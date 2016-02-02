@@ -1,8 +1,8 @@
 #ifndef DATABUFFER_H
 #define DATABUFFER_H
 //#include <iostream>
+#include <cstdlib>
 #include <iostream>
-#include <new>
 
 /**
  * \brief Base class to handle data management for abstract data types
@@ -11,15 +11,15 @@ template <typename T>
 class DataBuffer
 {
    public:
-      size_t   m_bufferSize     = 0;            //!< Size of the allocated buffer in bytes
-      size_t   m_bufferElements = 0;            //!< Number of elements in the buffer based on T
-      T *      m_buffer = NULL;                 //!< Pointer to buffer data
+      size_t   m_bufferSize     = 0;     //!< Size of the allocated buffer in bytes
+      size_t   m_bufferElements = 0;     //!< Number of elements in the buffer based on T
+      T *      m_buffer = NULL;          //!< Pointer to buffer data
 
       ~DataBuffer();
       T    operator [](size_t index) const   {return m_buffer[index];};
       T    & operator [](size_t index) {return m_buffer[index];};
 
-      bool allocate( size_t elements, bool reallocate = false );
+      bool allocate( size_t elements, bool force = false );
       void deallocate();
 };
 
@@ -41,32 +41,39 @@ DataBuffer<T>::~DataBuffer()
 }
 
 /**
- * \brief Allocates the buffer to the give size
+ * \brief Allocates the buffer to the given number of elements. 
  *
  * \param [in] size number of elements of the base type to allocate
  * \param [in] force flag to indicate if data should be deleted and reallocated
  * \return true on success, false on failure
  **/
 template<typename T>
-bool DataBuffer<T>::allocate( size_t size, bool force )
+bool DataBuffer<T>::allocate( size_t elements, bool force)
 {
    //Check to make sure we are not already allocated
    if( m_buffer != NULL ) {
-      if( force ) {
-         deallocate();
-      }
-      else {
+      if( !force ) {
          return false;
       }
    }
 
-   //Allocate new data
-   m_buffer = new(std::nothrow) T[size];
-   if( m_buffer == NULL ) {
-      return false;
+   //Check if reallocating to zero. If so, deallocate
+   if( elements == 0 ) {
+      deallocate();
+      return true;
    }
-   m_bufferElements = size;
-   m_bufferSize = sizeof( m_buffer);
+
+   size_t bytes = sizeof(T)*elements;
+
+   void * mem = std::realloc(m_buffer, bytes);
+   if( mem == NULL ) {
+      throw std::bad_alloc();
+   }
+
+   m_buffer = static_cast<T*>(mem);
+
+   m_bufferElements = elements;
+   m_bufferSize = sizeof( bytes );
 
    return true;
 }
@@ -81,11 +88,12 @@ void DataBuffer<T>::deallocate( void )
       return;
    }
 
-   delete[] m_buffer;
+   std::free(m_buffer);
    m_buffer = NULL;
    m_bufferElements = 0;
    m_bufferSize = 0;
 }
 
+// Function to test the databuffer operation
 bool testDataBuffer(void);
 #endif

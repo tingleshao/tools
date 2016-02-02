@@ -28,3 +28,8 @@ install(TARGETS
    PUBLIC_HEADER DESTINATION include
 )
 
+install(FILES
+   C11Thread.h
+   DESTINATION include
+)
+

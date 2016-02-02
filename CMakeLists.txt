@@ -8,6 +8,17 @@ IF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
    SET(CMAKE_INSTALL_PREFIX "/usr/local/CMakeExample" CACHE PATH "CMakeExample install prefix" FORCE) 
 ENDIF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT) 
 
+#determine if we build documentation
+find_package( Doxygen)
+if(DOXYGEN_FOUND)
+   configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile @ONLY)
+   add_custom_target(doc
+      ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
+      WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+      COMMENT "Generating API documentation with Doxygen" VERBATIM
+   )
+endif(DOXYGEN_FOUND)
+
 #Specify output locations for files.
 set(INCLUDE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/include")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)

@@ -165,6 +165,8 @@ size_t ExtendedBuffer<T>::assignElements( T element, size_t count, size_t startI
    if( startIndex+count > m_elementCount ) {
       m_elementCount = startIndex+count;
    }
+
+   return count;
 }
 
 //Test function

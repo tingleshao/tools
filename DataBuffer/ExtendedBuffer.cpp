@@ -8,8 +8,6 @@ using namespace std;
  **/
 bool testExtendedBuffer()
 {
-   bool rc = true;
-
    size_t elements = 100;
 
    //Create some buffers
@@ -71,8 +69,10 @@ bool testExtendedBuffer()
                 << "\t" << (int)uint8Buffer[elements/2] <<"\n"
                 << "\t" << (int)uint8Buffer[elements] <<"\n"
                 << "\t" << (int)uint8Buffer[elements*2-1] <<"\n";
+
+      return false;
    }
 
-   return rc;
+   return true;
 }
 

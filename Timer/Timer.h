@@ -62,7 +62,7 @@ class Timer
 
 //Support functions
 double getTime();
-uint64_t getIntTime();
+//uint64_t getIntTime();
 double convertTimeValToDouble( timeval tv );
 SMPTETime   convertTimeValToSMPTE( timeval tv, int fps ); 
 timeval     convertDoubleToTimeVal( double dTime );

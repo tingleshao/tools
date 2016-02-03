@@ -20,8 +20,8 @@ class ExtendedBuffer : public DataBuffer<T>
       void   deallocate();
       size_t getElementCount();
       size_t getElements( T * dest, size_t count, size_t startIndex = 0);
-      size_t setElements( T * array, size_t count, size_t offset = 0, bool resizeFlag = false);
-      size_t assignElements( T element, size_t count, size_t offset = 0, bool resizeFlag = false );
+      size_t setElements( T * array, size_t count, size_t startIndex = 0, bool resizeFlag = false);
+      size_t assignElements( T element, size_t count, size_t startIndex = 0, bool resizeFlag = false );
 };
 
 /**
@@ -94,7 +94,7 @@ size_t ExtendedBuffer<T>::getElements( T * dest, size_t count, size_t startIndex
  * available space will be filled.
  **/
 template<typename T>
-size_t ExtendedBuffer<T>::setElements( T * array, size_t count, size_t offset, bool resizeFlag ) 
+size_t ExtendedBuffer<T>::setElements( T * array, size_t count, size_t startIndex, bool resizeFlag ) 
 {
    //Make sure the input array is valid
    if(( array = NULL )||(count == 0)) {
@@ -103,19 +103,19 @@ size_t ExtendedBuffer<T>::setElements( T * array, size_t count, size_t offset, b
    }
 
    //Check to make sure we are bounded correctly. If not, resize if flag is set
-   if( count +offset > DataBuffer<T>::m_allocatedElements ) {
+   if( count +startIndex > DataBuffer<T>::m_allocatedElements ) {
       if( resizeFlag) {
-         DataBuffer<T>::allocate(count+offset, true);
+         DataBuffer<T>::allocate(count+startIndex, true);
       }
       else {
-         count = DataBuffer<T>::m_allocatedElements - offset;
+         count = DataBuffer<T>::m_allocatedElements - startIndex;
       }
    }
 
    size_t bytes = count * sizeof(T);
 
    //Perform copy
-   memcpy(&DataBuffer<T>::m_buffer[offset], array, count * sizeof(T));
+   memcpy(&DataBuffer<T>::m_buffer[startIndex], array, count * sizeof(T));
 
    return count;
 }
@@ -123,7 +123,7 @@ size_t ExtendedBuffer<T>::setElements( T * array, size_t count, size_t offset, b
 /**
  * \brief This function sets the number of elements at the specified offset to the given value.
  *
- * \param [in] array pointer to the array of elements to copy
+ * \param [in] element Element to copy to the array
  * \param [in] count number of elements to copy
  * \param [in] startIndex index to start to copy to
  * \param [in] resizeFlag flag to indicate if array should be resized if needed.
@@ -134,21 +134,21 @@ size_t ExtendedBuffer<T>::setElements( T * array, size_t count, size_t offset, b
  * available space will be filled.
  **/
 template<typename T>
-size_t ExtendedBuffer<T>::assignElements( T element, size_t count, size_t offset, bool resizeFlag )
+size_t ExtendedBuffer<T>::assignElements( T element, size_t count, size_t startIndex, bool resizeFlag )
 {
    //Check to make sure we are bounded correctly. If not, resize if flag is set
-   if( count +offset > DataBuffer<T>::m_allocatedElements ) {
+   if( count +startIndex > DataBuffer<T>::m_allocatedElements ) {
       if( resizeFlag) {
-         DataBuffer<T>::allocate(count+offset, true);
+         DataBuffer<T>::allocate(count+startIndex, true);
       }
       else {
-         count = DataBuffer<T>::m_allocatedElements - offset;
+         count = DataBuffer<T>::m_allocatedElements - startIndex;
       }
    }
 
    //Loop to copy the given number of elements
    for( int i = 0; i < count; i++ ) {
-      DataBuffer<T>::m_buffer[offset+i] = element;
+      DataBuffer<T>::m_buffer[startIndex+i] = element;
    }
 
 }

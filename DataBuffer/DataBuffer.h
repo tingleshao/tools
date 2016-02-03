@@ -17,8 +17,11 @@ class DataBuffer
 
    public:
       ~DataBuffer();
-      T    operator [](size_t index) const   {return m_buffer[index];};
-      T    & operator [](size_t index) {return m_buffer[index];};
+      
+      /** \brief returns the value at the index **/
+      T    operator [](size_t index) const   {return m_buffer[index];}; 
+      /** \brief assigned the index to the value **/
+      T    & operator [](size_t index) {return m_buffer[index];}; 
 
     
       size_t  getAllocatedElements();
@@ -40,6 +43,10 @@ DataBuffer<T>::~DataBuffer()
    }
 }
 
+/**
+ * \brief Returns the number of elements allocated in the array.
+ * \return number of allocated elements
+ **/
 template<typename T>
 size_t DataBuffer<T>::getAllocatedElements(void)
 {
@@ -49,7 +56,7 @@ size_t DataBuffer<T>::getAllocatedElements(void)
 /**
  * \brief Allocates the buffer to the given number of elements. 
  *
- * \param [in] size number of elements of the base type to allocate
+ * \param [in] elements number of elements of the base type to allocate
  * \param [in] resizeFlag flag to indicate if data should be deleted and reallocated
  * \return true on success, false on failure
  **/

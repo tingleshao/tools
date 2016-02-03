@@ -29,7 +29,12 @@ C11Thread::~C11Thread()
  * \brief Function called to start thread execution
  *
  * \param [in] arg generic pointer that represents shared data
+ * \param [in] runFlag shared pointer to indicate when running is stopped.
  * \return std::thread object for this threads
+ *
+ * This functions is the entry point for stand-alone thread execution. The optional 
+ * runFlag pointer allows the calling process to terminate multiple threads by setting
+ * the value of this shared pointer.
  **/
 bool C11Thread::Start( void * arg, bool * runFlag ) 
 {

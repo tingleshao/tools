@@ -1,10 +1,12 @@
 #include <iostream>
-#include <new>
+//#include <new>
 
 #include "DataBuffer.h"
 
 bool testDataBuffer()
 {
+   bool rc = true;
+
    int elements = 100;
 
    //Create some buffers
@@ -23,20 +25,28 @@ bool testDataBuffer()
    DBuffer.allocate(elements);
    CBuffer.allocate(elements);
 
-   uint8Buffer[1] = 1;
-   int16Buffer[1] = -2;
-   int32Buffer[1] = 3;
-   int64Buffer[1] = -4;
-   DBuffer[1] = -5.5;
-   CBuffer[1] = 'A';
+   for( int i = -2; i < 2; i++ ) {
+      uint8Buffer[i+2] = (uint8_t)i;
+      int16Buffer[i+2] = i;
+      int32Buffer[i+2] = i;
+      int64Buffer[i+2] = i;
+      DBuffer[i+2] = i-.5;
+      CBuffer[i+2] = i+70;
+   }
+
+   for( int i = -2; i < 2; i++ ) {
+      if(( uint8Buffer[i+2] != (uint8_t)i ) ||
+         ( int16Buffer[i+2] != i ) ||
+         ( int32Buffer[i+2] != i ) ||
+         ( int64Buffer[i+2] != i ) ||
+         ( DBuffer[i+2]  != i-.5 ) ||
+         ( CBuffer[i+2]  != i+70 )) {
+         std::cerr << "DataBuffer mismatch"<<std::endl;
+         rc = false;
+      }
+   }
 
 
-   std::cout << "uint8Buffer[1] 1:"<< (int)uint8Buffer.m_buffer[1] << endl;
-   std::cout << "int16Buffer[1] -2:"<< int16Buffer.m_buffer[1] << endl;
-   std::cout << "int32Buffer[1] 3:"<< int32Buffer.m_buffer[1] << endl;
-   std::cout << "int64Buffer[1] -4:"<< int64Buffer.m_buffer[1] << endl;
-   std::cout << "DBuffer[1] -5.5:"<< DBuffer.m_buffer[1] << endl;
-   std::cout << "CBuffer[1] A:"<< CBuffer.m_buffer[1] << endl;
 
    //Deallocate buffers
    uint8Buffer.deallocate();
@@ -45,6 +55,6 @@ bool testDataBuffer()
    int64Buffer.deallocate();
    DBuffer.deallocate();
 
-   return true;
+   return rc;
 }
 

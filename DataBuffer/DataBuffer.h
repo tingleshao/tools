@@ -12,15 +12,15 @@ class DataBuffer
 {
    public:
       size_t   m_bufferSize     = 0;     //!< Size of the allocated buffer in bytes
-      size_t   m_bufferElements = 0;     //!< Number of elements in the buffer based on T
+      size_t   m_allocatedElements = 0;     //!< Number of elements in the buffer based on T
       T *      m_buffer = NULL;          //!< Pointer to buffer data
 
       ~DataBuffer();
       T    operator [](size_t index) const   {return m_buffer[index];};
       T    & operator [](size_t index) {return m_buffer[index];};
 
-      bool allocate( size_t elements, bool force = false );
-      void deallocate();
+      virtual bool allocate( size_t elements, bool force = false );
+      virtual void deallocate();
 };
 
 
@@ -72,7 +72,7 @@ bool DataBuffer<T>::allocate( size_t elements, bool force)
 
    m_buffer = static_cast<T*>(mem);
 
-   m_bufferElements = elements;
+   m_allocatedElements = elements;
    m_bufferSize = sizeof( bytes );
 
    return true;
@@ -90,7 +90,7 @@ void DataBuffer<T>::deallocate( void )
 
    std::free(m_buffer);
    m_buffer = NULL;
-   m_bufferElements = 0;
+   m_allocatedElements = 0;
    m_bufferSize = 0;
 }
 

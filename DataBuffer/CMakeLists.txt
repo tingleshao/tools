@@ -12,6 +12,7 @@ include(GenerateExportHeader)
 #specifies a list of source files to be compiled
 set( BASE_SOURCES 
    DataBuffer.cpp
+   ExtendedBuffer.cpp
 )
 
 #specifies the library to create. The name will be libbase_static.a and libbase.so in this case.

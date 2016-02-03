@@ -25,6 +25,13 @@ bool testDataBuffer()
    DBuffer.allocate(elements);
    CBuffer.allocate(elements);
 
+   size_t count = uint8Buffer.getAllocatedElements();
+   if( count != elements ) {
+      std::cerr << "Number of allocated elements does not match:\n\t" 
+                <<count<<"!="<<elements << endl;
+      rc = false;
+   }
+
    for( int i = -2; i < 2; i++ ) {
       uint8Buffer[i+2] = (uint8_t)i;
       int16Buffer[i+2] = i;

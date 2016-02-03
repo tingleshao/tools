@@ -5,6 +5,7 @@ using namespace std;
 #include <Timer.h>
 #include <C11Thread.h>
 #include <DataBuffer.h>
+#include <ExtendedBuffer.h>
 
 /**
  * Main test function
@@ -24,6 +25,11 @@ int main(void)
    if( !testDataBuffer() )
    {
       cout << "DataBuffer Test Failed!" << endl;
+      return 1;
+   }
+   if( !testExtendedBuffer())
+   {
+      cout << "ExtendedBuffer Test Failed!" << endl;
       return 1;
    }
    

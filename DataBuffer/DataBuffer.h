@@ -1,6 +1,6 @@
 #ifndef DATABUFFER_H
 #define DATABUFFER_H
-//#include <iostream>
+
 #include <cstdlib>
 #include <iostream>
 
@@ -10,21 +10,21 @@
 template <typename T>
 class DataBuffer
 {
-   public:
+   protected:
       size_t   m_bufferSize     = 0;     //!< Size of the allocated buffer in bytes
       size_t   m_allocatedElements = 0;     //!< Number of elements in the buffer based on T
       T *      m_buffer = NULL;          //!< Pointer to buffer data
 
+   public:
       ~DataBuffer();
       T    operator [](size_t index) const   {return m_buffer[index];};
       T    & operator [](size_t index) {return m_buffer[index];};
 
-      virtual bool allocate( size_t elements, bool force = false );
+    
+      size_t  getAllocatedElements();
+      virtual bool allocate( size_t elements, bool resizeFlag = false );
       virtual void deallocate();
 };
-
-
-
 
 using namespace std;
 /**
@@ -40,19 +40,25 @@ DataBuffer<T>::~DataBuffer()
    }
 }
 
+template<typename T>
+size_t DataBuffer<T>::getAllocatedElements(void)
+{
+   return m_allocatedElements;
+}
+
 /**
  * \brief Allocates the buffer to the given number of elements. 
  *
  * \param [in] size number of elements of the base type to allocate
- * \param [in] force flag to indicate if data should be deleted and reallocated
+ * \param [in] resizeFlag flag to indicate if data should be deleted and reallocated
  * \return true on success, false on failure
  **/
 template<typename T>
-bool DataBuffer<T>::allocate( size_t elements, bool force)
+bool DataBuffer<T>::allocate( size_t elements, bool resizeFlag)
 {
    //Check to make sure we are not already allocated
    if( m_buffer != NULL ) {
-      if( !force ) {
+      if( !resizeFlag ) {
          return false;
       }
    }

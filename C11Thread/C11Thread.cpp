@@ -128,30 +128,26 @@ bool testC11Thread(void)
    bool rc = true;
    C11Thread cThread;
 
-   cout << "Test Stop function"<<endl;
    cThread.Start(NULL);
    std::this_thread::sleep_for(std::chrono::milliseconds(100));
    cThread.Stop();
    cThread.Join();
 
-   cout << "Test running flag"<<endl;
    static bool running = true;
    cThread.Start(NULL, &running);
    std::this_thread::sleep_for(std::chrono::milliseconds(100));
-   std::cout << "Running being set to false!" << endl;
    running = false;
    rc = cThread.Join();
    if( !rc ) {
-      std::cout << "Unable to join thread!"<<std::endl;
+      std::cerr << "Unable to join thread!"<<std::endl;
+      return false;
    }
-   std::cout << "Joined"<<std::endl;
 
    //Vector tests (timed)
    size_t threadCount = 100;
    running = true;
    std::vector<C11Thread> threadVect(threadCount);
 
-   cout << "Testing vector "<<endl << endl;
    //Spawn threadCount threads
    for( int i = 0; i < threadCount; i++ ) {
       threadVect[i].Start(NULL, &running);

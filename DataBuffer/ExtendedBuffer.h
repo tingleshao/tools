@@ -151,7 +151,11 @@ size_t ExtendedBuffer<T>::assignElements( T element, size_t count, size_t startI
       DataBuffer<T>::m_buffer[startIndex+i] = element;
    }
 
+   if( startIndex+count > m_elementCount ) {
+      m_elementCount = startIndex+count;
+   }
 }
+
 //Test function
 bool testExtendedBuffer();
 

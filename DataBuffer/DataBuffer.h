@@ -12,8 +12,10 @@ class DataBuffer
 {
    protected:
       size_t   m_bufferSize     = 0;     //!< Size of the allocated buffer in bytes
-      size_t   m_allocatedElements = 0;     //!< Number of elements in the buffer based on T
+      size_t   m_allocatedElements = 0;  //!< Number of elements in the buffer based on T
       T *      m_buffer = NULL;          //!< Pointer to buffer data
+      T        defaultValue;             //!< Default value
+      bool     useDefaultValueFlag = false;  //!< Flag to indicate if we should use default value
 
    public:
       ~DataBuffer();
@@ -23,7 +25,8 @@ class DataBuffer
       /** \brief assigned the index to the value **/
       T    & operator [](size_t index) {return m_buffer[index];}; 
 
-    
+      void    useDefaultValue( bool flag);
+      void    setDefaultValue(T value );
       size_t  getAllocatedElements();
       virtual bool allocate( size_t elements, bool resizeFlag = false );
       virtual void deallocate();
@@ -44,6 +47,22 @@ DataBuffer<T>::~DataBuffer()
 }
 
 /**
+ * \brief Sets the default value to assign to data
+ * \param [in] value default value to set all allocated data to
+ *
+ * This function sets the default value to set all allocated data to
+ * and sets the useDefaultValueFlag to true. All future allocated 
+ * elements will be set to this value. The useDefaultValue function 
+ * can override the useDefaultValue flag
+ **/
+template<typename T>
+void DataBuffer<T>::setDefaultValue( T value ) 
+{
+   defaultValue = value;
+   useDefaultValueFlag = true;
+}
+
+/**
  * \brief Returns the number of elements allocated in the array.
  * \return number of allocated elements
  **/
@@ -51,6 +70,16 @@ template<typename T>
 size_t DataBuffer<T>::getAllocatedElements(void)
 {
    return m_allocatedElements;
+}
+
+/** 
+ * \brief This function is used to enable or disable setting allocated data to the default value
+ *
+ **/
+template<typename T>
+void DataBuffer<T>::useDefaultValue(bool flag )
+{
+   useDefaultValueFlag = flag;
 }
 
 /**
@@ -85,8 +114,17 @@ bool DataBuffer<T>::allocate( size_t elements, bool resizeFlag)
 
    m_buffer = static_cast<T*>(mem);
 
+   //Assign default values to buffers
+   if( useDefaultValueFlag ) {
+      for(int i = m_allocatedElements; i < elements; i++)
+      {
+         m_buffer[i] = defaultValue;
+      }
+   }
+
    m_allocatedElements = elements;
    m_bufferSize = sizeof( bytes );
+
 
    return true;
 }

@@ -3,7 +3,7 @@
 //#include <iostream>
 #include <cstdlib>
 #include <iostream>
-//#include <new>
+#include <climits>
 #include "DataBuffer.h"
 
 using namespace std;
@@ -20,8 +20,8 @@ class ExtendedBuffer : public DataBuffer<T>
       void   deallocate();
       size_t getElementCount();
       size_t getElements( T * dest, size_t count, size_t startIndex = 0);
-      size_t setElements( T * array, size_t count, size_t startIndex = 0, bool resizeFlag = false);
-      size_t assignElements( T element, size_t count, size_t startIndex = 0, bool resizeFlag = false );
+      size_t setElements( T * array, size_t count, size_t startIndex = UINT_MAX, bool resizeFlag = false);
+      size_t assignElements( T element, size_t count, size_t startIndex = UINT_MAX, bool resizeFlag = false );
 };
 
 /**
@@ -91,7 +91,8 @@ size_t ExtendedBuffer<T>::getElements( T * dest, size_t count, size_t startIndex
  *
  * If the resize flag is set, this function well expand the array to handle all
  * of the input data. Otherwise, if the internal buffer is undersized, all 
- * available space will be filled.
+ * available space will be filled. If startIndex == UINT_MAX, the array is appended to 
+ * the current m_elementCount index. 
  **/
 template<typename T>
 size_t ExtendedBuffer<T>::setElements( T * array, size_t count, size_t startIndex, bool resizeFlag ) 
@@ -100,6 +101,11 @@ size_t ExtendedBuffer<T>::setElements( T * array, size_t count, size_t startInde
    if(( array = NULL )||(count == 0)) {
       cerr<<"DataBuffer::setElements received a NULL input array"<<endl;
       return 0;
+   }
+
+   //If we're set to UINT_MAX, the start with the highest element
+   if( startIndex == UINT_MAX ) {
+      startIndex = m_elementCount;
    }
 
    //Check to make sure we are bounded correctly. If not, resize if flag is set
@@ -136,6 +142,11 @@ size_t ExtendedBuffer<T>::setElements( T * array, size_t count, size_t startInde
 template<typename T>
 size_t ExtendedBuffer<T>::assignElements( T element, size_t count, size_t startIndex, bool resizeFlag )
 {
+   //If we're set to UINT_MAX, the start with the highest element
+   if( startIndex == UINT_MAX ) {
+      startIndex = m_elementCount;
+   }
+
    //Check to make sure we are bounded correctly. If not, resize if flag is set
    if( count +startIndex > DataBuffer<T>::m_allocatedElements ) {
       if( resizeFlag) {

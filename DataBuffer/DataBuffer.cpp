@@ -7,6 +7,7 @@ bool testDataBuffer()
 {
    bool rc = true;
 
+   int defaultValue = 10;
    int elements = 100;
 
    //Create some buffers
@@ -17,6 +18,8 @@ bool testDataBuffer()
    DataBuffer<double>DBuffer;
    DataBuffer<char>CBuffer;
    
+   uint8Buffer.setDefaultValue(defaultValue );
+
    //Allocate buffers
    uint8Buffer.allocate(elements);
    int16Buffer.allocate(elements);
@@ -24,6 +27,12 @@ bool testDataBuffer()
    int64Buffer.allocate(elements);
    DBuffer.allocate(elements);
    CBuffer.allocate(elements);
+
+   if( uint8Buffer[0] != defaultValue ) {
+      std::cerr << "Default value not working: "<<(int)uint8Buffer[0]<<"!="<< defaultValue <<endl;
+      return false;
+   }
+
 
    size_t count = uint8Buffer.getAllocatedElements();
    if( count != elements ) {

@@ -9,15 +9,15 @@ include_directories( ${CMAKE_SOURCE_DIR}/DataBuffer)
 include_directories( ${CMAKE_SOURCE_DIR}/ThreadSafeQueue)
 
 #Specify the output executable of this file
-add_executable( unitTest
-   UnitTest.cpp
+add_executable( AquetiToolsTest
+   AquetiToolsTest.cpp
 )
 
 #Find OS Threads Library
 find_package(Threads REQUIRED)
 
 #assign a library to link to this file. This shows a static library
-target_link_libraries( unitTest
+target_link_libraries( AquetiToolsTest
    Timer_static
    C11Thread_static
    DataBuffer_static
@@ -27,7 +27,7 @@ target_link_libraries( unitTest
 
 #Specify where the targets are installed when a "make install" is executed
 install(TARGETS
-   unitTest
+   AquetiToolsTest
    RUNTIME DESTINATION bin
 )
 

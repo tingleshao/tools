@@ -6,6 +6,7 @@ using namespace std;
 #include <C11Thread.h>
 #include <DataBuffer.h>
 #include <ThreadSafeQueue.h>
+#include <ExtendedBuffer.h>
 
 /**
  * Main test function
@@ -30,6 +31,10 @@ int main(void)
    if( !test_ThreadSafeQueue())
    {
       cout << "Threadsafe Queue Test Failed!" << endl;
+   }
+   if( !testExtendedBuffer())
+   {
+      cout << "ExtendedBuffer Test Failed!" << endl;
       return 1;
    }
    

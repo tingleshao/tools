@@ -24,3 +24,8 @@ install(TARGETS
    PUBLIC_HEADER DESTINATION include
 )
 
+#install header files
+install( FILES
+   Timer.h
+   DESTINATION include
+)

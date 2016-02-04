@@ -6,21 +6,23 @@ PROJECT(AquetiTools)
 include_directories( ${CMAKE_SOURCE_DIR}/Timer)
 include_directories( ${CMAKE_SOURCE_DIR}/C11Thread)
 include_directories( ${CMAKE_SOURCE_DIR}/DataBuffer)
-
-
+include_directories( ${CMAKE_SOURCE_DIR}/ThreadSafeQueue)
 
 #Specify the output executable of this file
 add_executable( unitTest
    UnitTest.cpp
 )
 
+#Find OS Threads Library
+find_package(Threads REQUIRED)
+
 #assign a library to link to this file. This shows a static library
 target_link_libraries( unitTest
    Timer_static
    C11Thread_static
    DataBuffer_static
-
-   pthread                          #For threaded operation
+   ThreadSafeQueue_static
+   ${CMAKE_THREAD_LIBS_INIT}               #For threaded operation
 )
 
 #Specify where the targets are installed when a "make install" is executed

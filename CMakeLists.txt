@@ -32,6 +32,5 @@ add_definitions(-std=c++11)     #Use C++11
 add_subdirectory(Timer)
 add_subdirectory(DataBuffer)
 add_subdirectory(C11Thread)
+add_subdirectory(ThreadSafeQueue)
 add_subdirectory(test)
-
-

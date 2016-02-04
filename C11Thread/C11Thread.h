@@ -31,18 +31,16 @@ class C11Thread
        bool * runPtr = NULL;              //!< Flag to stop running by a shared pointer
        bool running = false;              //!< Internal flag to stop execution due to function call
 
-       virtual void Execute( void * arg );
+       void Execute( void );
 
     protected:
 
     public:
        ~C11Thread();
-       bool Start( void * arg = NULL, bool * runFlag=NULL );
+       bool Start( bool * runFlag=NULL );
        bool Join( void );
        void Stop();
        virtual void mainLoop();
-
-    protected:
 };
 
 bool testC11Thread();

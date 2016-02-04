@@ -29,3 +29,9 @@ install(TARGETS
    PUBLIC_HEADER DESTINATION include
 )
 
+#install include files
+install(FILES
+   DataBuffer.h
+   ExtendedBuffer.h
+   DESTINATION include
+)

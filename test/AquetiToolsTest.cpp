@@ -5,6 +5,7 @@ using namespace std;
 #include <Timer.h>
 #include <C11Thread.h>
 #include <DataBuffer.h>
+#include <ThreadSafeQueue.h>
 #include <ExtendedBuffer.h>
 
 /**
@@ -27,6 +28,10 @@ int main(void)
       cout << "DataBuffer Test Failed!" << endl;
       return 1;
    }
+   if( !test_ThreadSafeQueue())
+   {
+      cout << "Threadsafe Queue Test Failed!" << endl;
+   }
    if( !testExtendedBuffer())
    {
       cout << "ExtendedBuffer Test Failed!" << endl;
@@ -34,4 +39,5 @@ int main(void)
    }
    
    cout << "All tests completed successfully!" << endl;
+   return 0;
 }

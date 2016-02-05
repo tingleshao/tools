@@ -15,7 +15,7 @@ bool testExtendedBuffer()
    
    //Allocate buffers - test default resize flag operation
    uint8Buffer.assignElements( 0, elements);
-   size_t count = uint8Buffer.getAllocatedElements();
+   size_t count = uint8Buffer.getElementCount();
    if( count != 0 ) {
       std::cerr << "Allocated elements when not supposed to" <<count<<"!= 0" << endl;
       return false;
@@ -23,7 +23,7 @@ bool testExtendedBuffer()
 
    //Preallocate a buffer without assigning values
    uint8Buffer.allocate( elements );
-   count = uint8Buffer.getAllocatedElements();
+   count = uint8Buffer.getElementCount();
    if( count != elements ) {
       std::cerr << "Allocated elements incorrect: " <<count<<"!="<<elements<< endl;
       return false;
@@ -31,8 +31,8 @@ bool testExtendedBuffer()
 
    //Assign elements with a force resize. New elementSize shoudl reflect elements
    uint8Buffer.assignElements( 0, elements/2, 0, false);
-   count = uint8Buffer.getAllocatedElements();
-   size_t ecount = uint8Buffer.getElementCount();
+   count = uint8Buffer.getElementCount();
+   size_t ecount = uint8Buffer.getMaxIndex();
    if(( count != elements )||(ecount != elements/2)) {
       std::cerr << "Allocated elements incorrect: " <<count<<"!="<<elements
                 << "||"<<ecount<<"!="<<elements/2<< endl;
@@ -41,7 +41,7 @@ bool testExtendedBuffer()
 
    //Assign another set of elements to array. Should top out at count elements
    uint8Buffer.assignElements( 1, elements, ecount, false);
-   count = uint8Buffer.getAllocatedElements();
+   count = uint8Buffer.getElementCount();
    ecount = uint8Buffer.getElementCount();
    if(( count != elements )||(ecount != elements)) {
       std::cerr << "Allocated elements2 incorrect: " <<count<<"!="<<elements
@@ -51,7 +51,7 @@ bool testExtendedBuffer()
 
    //Assign one more set, this time  force another write
    uint8Buffer.assignElements( 2, elements, ecount, true );
-   count = uint8Buffer.getAllocatedElements();
+   count = uint8Buffer.getElementCount();
    ecount = uint8Buffer.getElementCount();
    if(( count != elements*2 )||(ecount != elements*2)) {
       std::cerr << "Allocated elements2 incorrect: " <<count<<"!="<<elements*2
@@ -74,13 +74,13 @@ bool testExtendedBuffer()
    }
 
    //Try a valid elementCount
-   if( uint8Buffer.setElementCount( elements*10)) {
+   if( uint8Buffer.setMaxIndex ( elements*10)) {
       std::cerr << "False success setting elementCount" << std::endl;
       return false;
    }
 
    //Try a valid elementCount
-   if( ! uint8Buffer.setElementCount( elements/2)) {
+   if( ! uint8Buffer.setMaxIndex( elements/2)) {
       std::cerr << "Failed decrementing elementCount" << std::endl;
       return false;
    }

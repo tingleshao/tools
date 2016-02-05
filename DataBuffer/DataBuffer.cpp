@@ -34,7 +34,7 @@ bool testDataBuffer()
    }
 
 
-   size_t count = uint8Buffer.getAllocatedElements();
+   size_t count = uint8Buffer.getElementCount();
    if( count != elements ) {
       std::cerr << "Number of allocated elements does not match:\n\t" 
                 <<count<<"!="<<elements << endl;

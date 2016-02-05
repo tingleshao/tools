@@ -15,11 +15,11 @@ template <typename T>
 class ExtendedBuffer : public DataBuffer<T>
 {
    protected:
-      size_t m_elementCount = 0;                   //!< Number of elements set in the array
+      size_t m_maxIndex = 0;                   //!< Number of elements set in the array
    public:
       void   deallocate();
-      size_t getElementCount();
-      bool   setElementCount( size_t value );
+      size_t getMaxIndex();
+      bool   setMaxIndex( size_t value );
       size_t getElements( T * dest, size_t count, size_t startIndex = 0);
       size_t setElements( T * array, size_t count, size_t startIndex = UINT_MAX, bool resizeFlag = false);
       size_t assignElements( T element, size_t count, size_t startIndex = UINT_MAX, bool resizeFlag = false );
@@ -30,16 +30,16 @@ class ExtendedBuffer : public DataBuffer<T>
  * \return number of elements assigned to the array
  **/
 template<typename T>
-bool ExtendedBuffer<T>::setElementCount( size_t value) 
+bool ExtendedBuffer<T>::setMaxIndex( size_t value) 
 {
    //We cannot force an element count to be greater than
    //the number of allocated elements
-   if( value > DataBuffer<T>::m_allocatedElements ) {
+   if( value > DataBuffer<T>::getElementCount()) {
       return false;
    }
 
    //We're in range. Set teh value
-   m_elementCount = value;
+   m_maxIndex = value;
    return true;
 }
 
@@ -48,9 +48,9 @@ bool ExtendedBuffer<T>::setElementCount( size_t value)
  * \return number of elements assigned to the array
  **/
 template<typename T>
-size_t ExtendedBuffer<T>::getElementCount()
+size_t ExtendedBuffer<T>::getMaxIndex()
 {
-   return m_elementCount;
+   return m_maxIndex;
 }
 
 /**
@@ -65,7 +65,7 @@ template<typename T>
 void ExtendedBuffer<T>::deallocate()
 {
    DataBuffer<T>::deallocate();
-   m_elementCount = 0;
+   m_maxIndex = 0;
 
    return;
 }
@@ -89,8 +89,8 @@ void ExtendedBuffer<T>::deallocate()
 template<typename T>
 size_t ExtendedBuffer<T>::getElements( T * dest, size_t count, size_t startIndex ) 
 {
-   if( count > m_elementCount - startIndex ) {
-      count = m_elementCount - startIndex;
+   if( count > m_maxIndex - startIndex ) {
+      count = m_maxIndex - startIndex;
    }
 
    size_t bytes = count & sizeof(T);
@@ -111,7 +111,7 @@ size_t ExtendedBuffer<T>::getElements( T * dest, size_t count, size_t startIndex
  * If the resize flag is set, this function well expand the array to handle all
  * of the input data. Otherwise, if the internal buffer is undersized, all 
  * available space will be filled. If startIndex == UINT_MAX, the array is appended to 
- * the current m_elementCount index. 
+ * the current m_maxIndex index. 
  **/
 template<typename T>
 size_t ExtendedBuffer<T>::setElements( T * array, size_t count, size_t startIndex, bool resizeFlag ) 
@@ -124,7 +124,7 @@ size_t ExtendedBuffer<T>::setElements( T * array, size_t count, size_t startInde
 
    //If we're set to UINT_MAX, the start with the highest element
    if( startIndex == UINT_MAX ) {
-      startIndex = m_elementCount;
+      startIndex = m_maxIndex;
    }
 
    //Check to make sure we are bounded correctly. If not, resize if flag is set
@@ -163,7 +163,7 @@ size_t ExtendedBuffer<T>::assignElements( T element, size_t count, size_t startI
 {
    //If we're set to UINT_MAX, the start with the highest element
    if( startIndex == UINT_MAX ) {
-      startIndex = m_elementCount;
+      startIndex = m_maxIndex;
    }
 
    //Check to make sure we are bounded correctly. If not, resize if flag is set
@@ -181,8 +181,8 @@ size_t ExtendedBuffer<T>::assignElements( T element, size_t count, size_t startI
       DataBuffer<T>::m_buffer[startIndex+i] = element;
    }
 
-   if( startIndex+count > m_elementCount ) {
-      m_elementCount = startIndex+count;
+   if( startIndex+count > m_maxIndex ) {
+      m_maxIndex = startIndex+count;
    }
 
    return count;

@@ -13,11 +13,12 @@ class DataBuffer
    protected:
       size_t   m_bufferSize     = 0;     //!< Size of the allocated buffer in bytes
       size_t   m_allocatedElements = 0;  //!< Number of elements in the buffer based on T
-      T *      m_buffer = NULL;          //!< Pointer to buffer data
       T        defaultValue;             //!< Default value
       bool     useDefaultValueFlag = false;  //!< Flag to indicate if we should use default value
+      T *      m_buffer = NULL;          //!< Pointer to buffer data
 
    public:
+
       ~DataBuffer();
       
       /** \brief returns the value at the index **/
@@ -27,7 +28,7 @@ class DataBuffer
 
       void    useDefaultValue( bool flag);
       void    setDefaultValue(T value );
-      size_t  getAllocatedElements();
+      size_t  getElementCount();
       virtual bool allocate( size_t elements, bool resizeFlag = false );
       virtual void deallocate();
 };
@@ -67,7 +68,7 @@ void DataBuffer<T>::setDefaultValue( T value )
  * \return number of allocated elements
  **/
 template<typename T>
-size_t DataBuffer<T>::getAllocatedElements(void)
+size_t DataBuffer<T>::getElementCount(void)
 {
    return m_allocatedElements;
 }

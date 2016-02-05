@@ -7,6 +7,7 @@ using namespace std;
 #include <DataBuffer.h>
 #include <ThreadSafeQueue.h>
 #include <ExtendedBuffer.h>
+#include <BaseSocket.h>
 
 /**
  * Main test function
@@ -35,6 +36,11 @@ int main(void)
    if( !testExtendedBuffer())
    {
       cout << "ExtendedBuffer Test Failed!" << endl;
+      return 1;
+   }
+   if( !testBaseSocket())
+   {
+      cout << "BaseSocket Test Failed!" << endl;
       return 1;
    }
    

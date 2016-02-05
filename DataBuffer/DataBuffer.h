@@ -12,7 +12,7 @@ class DataBuffer
 {
    protected:
       size_t   m_bufferSize     = 0;     //!< Size of the allocated buffer in bytes
-      size_t   m_allocatedElements = 0;  //!< Number of elements in the buffer based on T
+      size_t   m_elementCount = 0;  //!< Number of elements in the buffer based on T
       T        defaultValue;             //!< Default value
       bool     useDefaultValueFlag = false;  //!< Flag to indicate if we should use default value
       T *      m_buffer = NULL;          //!< Pointer to buffer data
@@ -70,7 +70,7 @@ void DataBuffer<T>::setDefaultValue( T value )
 template<typename T>
 size_t DataBuffer<T>::getElementCount(void)
 {
-   return m_allocatedElements;
+   return m_elementCount;
 }
 
 /** 
@@ -117,13 +117,13 @@ bool DataBuffer<T>::allocate( size_t elements, bool resizeFlag)
 
    //Assign default values to buffers
    if( useDefaultValueFlag ) {
-      for(int i = m_allocatedElements; i < elements; i++)
+      for(int i = m_elementCount; i < elements; i++)
       {
          m_buffer[i] = defaultValue;
       }
    }
 
-   m_allocatedElements = elements;
+   m_elementCount = elements;
    m_bufferSize = sizeof( bytes );
 
 
@@ -142,7 +142,7 @@ void DataBuffer<T>::deallocate( void )
 
    std::free(m_buffer);
    m_buffer = NULL;
-   m_allocatedElements = 0;
+   m_elementCount = 0;
    m_bufferSize = 0;
 }
 

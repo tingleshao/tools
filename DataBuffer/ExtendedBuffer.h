@@ -166,13 +166,15 @@ size_t ExtendedBuffer<T>::assignElements( T element, size_t count, size_t startI
       startIndex = m_maxIndex;
    }
 
+   size_t elementCount = DataBuffer<T>::getElementCount();
+
    //Check to make sure we are bounded correctly. If not, resize if flag is set
-   if( count +startIndex > DataBuffer<T>::m_allocatedElements ) {
+   if( count +startIndex > elementCount ) {
       if( resizeFlag) {
          DataBuffer<T>::allocate(count+startIndex, true);
       }
       else {
-         count = DataBuffer<T>::m_allocatedElements - startIndex;
+         count = elementCount - startIndex;
       }
    }
 

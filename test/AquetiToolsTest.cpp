@@ -8,6 +8,7 @@ using namespace std;
 #include <ThreadSafeQueue.h>
 #include <ExtendedBuffer.h>
 #include <BaseSocket.h>
+#include <SocketServer.h>
 
 /**
  * Main test function
@@ -43,7 +44,11 @@ int main(void)
       cout << "BaseSocket Test Failed!" << endl;
       return 1;
    }
-   
+   if( !testSocketServer())
+   {
+      cout << "SocketServer Test Failed!" << endl;
+      return 1;
+   }
    cout << "All tests completed successfully!" << endl;
    return 0;
 }

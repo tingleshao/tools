@@ -44,7 +44,7 @@ class BaseSocketData {
 //      int     bytes = 0;        //!< size of data requested or read in (not Buffer size)
 //      int64_t offset = 0;       //!< Current buffer offset
       std::string hostname;     //!< IP Address of the socket
-      ExtendedBuffer<uint8_t> data;
+      ExtendedBuffer<uint8_t> * data = NULL;
 
       int sendData( uint8_t * buffer,  size_t bytes );
 }; 

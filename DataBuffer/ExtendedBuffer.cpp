@@ -73,6 +73,18 @@ bool testExtendedBuffer()
       return false;
    }
 
+   //Try a valid elementCount
+   if( uint8Buffer.setElementCount( elements*10)) {
+      std::cerr << "False success setting elementCount" << std::endl;
+      return false;
+   }
+
+   //Try a valid elementCount
+   if( ! uint8Buffer.setElementCount( elements/2)) {
+      std::cerr << "Failed decrementing elementCount" << std::endl;
+      return false;
+   }
+
    return true;
 }
 

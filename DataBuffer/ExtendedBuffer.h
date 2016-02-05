@@ -19,10 +19,29 @@ class ExtendedBuffer : public DataBuffer<T>
    public:
       void   deallocate();
       size_t getElementCount();
+      bool   setElementCount( size_t value );
       size_t getElements( T * dest, size_t count, size_t startIndex = 0);
       size_t setElements( T * array, size_t count, size_t startIndex = UINT_MAX, bool resizeFlag = false);
       size_t assignElements( T element, size_t count, size_t startIndex = UINT_MAX, bool resizeFlag = false );
 };
+
+/**
+ * \brief Sets the number of elements to the specified value
+ * \return number of elements assigned to the array
+ **/
+template<typename T>
+bool ExtendedBuffer<T>::setElementCount( size_t value) 
+{
+   //We cannot force an element count to be greater than
+   //the number of allocated elements
+   if( value > DataBuffer<T>::m_allocatedElements ) {
+      return false;
+   }
+
+   //We're in range. Set teh value
+   m_elementCount = value;
+   return true;
+}
 
 /**
  * \brief Returns the number of elements assigned to the array

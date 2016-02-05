@@ -5,10 +5,6 @@ PROJECT(AquetiTools)
 #Set compiler/linker options
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fexpensive-optimizations")
 
-
-#This tells cmake to install header files when make install is executed
-include(GenerateExportHeader)
-
 #specifies a list of source files to be compiled
 set( BASE_SOURCES 
    C11Thread.cpp

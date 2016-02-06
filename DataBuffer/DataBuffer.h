@@ -19,6 +19,7 @@ class DataBuffer
 
    public:
 
+      DataBuffer(size_t elements=0);
       ~DataBuffer();
       
       /** \brief returns the value at the index **/
@@ -34,6 +35,20 @@ class DataBuffer
 };
 
 using namespace std;
+
+/**
+ * \brief Constructor
+ * 
+ * \param[in] elements number of elements (default = 0)
+ **/
+template<typename T>
+DataBuffer<T>::DataBuffer( size_t elements ) 
+{
+   if( elements > 0 ) {
+      allocate(elements);
+   }
+}
+
 /**
  * \brief Destructor
  *

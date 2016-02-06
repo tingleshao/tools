@@ -46,9 +46,9 @@ class BaseSocketData {
       std::string hostname;     //!< IP Address of the socket
       ExtendedBuffer<uint8_t> * data = NULL;
 
+      ExtendedBuffer<uint8_t> * extractData();
       int sendData( uint8_t * buffer,  size_t bytes );
 }; 
-
 
 /**
  *!\class BaseSocket 

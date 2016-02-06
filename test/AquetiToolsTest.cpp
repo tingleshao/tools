@@ -30,6 +30,7 @@ int main(void)
       cout << "DataBuffer Test Failed!" << endl;
       return 1;
    }
+/*
    if( !test_ThreadSafeQueue())
    {
       cout << "Threadsafe Queue Test Failed!" << endl;
@@ -39,6 +40,7 @@ int main(void)
       cout << "ExtendedBuffer Test Failed!" << endl;
       return 1;
    }
+*/
    if( !testBaseSocket())
    {
       cout << "BaseSocket Test Failed!" << endl;

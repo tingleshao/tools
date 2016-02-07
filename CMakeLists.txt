@@ -37,13 +37,29 @@ add_subdirectory(AquetiSocket)
 add_subdirectory(test)
 
 link_directories(${CMAKE_BINARY_DIR}/lib)
-add_library( AquetToolLib OBJECT 
+add_library( AquetiTool wrapper.cpp)
+
+target_link_libraries( AquetiTool
+   wrapper.cpp
    Timer
    DataBuffer
    C11Thread
    ThreadSafeQueue
    AquetiSocket
 )
+
+#install library files
+install(TARGETS 
+   AquetiTool
+   LIBRARY DESTINATION lib
+   ARCHIVE DESTINATION lib
+   INCLUDES DESTINATION include
+   PUBLIC_HEADER DESTINATION include
+)
+
+
+
+
 
 #add_library( AquetToolLib_static STATIC
 #   Timer

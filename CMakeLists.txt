@@ -35,3 +35,20 @@ add_subdirectory(C11Thread)
 add_subdirectory(ThreadSafeQueue)
 add_subdirectory(AquetiSocket)
 add_subdirectory(test)
+
+link_directories(${CMAKE_BINARY_DIR}/lib)
+add_library( AquetToolLib OBJECT 
+   Timer
+   DataBuffer
+   C11Thread
+   ThreadSafeQueue
+   AquetiSocket
+)
+
+#add_library( AquetToolLib_static STATIC
+#   Timer
+#   DataBuffer
+#   C11Thread
+#   ThreadSafeQueue
+#   AquetiSocket
+#)

@@ -37,9 +37,9 @@ add_subdirectory(AquetiSocket)
 add_subdirectory(test)
 
 link_directories(${CMAKE_BINARY_DIR}/lib)
-add_library( AquetiTool wrapper.cpp)
+add_library( AquetiTools wrapper.cpp)
 
-target_link_libraries( AquetiTool
+target_link_libraries( AquetiTools
    Timer
    DataBuffer
    C11Thread
@@ -49,7 +49,7 @@ target_link_libraries( AquetiTool
 
 #install library files
 install(TARGETS 
-   AquetiTool
+   AquetiTools
    LIBRARY DESTINATION lib
    ARCHIVE DESTINATION lib
    INCLUDES DESTINATION include

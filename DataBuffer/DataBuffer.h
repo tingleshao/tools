@@ -79,7 +79,7 @@ class DataBuffer
       size_t  setElements( T * array, size_t count, size_t startIndex = UINT_MAX, bool resizeFlag = false );
       size_t  getElements( T * dest, size_t count, size_t startIndex=0 );
       size_t  getElementCount();
-      RawDataStruct<T> getDataPtr();
+      RawDataStruct<T> getData();
 
       virtual bool allocate( size_t elements, bool resizeFlag = false );
       virtual void deallocate();
@@ -138,7 +138,7 @@ void DataBuffer<T>::setDefaultValue( T value )
  * class. It is assumed the calling process will delete the data when it is complete.
  **/
 template <typename T>
-RawDataStruct<T> DataBuffer<T>::getDataPtr()
+RawDataStruct<T> DataBuffer<T>::getData()
 {
    RawDataStruct<T> rawData;
 

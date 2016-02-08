@@ -7,6 +7,51 @@
 #include <cstring>
 
 /**
+ * \brief Low level data structure to associate pointer with a data size
+ *
+ * This class is a very simple interface to represent a continuous array of data.
+ * The size value is the number of elements in the buffer and the buffer is the data
+ * itself. There is no inherent method for data management allocated data is must be
+ * freed with an external call to the deallocate function
+ **/
+template<typename T>
+struct RawDataStruct
+{
+   size_t size   =0;                     //!< Number of elements in the buffer
+   T*     buffer = NULL;                 //!< Actual data buffer
+
+   void allocate( size_t size);
+   void deallocate();
+};
+
+/**
+ * !\brief Allocated the buffer
+ *
+ * This function reallocates the buffer to the given size
+ **/
+template<typename T>
+void RawDataStruct<T>::allocate( size_t newSize ) 
+{
+   if( buffer != NULL ) {
+      deallocate();
+   }
+
+   buffer = new T(newSize);
+}
+
+/**
+ * !\brief Released the buffer
+ **/
+template<typename T>
+void RawDataStruct<T>::deallocate() 
+{
+   delete[] buffer;
+   buffer = NULL;
+}
+
+
+
+/**
  * \brief Base class to handle data management for abstract data types
  **/
 template <typename T>
@@ -34,6 +79,8 @@ class DataBuffer
       size_t  setElements( T * array, size_t count, size_t startIndex = UINT_MAX, bool resizeFlag = false );
       size_t  getElements( T * dest, size_t count, size_t startIndex=0 );
       size_t  getElementCount();
+      RawDataStruct<T> getDataPtr();
+
       virtual bool allocate( size_t elements, bool resizeFlag = false );
       virtual void deallocate();
 };
@@ -82,6 +129,30 @@ void DataBuffer<T>::setDefaultValue( T value )
    m_useDefaultValueFlag = true;
 }
 
+/**
+ * \brief Returns a copy of data from the buffer
+ *
+ * \return RawDataStruct with a pointer to the memory buffer and the size of the data
+ *
+ * This function instantiates a RawDataStruct and populates it with data from the
+ * class. It is assumed the calling process will delete the data when it is complete.
+ **/
+template <typename T>
+RawDataStruct<T> DataBuffer<T>::getDataPtr()
+{
+   RawDataStruct<T> rawData;
+
+   //Make sure we have data
+   if( m_elementCount == 0 ) {
+      return rawData;
+   }
+
+   //Allocate the datastruct
+   rawData.allocate(m_elementCount);
+   getElements( rawData.buffer, rawData.size);
+
+   return rawData;
+}
 
 /**
  * \brief This function copies an array of elements to the specified offset

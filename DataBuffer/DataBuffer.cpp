@@ -99,6 +99,9 @@ bool testDataBuffer()
       std::cerr<<"Failed to set/get elements"<<std::endl;
    }
 
+   RawDataStruct<uint8_t> rdb = uint8Buffer2.getDataPtr();
+
+   rdb.deallocate();
 
    //Deallocate buffers
    uint8Buffer.deallocate();

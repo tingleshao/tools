@@ -62,6 +62,27 @@ bool testDataBuffer()
       }
    }
 
+   //Create a new one to add an array
+   DataBuffer<uint8_t> uint8Buffer2;
+   uint8_t * buffer = new uint8_t[elements];
+   for( int i = 0; i <elements; i++ ) 
+   {
+      buffer[i] = i;
+   }
+
+   //Try to add elements with default values
+   size_t result = uint8Buffer2.setElements(buffer, elements);
+   if( result != 0 ) {
+      std::cerr<<"Wrote "<<result<<" elements when expecting 0"<<std::endl;
+      return false;
+   }
+   //Try to add elements with default values
+   result = uint8Buffer2.setElements(buffer, elements, 0, true);
+   if( result != elements ) {
+      std::cerr<<"Wrote "<<result<<" elements when expecting "<<elements<<std::endl;
+      return false;
+   }
+
 
 
    //Deallocate buffers
@@ -71,6 +92,7 @@ bool testDataBuffer()
    int64Buffer.deallocate();
    DBuffer.deallocate();
 
+   delete buffer;
    return rc;
 }
 

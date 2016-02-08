@@ -129,37 +129,11 @@ size_t ExtendedBuffer<T>::getElements( T * dest, size_t count, size_t startIndex
 template<typename T>
 size_t ExtendedBuffer<T>::setElements( T * array, size_t count, size_t startIndex, bool resizeFlag ) 
 {
-   //Make sure the input array is valid
-   if(( array = NULL )||(count == 0)) {
-      cerr<<"DataBuffer::setElements received a NULL input array"<<endl;
-      return 0;
-   }
+   size_t result = DataBuffer<T>::setElements( array, count, startIndex, resizeFlag );
 
-   //If we're set to UINT_MAX, the start with the highest element
-   if( startIndex == UINT_MAX ) {
-      startIndex = m_maxIndex;
-   }
+//   if(result > 0 )
 
-   //Check to make sure we are bounded correctly. If not, resize if flag is set
-   if( count +startIndex > DataBuffer<T>::m_elementCount ) {
-      if( resizeFlag) {
-         DataBuffer<T>::allocate(count+startIndex, true);
-      }
-      else {
-         count = DataBuffer<T>::m_elementCount - startIndex;
-      }
-   }
-
-   size_t bytes = count * sizeof(T);
-   if( bytes == 0 ) {
-      return bytes;
-   }
-   
-
-   //Perform copy
-   memcpy(&DataBuffer<T>::m_buffer[startIndex], array, bytes);
-
-   return count;
+   return result;
 }
 
 /**

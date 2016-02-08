@@ -3,6 +3,8 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <climits>
+#include <cstring>
 
 /**
  * \brief Base class to handle data management for abstract data types
@@ -11,11 +13,11 @@ template <typename T>
 class DataBuffer
 {
    protected:
-      size_t   m_bufferSize     = 0;     //!< Size of the allocated buffer in bytes
-      size_t   m_elementCount = 0;  //!< Number of elements in the buffer based on T
-      T        defaultValue;             //!< Default value
-      bool     useDefaultValueFlag = false;  //!< Flag to indicate if we should use default value
-      T *      m_buffer = NULL;          //!< Pointer to buffer data
+      size_t   m_bufferSize   = 0;            //!< Size of the allocated buffer in bytes
+      size_t   m_elementCount = 0;            //!< Number of elements in the buffer based on T
+      T        m_defaultValue = false;        //!< Default value
+      bool     m_useDefaultValueFlag = false; //!< Flag to indicate if we should use default value
+      T *      m_buffer = NULL;               //!< Pointer to buffer data
 
    public:
 
@@ -29,6 +31,7 @@ class DataBuffer
 
       void    useDefaultValue( bool flag);
       void    setDefaultValue(T value );
+      size_t  setElements( T * array, size_t count, size_t startIndex = UINT_MAX, bool resizeFlag = false );
       size_t  getElementCount();
       virtual bool allocate( size_t elements, bool resizeFlag = false );
       virtual void deallocate();
@@ -74,9 +77,61 @@ DataBuffer<T>::~DataBuffer()
 template<typename T>
 void DataBuffer<T>::setDefaultValue( T value ) 
 {
-   defaultValue = value;
-   useDefaultValueFlag = true;
+   m_defaultValue = value;
+   m_useDefaultValueFlag = true;
 }
+
+
+/**
+ * \brief This function copies an array of elements to the specified offset
+ *
+ * \param [in] array pointer to the array of elements to copy
+ * \param [in] count number of elements to copy
+ * \param [in] startIndex index to start to copy to. If set to MAX then adds more elements
+ * \param [in] resizeFlag flag to indicate if array should be resized if needed.
+ * \return number of elements copied.
+ *
+ * If the resize flag is set, this function well expand the array to handle all
+ * of the input data. Otherwise, if the internal buffer is undersized, all 
+ * available space will be filled. If startIndex == UINT_MAX, the array is appended to 
+ * the current m_maxIndex index. 
+ **/
+template<typename T>
+size_t DataBuffer<T>::setElements( T * array, size_t count, size_t startIndex, bool resizeFlag ) 
+{
+   //Make sure the input array is valid
+   if(( array == NULL )||(count == 0)) {
+      cerr<<"DataBuffer::setElements received a NULL input array"<<endl;
+      return 0;
+   }
+
+   //If we're set to UINT_MAX, the start with the highest element
+   if( startIndex == UINT_MAX ) {
+      startIndex = m_elementCount;
+   }
+
+   //Check to make sure we are bounded correctly. If not, resize if flag is set
+   if( count + startIndex > m_elementCount ) {
+      if( resizeFlag) {
+         allocate(count+startIndex, true);
+      }
+      else {
+         count = m_elementCount - startIndex;
+      }
+   }
+
+   size_t bytes = count * sizeof(T);
+   if( bytes == 0 ) {
+      return bytes;
+   }
+   
+   //Perform copy
+   std::memcpy(&m_buffer[startIndex], array, bytes);
+
+   return count;
+}
+
+
 
 /**
  * \brief Returns the number of elements allocated in the array.
@@ -95,7 +150,7 @@ size_t DataBuffer<T>::getElementCount(void)
 template<typename T>
 void DataBuffer<T>::useDefaultValue(bool flag )
 {
-   useDefaultValueFlag = flag;
+   m_useDefaultValueFlag = flag;
 }
 
 /**
@@ -131,15 +186,15 @@ bool DataBuffer<T>::allocate( size_t elements, bool resizeFlag)
    m_buffer = static_cast<T*>(mem);
 
    //Assign default values to buffers
-   if( useDefaultValueFlag ) {
+   if( m_useDefaultValueFlag ) {
       for(int i = m_elementCount; i < elements; i++)
       {
-         m_buffer[i] = defaultValue;
+         m_buffer[i] = m_defaultValue;
       }
    }
 
    m_elementCount = elements;
-   m_bufferSize = sizeof( bytes );
+   m_bufferSize = bytes;
 
 
    return true;

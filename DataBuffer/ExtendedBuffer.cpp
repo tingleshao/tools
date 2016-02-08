@@ -87,6 +87,7 @@ bool testExtendedBuffer()
 
    //Create a new one to add an array
    ExtendedBuffer<uint8_t> uint8Buffer2;
+//   uint8_t buffer[elements];
    uint8_t buffer[elements];
    for( int i = 0; i <elements; i++ ) 
    {

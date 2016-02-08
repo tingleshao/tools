@@ -17,6 +17,8 @@ class ExtendedBuffer : public DataBuffer<T>
    protected:
       size_t m_maxIndex = 0;                   //!< Number of elements set in the array
    public:
+      ExtendedBuffer(size_t elements=0);
+
       void   deallocate();
       size_t getMaxIndex();
       bool   setMaxIndex( size_t value );
@@ -25,6 +27,16 @@ class ExtendedBuffer : public DataBuffer<T>
       size_t assignElements( T element, size_t count, size_t startIndex = UINT_MAX, bool resizeFlag = false );
 };
 
+/**
+ * \brief Sets the number of elements to the specified value
+ *
+ * \param [in] elements number of elements to allocate on creation (default = 0 );
+ **/
+template<typename T>
+ExtendedBuffer<T>::ExtendedBuffer( size_t elements) 
+{
+   DataBuffer<T>::allocate(elements);
+}
 /**
  * \brief Sets the number of elements to the specified value
  * \return number of elements assigned to the array

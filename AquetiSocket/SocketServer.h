@@ -20,9 +20,8 @@
 #include <string>
 #include <thread>
 
-//#include <AciTypes.h>
-#include "BaseSocket.h"
 #include <C11Thread.h>
+#include "BaseSocket.h"
 
 #define SKT_BACKLOG 1000
 
@@ -38,7 +37,8 @@ class SocketServer : public BaseSocket, public C11Thread
 
 
       int  addConnection();
-      DataBuffer<uint8_t> readIndex( size_t index );
+//      DataBuffer<uint8_t> readIndex( size_t index );
+      ExtendedBuffer<uint8_t> * readIndex( size_t index );
       void mainLoop( void );
 
    public:

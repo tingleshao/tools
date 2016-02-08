@@ -184,13 +184,13 @@ bool SocketServer::processSocketIndex( int index )
  **/
 bool SocketServer::processSocketData( BaseSocketData sockData)
 {
-   size_t maxIndex = socketData.data.getMaxIndex();
+   size_t maxIndex = socketData.data->getMaxIndex();
    if(maxIndex == 0 ) {
       cout << "Socket at index "<<sockData.index<<" receive error"<<endl;
       return false;
    }
    else {
-      cout << "Socket at index "<<sockData.index<<" received: "<<sockData.data[0]<<endl;
+      cout << "Socket at index "<<sockData.index<<" received: "<<(*sockData.data)[0]<<endl;
       received++;
    }
 
@@ -211,8 +211,8 @@ size_t SocketServer::readSocketData( BaseSocketData * refSocketData )
    int nbytes = 0;
    int ret = 0;
 
-   size_t elementCount = refSocketData->data.getElementCount();
-   size_t maxIndex  = refSocketData->data.getMaxIndex();
+   size_t elementCount = refSocketData->data->getElementCount();
+   size_t maxIndex  = refSocketData->data->getMaxIndex();
 
    //Verify that the bufferSize is greater than the data size
    if(( elementCount - maxIndex )<= 0 ) {
@@ -246,7 +246,7 @@ size_t SocketServer::readSocketData( BaseSocketData * refSocketData )
    }
 
    // Data read. 
-   refSocketData->data.setMaxIndex(nbytes+maxIndex);
+   refSocketData->data->setMaxIndex(nbytes+maxIndex);
 
    //This would be changed here to check if a given number of bytes were received.
    return nbytes;
@@ -389,11 +389,13 @@ int SocketServer::sendData( BaseSocketData data, uint8_t * buffer, size_t bytes 
 /**
  *!\brief funtion to read data from the given index
  **/
-DataBuffer<uint8_t> SocketServer::readIndex( size_t index )
+ExtendedBuffer<uint8_t> * SocketServer::readIndex( size_t index )
 {
    int rc = readSocketData( &socketDataVector[index] );
  
    //Return a valid index 
+   ExtendedBuffer<uint8_t> * result = socketDataVector[index].extractData();
+
    return socketDataVector[index].data;
 }
 

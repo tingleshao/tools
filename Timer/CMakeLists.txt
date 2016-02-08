@@ -2,9 +2,6 @@ cmake_minimum_required(VERSION 2.8)
 
 PROJECT(AquetiTools)
 
-#This tells cmake to install header files when make install is executed
-include(GenerateExportHeader)
-
 #specifies a list of source files to be compiled
 set( BASE_SOURCES 
    Timer.cpp

@@ -36,7 +36,7 @@ void RawDataStruct<T>::allocate( size_t newSize )
       deallocate();
    }
 
-   buffer = new T(newSize);
+   buffer = new T[newSize];
 }
 
 /**
@@ -45,8 +45,10 @@ void RawDataStruct<T>::allocate( size_t newSize )
 template<typename T>
 void RawDataStruct<T>::deallocate() 
 {
-   delete[] buffer;
-   buffer = NULL;
+   if( buffer != NULL) {
+      delete[] buffer;
+      buffer = NULL;
+   }
 }
 
 

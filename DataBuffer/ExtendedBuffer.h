@@ -21,7 +21,7 @@ class ExtendedBuffer : public DataBuffer<T>
       size_t getMaxIndex();
       bool   setMaxIndex( size_t value );
       size_t getElements( T * dest, size_t count, size_t startIndex = 0);
-      size_t setElements( T * array, size_t count, size_t startIndex = UINT_MAX, bool resizeFlag = false);
+      size_t setElements( T * array, size_t count, size_t startIndex = 0, bool resizeFlag = false);
       size_t assignElements( T element, size_t count, size_t startIndex = UINT_MAX, bool resizeFlag = false );
 };
 
@@ -128,7 +128,7 @@ size_t ExtendedBuffer<T>::setElements( T * array, size_t count, size_t startInde
    }
 
    //Check to make sure we are bounded correctly. If not, resize if flag is set
-   if( count +startIndex > DataBuffer<T>::m_allocatedElements ) {
+   if( count +startIndex > DataBuffer<T>::m_elementCount ) {
       if( resizeFlag) {
          DataBuffer<T>::allocate(count+startIndex, true);
       }

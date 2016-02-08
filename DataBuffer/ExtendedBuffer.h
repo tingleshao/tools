@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <climits>
+#include <cstring>
 #include "DataBuffer.h"
 
 using namespace std;
@@ -145,14 +146,18 @@ size_t ExtendedBuffer<T>::setElements( T * array, size_t count, size_t startInde
          DataBuffer<T>::allocate(count+startIndex, true);
       }
       else {
-         count = DataBuffer<T>::m_allocatedElements - startIndex;
+         count = DataBuffer<T>::m_elementCount - startIndex;
       }
    }
 
    size_t bytes = count * sizeof(T);
+   if( bytes = 0 ) {
+      return bytes;
+   }
+   
 
    //Perform copy
-   memcpy(&DataBuffer<T>::m_buffer[startIndex], array, count * sizeof(T));
+   memcpy(&DataBuffer<T>::m_buffer[startIndex], array, bytes);
 
    return count;
 }

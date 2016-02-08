@@ -32,6 +32,7 @@ class DataBuffer
       void    useDefaultValue( bool flag);
       void    setDefaultValue(T value );
       size_t  setElements( T * array, size_t count, size_t startIndex = UINT_MAX, bool resizeFlag = false );
+      size_t  getElements( T * dest, size_t count, size_t startIndex=0 );
       size_t  getElementCount();
       virtual bool allocate( size_t elements, bool resizeFlag = false );
       virtual void deallocate();
@@ -131,7 +132,34 @@ size_t DataBuffer<T>::setElements( T * array, size_t count, size_t startIndex, b
    return count;
 }
 
+/**
+ * \brief Returns a copy of the elements at the given destination
+ *
+ * \param [in] dest destination address to write data to
+ * \param [in] count number of elements to copy 
+ * \param [in] startIndex index into array to start with (default=0)
+ * \return number of elements successfully copied
+ *
+ * This function copies the number of specified elements to the destination
+ * address starting at the index specified by the startIndex. If startIndex 
+ * is greater that the number of specified elements (elementCount) this only
+ * the elements that are defined are copied. 
+ *
+ * No error checking is performed to ensure that the destination pointer has
+ * been properly allocated.
+ **/
+template<typename T>
+size_t DataBuffer<T>::getElements( T * dest, size_t count, size_t startIndex ) 
+{
+   if( count > m_elementCount - startIndex ) {
+      count = m_elementCount - startIndex;
+   }
 
+   size_t bytes = count * sizeof(T);
+   memcpy( dest, m_buffer, bytes );
+   
+   return count; 
+}
 
 /**
  * \brief Returns the number of elements allocated in the array.

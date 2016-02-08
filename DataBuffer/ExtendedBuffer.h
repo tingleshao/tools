@@ -23,8 +23,8 @@ class ExtendedBuffer : public DataBuffer<T>
       void   deallocate();
       size_t getMaxIndex();
       bool   setMaxIndex( size_t value );
-      size_t getElements( T * dest, size_t count, size_t startIndex = 0);
       size_t setElements( T * array, size_t count, size_t startIndex = 0, bool resizeFlag = false);
+      size_t getElements( T * dest, size_t count, size_t startIndex = 0);
       size_t assignElements( T element, size_t count, size_t startIndex = UINT_MAX, bool resizeFlag = false );
 };
 
@@ -84,35 +84,6 @@ void ExtendedBuffer<T>::deallocate()
 }
 
 /**
- * \brief Returns a copy of the elements at the given destination
- *
- * \param [in] dest destination address to write data to
- * \param [in] count number of elements to copy
- * \param [in] startIndex index into array to start with
- * \return number of elements successfully copied
- *
- * This function copies the number of specified elements to the destination
- * address starting at the index specified by the startIndex. If startIndex 
- * is greater that the number of specified elements (elementCount) this only
- * the elements that are defined are copied. 
- *
- * No error checking is performed to ensure that the destination pointer has
- * been properly allocated.
- **/
-template<typename T>
-size_t ExtendedBuffer<T>::getElements( T * dest, size_t count, size_t startIndex ) 
-{
-   if( count > m_maxIndex - startIndex ) {
-      count = m_maxIndex - startIndex;
-   }
-
-   size_t bytes = count & sizeof(T);
-   memcpy( dest, DataBuffer<T>::m_buffer, bytes );
-   
-   return count; 
-}
-
-/**
  * \brief This function copies an array of elements to the specified offset
  *
  * \param [in] array pointer to the array of elements to copy
@@ -135,6 +106,36 @@ size_t ExtendedBuffer<T>::setElements( T * array, size_t count, size_t startInde
 
    return result;
 }
+
+/**
+ * \brief Returns a copy of the elements at the given destination
+ *
+ * \param [in] dest destination address to write data to
+ * \param [in] count number of elements to copy 
+ * \param [in] startIndex index into array to start with (default=0)
+ * \return number of elements successfully copied
+ *
+ * This function copies the number of specified elements to the destination
+ * address starting at the index specified by the startIndex. If startIndex 
+ * is greater that the number of specified elements (elementCount) this only
+ * the elements that are defined are copied. 
+ *
+ * No error checking is performed to ensure that the destination pointer has
+ * been properly allocated.
+ **/
+template<typename T>
+size_t ExtendedBuffer<T>::getElements( T * dest, size_t count, size_t startIndex ) 
+{
+   if( count > m_maxIndex - startIndex ) {
+      count = m_maxIndex - startIndex;
+   }
+
+   DataBuffer<T>::getEelements( dest, count, startIndex );
+   
+   return count; 
+}
+
+
 
 /**
  * \brief This function sets the number of elements at the specified offset to the given value.

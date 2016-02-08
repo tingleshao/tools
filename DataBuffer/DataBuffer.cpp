@@ -64,7 +64,8 @@ bool testDataBuffer()
 
    //Create a new one to add an array
    DataBuffer<uint8_t> uint8Buffer2;
-   uint8_t * buffer = new uint8_t[elements];
+   uint8_t buffer[elements];
+   uint8_t buffer2[elements];
    for( int i = 0; i <elements; i++ ) 
    {
       buffer[i] = i;
@@ -83,6 +84,20 @@ bool testDataBuffer()
       return false;
    }
 
+   //Read elements from buffer
+   result = uint8Buffer2.getElements( buffer2, elements);
+
+   rc = true;
+   for( int i = 0; i < elements; i++ ) {
+      if( buffer[i] != buffer2[i] ) {
+         std::cerr<<"Buffer "<<i<<" does not match output:("<<buffer[i]<<"!="<<buffer2[i]<<")"<<std::endl;
+         rc = false;
+      }
+   }
+
+   if( !rc ) {
+      std::cerr<<"Failed to set/get elements"<<std::endl;
+   }
 
 
    //Deallocate buffers
@@ -92,7 +107,6 @@ bool testDataBuffer()
    int64Buffer.deallocate();
    DBuffer.deallocate();
 
-   delete buffer;
    return rc;
 }
 

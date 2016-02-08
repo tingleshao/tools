@@ -151,7 +151,7 @@ size_t ExtendedBuffer<T>::setElements( T * array, size_t count, size_t startInde
    }
 
    size_t bytes = count * sizeof(T);
-   if( bytes = 0 ) {
+   if( bytes == 0 ) {
       return bytes;
    }
    

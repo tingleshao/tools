@@ -129,6 +129,9 @@ template<typename T>
 size_t ExtendedBuffer<T>::setElements( T * array, size_t count, size_t startIndex, bool resizeFlag ) 
 {
    size_t result = DataBuffer<T>::setElements( array, count, startIndex, resizeFlag );
+   if( result+startIndex > m_maxIndex ) {
+      m_maxIndex = result+startIndex;
+   }
    return result;
 }
 

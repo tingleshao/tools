@@ -85,7 +85,10 @@ RawDataStruct<T> ExtendedBuffer<T>::getRawData()
    rawData.allocate(m_maxIndex );
 
    rawData.size = m_maxIndex;
-   getElements( rawData.buffer, rawData.size); 
+   
+   DataBuffer<T>::getElements( rawData.buffer, rawData.size);
+
+
    return rawData;;
 }
 

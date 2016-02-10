@@ -26,6 +26,8 @@ class ExtendedBuffer : public DataBuffer<T>
       size_t setElements( T * array, size_t count, size_t startIndex = 0, bool resizeFlag = false);
       size_t getElements( T * dest, size_t count, size_t startIndex = 0);
       size_t assignElements( T element, size_t count, size_t startIndex = UINT_MAX, bool resizeFlag = false );
+
+      RawDataStruct<T> getRawData();
 };
 
 /**
@@ -67,6 +69,32 @@ size_t ExtendedBuffer<T>::getMaxIndex()
 }
 
 /**
+ * \brief Returns the number of elements assigned to the array
+ * \return number of elements assigned to the array
+ **/
+template<typename T>
+RawDataStruct<T> ExtendedBuffer<T>::getRawData()
+{
+   RawDataStruct<T> rawData;
+   //Make sure we have data
+   if( m_maxIndex == 0 ) {
+      return rawData;
+   }
+
+   //Allocate the datastruct
+   rawData.allocate(m_maxIndex );
+
+   rawData.size = m_maxIndex;
+   
+   DataBuffer<T>::getElements( rawData.buffer, rawData.size);
+
+
+   return rawData;;
+}
+
+
+
+/**
  * \brief deallocates the buffer and clears the elementCount
  *
  * \return true on success, false on failure
@@ -101,9 +129,9 @@ template<typename T>
 size_t ExtendedBuffer<T>::setElements( T * array, size_t count, size_t startIndex, bool resizeFlag ) 
 {
    size_t result = DataBuffer<T>::setElements( array, count, startIndex, resizeFlag );
-
-//   if(result > 0 )
-
+   if( result+startIndex > m_maxIndex ) {
+      m_maxIndex = result+startIndex;
+   }
    return result;
 }
 

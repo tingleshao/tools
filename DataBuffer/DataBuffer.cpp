@@ -99,7 +99,7 @@ bool testDataBuffer()
       std::cerr<<"Failed to set/get elements"<<std::endl;
    }
 
-   RawDataStruct<uint8_t> rdb = uint8Buffer2.getData();
+   RawDataStruct<uint8_t> rdb = uint8Buffer2.getRawData();
 
    rdb.deallocate();
 

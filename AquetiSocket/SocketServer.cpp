@@ -179,8 +179,7 @@ bool SocketServer::processSocketIndex( int index )
 
 /**
  * \brief Processes the data in incoming databuffer object
- * \param [in] index index of the socket in the array of  file descriptor
- * \param [in] data DataBuffer object with received data
+ * \param [in] sockData BaseSocketData struct with received data
  **/
 bool SocketServer::processSocketData( BaseSocketData sockData)
 {
@@ -400,10 +399,11 @@ ExtendedBuffer<uint8_t> * SocketServer::readIndex( size_t index )
 }
 
 /**
- *!\brief Establish a TCP connection to the specified host name and port number.
+ * \brief Establish a TCP connection to the specified host name and port number.
  *
  * \param [in] addr - IP address to connect to
  * \param [in] port - port number ot connect to
+ * \param [in] backlog - size of backlog stack 
  *
  * \return -1 on failure and a file descriptor on success.
  **/

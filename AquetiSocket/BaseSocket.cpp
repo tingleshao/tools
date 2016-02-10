@@ -807,10 +807,8 @@ bool BaseSocket::createUdpClient( std::string hostname, int port )
 /**
  *!\brief function that creates a TcpClient
  *
- * \param [in] hostname name of the system to connect
  * \param [in] port port to connect to on the remote machine
- *
- * \return array index on success, negative number on failure
+ * \return true on success, false on failure
  *
  * This function creates a scoketData objects and adds it to the socketVector list.
  * The BaseBaseSocketData structure contains
@@ -1042,7 +1040,7 @@ BaseSocketData createBaseSocketData( size_t dataSize)
 
 
 
-#define SOCKETCOMMTESTPORT 9001
+#define SOCKETCOMMTESTPORT 9001            //!< Default Communication port for testing
 
 
 //============================================================

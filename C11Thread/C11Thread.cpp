@@ -80,7 +80,7 @@ void C11Thread::Execute()
  * This function is the main processing loop. It needs to be overwritten for
  * each class instantiation. In the base class, it sleep for 1000uSecs
  **/
-void C11Thread::mainLoop() 
+void C11Thread::mainLoop(void) 
 {
    std::cout << threadObj->get_id() <<": C11Thread mainLoop"<<endl;
    std::this_thread::sleep_for(std::chrono::milliseconds(1000));

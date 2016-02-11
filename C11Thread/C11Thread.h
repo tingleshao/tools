@@ -40,7 +40,7 @@ class C11Thread
        bool Start( bool * runFlag=NULL );
        bool Join( void );
        void Stop();
-       virtual void mainLoop();
+       virtual void mainLoop(void);
 };
 
 bool testC11Thread();

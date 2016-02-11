@@ -147,20 +147,12 @@ int SocketServer::Initialize( int port, int listenSize )
    return 1;
 }
 
-/* 
- *
- *
-void SocketServer::setWaitTime( double wait )
-{
-   waitTime = wait;
-}
-*/
-
 /**
  *!\brief main processing loop
  **/
 void SocketServer::mainLoop( void )
 {
+   std::cout << "SocketServer mainLoop"<<endl;
    receiveData( waitTime );
 }
 

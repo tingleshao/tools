@@ -12,7 +12,9 @@ int main(void)
    //Create a socket Server
    SocketServer server;
    server.Initialize( 9000 );
-   server.Start();
 
-   
+   cout << "Starting"<<endl;
+   server.Start();
+   cout << "Done"<<endl;
+
 }

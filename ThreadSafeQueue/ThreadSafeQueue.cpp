@@ -39,7 +39,7 @@ template<class T> void ThreadSafeQueue<T>::delete_all()
 */
 template<class T> bool ThreadSafeQueue<T>::enqueue(T* data, bool force)
 {
-    std::lock_guard<std::mutex> lock(m);
+    std::unique_lock<std::mutex> lock(m);
     if(!force && length >= max_size)
         return false;
     QNode* temp = new QNode(data);
@@ -52,6 +52,8 @@ template<class T> bool ThreadSafeQueue<T>::enqueue(T* data, bool force)
         head = temp;
     }
     length++;
+    lock.unlock();
+    cv.notify_one();
     return true;
 }
 

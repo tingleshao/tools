@@ -207,7 +207,7 @@ void add_to_queue(ThreadSafeQueue<int> &q, int num, bool print)
 */
 void remove_from_queue(ThreadSafeQueue<int> &q, bool print)
 {
-    int* num = q.dequeue();
+    int* num = q.dequeue(false);
     if(print) {
         if(num != nullptr) {
             std::cout << "Removed " << *num << " from queue" << std::endl;
@@ -259,7 +259,7 @@ void push_to_queue(ThreadSafeQueue<int> &q, int num, bool print)
 */
 void pop_from_queue(ThreadSafeQueue<int> &q, bool print)
 {
-    int* num = q.pop();
+    int* num = q.pop(false);
     if(print) {
         if(num != nullptr) {
             std::cout << "Removed " << *num << " from queue" << std::endl;

@@ -23,11 +23,11 @@
 
 
 //Socket status variables
-#define SOCK_ERROR         -1
-#define SOCK_NONE          0
-#define SOCK_CONNECTED     1
+#define SOCK_ERROR        -1            //!<Code shown for the socket if there is an error
+#define SOCK_NONE          0            //!<Code for a socket object in undefined state
+#define SOCK_CONNECTED     1            //!<Code to show socket is connected
 
-#define DEFAULT_SOCKET_BUFFER_SIZE 256
+#define DEFAULT_SOCKET_BUFFER_SIZE 1024 //!< Default size of a socket buffer
 
 /**
  * \brief datastructure to manage incoming socket data 
@@ -43,9 +43,9 @@ class BaseSocketData {
       int     port = -1;        //!< port number of the socket
       int     index = 0;        //!< Array index of the socket data
       std::string hostname;     //!< IP Address of the socket
-      ExtendedBuffer<uint8_t> * data = NULL;
+      ExtendedBuffer<uint8_t> * data = NULL;  //!< Pointer to the data structure for recieving data
 
-      ExtendedBuffer<uint8_t> * extractData();
+      ExtendedBuffer<uint8_t> * extractData(); 
       int sendData( uint8_t * buffer,  size_t bytes );
 }; 
 
@@ -60,9 +60,9 @@ class BaseSocket
    public:
       BaseSocket();
       virtual ~BaseSocket();
-      bool    disconnect(void);
+//      bool    disconnect(void);
 
-      BaseSocketData socketData;
+      BaseSocketData socketData;              //!< Structure containing information about a socket
 //      size_t socketDataBufferSize = 256;    //!< size of data in BaseSocketData structures
 //      std::vector<BaseSocketData> socketDataVector;
 //      int portNumber = 9000;                   //!< Port number of socket
@@ -75,21 +75,21 @@ class BaseSocket
 
 //      int serverSock  = 0;                  //!< socket of a server (0 => client
 
-      int servFdMax   = 0;
-      int clientFdMax = 0;
-      int exceptFdMax = 0;
+      int servFdMax   = 0;                  //!< Maximum Server File Descriptor
+      int clientFdMax = 0;                  //!< Maximum Client File Descriptor
+      int exceptFdMax = 0;                  //!< Maximum exception File Descriptor
 
       int status = 0;                       //!< Variable to indicate status
-      uint64_t received = 0;                     //!< Number of received packets
-      uint64_t sent     = 0;                     //!< Number of messages sent
+      uint64_t received = 0;                //!< Number of received packets
+      uint64_t sent     = 0;                //!< Number of messages sent
       double waitTime = 0.0;                //!< How long to wait for socket data
 
       size_t bufferSize = 0;                //!< Size of the data buffer for incoming info
 
       //Initialization and exit functions
       bool createTcpClient( std::string hostname, int port);
-      int  createTcpServer( std::string hostname, int port);
-      bool createTcpListener( int port);
+//      int  createTcpServer( std::string hostname, int port);
+//      bool createTcpListener( int port);
       bool createUdpClient( std::string hostname, int port);
       bool createUdpListener( int port);
 
@@ -117,9 +117,8 @@ class BaseSocket
 
 BaseSocketData createBaseSocketData( size_t size );
 
-int open_socket ( const char * IPaddress
-                , unsigned short * portno 
-                );
+///Opens a socekt at the given address and port
+int open_socket ( const char * IPaddress , unsigned short * portno );
 
 /// Establish a TCP connection to the specified host name and port number.
 // Returns -1 on failure and a file descriptor on success.

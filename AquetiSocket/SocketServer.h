@@ -31,9 +31,9 @@
 class SocketServer : public BaseSocket, public C11Thread
 {
    private:
-//      double waitTime = 0.1;                //!< How long to wait while reading
-      bool * running = NULL;                //!< Flag to signal thread termination
-      std::vector<BaseSocketData> socketDataVector; //Array of open sockets with data
+//      double waitTime = 0.1;                      //!< How long to wait while reading
+      bool * running = NULL;                        //!< Flag to signal thread termination
+      std::vector<BaseSocketData> socketDataVector; //!<Array of open sockets with data
 
 
       int  addConnection();

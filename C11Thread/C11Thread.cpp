@@ -27,7 +27,7 @@ C11Thread::~C11Thread()
 /** 
  * \brief Function called to start thread execution
  *
- * \param [in] arg generic pointer that represents shared data
+ * \param [in] runFlag boolean pointer to terminate thread execution
  * \return std::thread object for this threads
  **/
 bool C11Thread::Start( bool * runFlag ) 
@@ -49,8 +49,6 @@ bool C11Thread::Start( bool * runFlag )
 
 /**
  * \brief Execution function that starts thread processing
- *
- * \param [in] arg generic pointer to shared data
  *
  * This function is entry point into thread operation. This
  * function exits when the runPtr or running flag are set to false.

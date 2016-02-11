@@ -1,3 +1,3 @@
 /**
- * \file Dummy file to generate merged libraries
+ * This file is needed to combine multiple libraries
  */

@@ -24,6 +24,7 @@ target_link_libraries( AquetiToolsTest
    DataBuffer_static
    ThreadSafeQueue_static
    AquetiSocket_static
+   AquetiTools
    ${CMAKE_THREAD_LIBS_INIT}               #For threaded operation
 )
 

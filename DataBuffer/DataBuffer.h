@@ -52,5 +52,6 @@ class DataBuffer : public RawDataBuffer
       bool allocate( size_t bytes, bool resizeFlag = false );
 };
 
-bool testDataBuffer(void);
+//Test functions
+bool testDataBuffer();
 #endif

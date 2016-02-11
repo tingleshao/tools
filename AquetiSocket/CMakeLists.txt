@@ -16,9 +16,16 @@ set( BASE_SOURCES
    SocketServer.cpp
 )
 
+
 #specifies the library to create. The name will be libbase_static.a and libbase.so in this case.
 add_library( AquetiSocket SHARED ${BASE_SOURCES})
 add_library( AquetiSocket_static ${BASE_SOURCES})
+
+#target_link_libraries( AquetiSocket
+#   Timer
+#   DataBuffer
+#   C11THread
+#)
 
 #install library files
 install(TARGETS 

@@ -12,6 +12,7 @@ include(GenerateExportHeader)
 #specifies a list of source files to be compiled
 set( LIB_SOURCES 
    DataBuffer.cpp
+   ExtendedBuffer.cpp
 )
 
 #specifies the library to create. The name will be libbase_static.a and libbase.so in this case.
@@ -21,7 +22,6 @@ add_library( DataBuffer_static ${LIB_SOURCES})
 #specifies an executable for testing
 add_executable( bufferTest
    BufferTest.cpp
-   ExtendedBuffer.cpp
 )
 
 target_link_libraries( bufferTest

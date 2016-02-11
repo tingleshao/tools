@@ -16,24 +16,26 @@
 template <class T> class ThreadSafeQueue
 {
     private:
-        std::mutex m;                           // The mutex that will be used for accessing the queue
-        size_t length = 0;                      // The length of the queue
-        struct QNode;                         // A simple linked list node
-        QNode* head = nullptr;                // The head of the queue
-        QNode* tail = nullptr;                // The tail of the queue
-        size_t max_size = DEFAULT_MAX_SIZE;     // Maximum size of queue
+        std::mutex m;                           //<! The mutex that will be used for accessing the queue
+        std::condition_variable cv;             //<! The condition variable which waits on blocking dequeue
+        size_t length = 0;                      //<! The length of the queue
+        struct QNode;                           //<! A simple linked list node
+        QNode* head = nullptr;                  //<! The head of the queue
+        QNode* tail = nullptr;                  //<! The tail of the queue
+        size_t max_size = DEFAULT_MAX_SIZE;     //<! Maximum size of queue
 
     public:
-        ~ThreadSafeQueue();                  // Destructor.  Deletes all data in queue
-        bool enqueue(T*, bool force=false);     // Add data to the tail of the queue
-        T* dequeue();                           // Remove and return data from the head of the queue
-        bool push(T*, bool force=false);        // Add data to the head of the queue (as a stack)
-        T* pop();                               // Pop data off the head of the queue (as a stack)
-        T* peek();                              // Peek at the head of the queue
-        size_t size();                          // Return the size of the queue
-        void delete_all();                      // Deletes all nodes in the queue
-        void set_max_size(size_t);              // Sets max size
-        size_t get_max_size();                  // Returns max size
+        ~ThreadSafeQueue();                     //<! Destructor.  Deletes all data in queue
+        bool enqueue(T*, bool force=false);     //<! Add data to the tail of the queue
+        T* dequeue(bool blocking=true);         //<! Remove and return data from the head of the queue
+        bool push(T*, bool force=false);        //<! Add data to the head of the queue (as a stack)
+        T* pop(bool blocking=true, uint16_t timeout=0);
+                                                //<! Pop data off the head of the queue (as a stack)
+        T* peek();                              //<! Peek at the head of the queue
+        size_t size();                          //<! Return the size of the queue
+        void delete_all();                      //<! Deletes all nodes in the queue
+        void set_max_size(size_t);              //<! Sets max size
+        size_t get_max_size();                  //<! Returns max size
 };
 
 bool test_ThreadSafeQueue(unsigned int numThreads=20, bool print=true);

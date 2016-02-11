@@ -18,7 +18,7 @@ template <typename T>
 class TypeBuffer 
 {
    public:
-      size_t m_elements = 0;
+      size_t m_elements = 0;               //!< Number of elements in the buffer
       T * m_buffer = NULL;                 //!< Pointer to the  buffer in the Base class
 
       bool allocate( size_t elements, bool resizeFlag = false );

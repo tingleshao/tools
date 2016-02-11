@@ -60,7 +60,7 @@ void RawDataBuffer::deallocate( void )
 /**
  * \brief Constructor
  * 
- * \param[in] number of bytes to allocate on start
+ * \param[in] bytes number of bytes to allocate on start
  **/
 DataBuffer::DataBuffer( size_t bytes) 
 {

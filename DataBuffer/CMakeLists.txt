@@ -48,5 +48,6 @@ install(TARGETS
 install(FILES
    DataBuffer.h
    ExtendedBuffer.h
+   TypeBuffer.h
    DESTINATION include
 )

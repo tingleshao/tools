@@ -11,28 +11,28 @@ bool testExtendedBuffer()
    size_t elements = 100;
 
    //Create some buffers
-   ExtendedBuffer<uint16_t> uint8Buffer;
+   ExtendedBuffer<uint16_t> uint16Buffer;
    
    //Allocate buffers - test default resize flag operation
-   uint8Buffer.assignElements( 10, 10);
-   size_t count = uint8Buffer.getMaxIndex();
+   uint16Buffer.assignElements( 10, 10);
+   size_t count = uint16Buffer.getMaxIndex();
    if( count != 10 ) {
       std::cerr << "Allocated elements when not supposed to" <<count<<"!= 0" << endl;
       return false;
    }
 
    //Preallocate a buffer without assigning values
-   uint8Buffer.allocate( elements, true );
-   count = uint8Buffer.getElementCount();
+   uint16Buffer.allocate( elements, true );
+   count = uint16Buffer.getElementCount();
    if( count != elements ) {
       std::cerr << "Allocated elements incorrect: " <<count<<"!="<<elements<< endl;
       return false;
    }
 
    //Assign elements with a force resize. New elementSize shoudl reflect elements
-   uint8Buffer.assignElements( 0, elements/2, 0, false);
-   count = uint8Buffer.getElementCount();
-   size_t ecount = uint8Buffer.getMaxIndex();
+   uint16Buffer.assignElements( 0, elements/2, 0, false);
+   count = uint16Buffer.getElementCount();
+   size_t ecount = uint16Buffer.getMaxIndex();
    if(( count != elements )||(ecount != elements/2)) {
       std::cerr << "Allocated elements incorrect: " <<count<<"!="<<elements
                 << "||"<<ecount<<"!="<<elements/2<< endl;
@@ -40,9 +40,9 @@ bool testExtendedBuffer()
    }
 
    //Assign another set of elements to array. Should top out at count elements
-   uint8Buffer.assignElements( 1, elements, ecount, false);
-   count = uint8Buffer.getMaxIndex();
-   ecount = uint8Buffer.getMaxIndex();
+   uint16Buffer.assignElements( 1, elements, ecount, false);
+   count = uint16Buffer.getMaxIndex();
+   ecount = uint16Buffer.getMaxIndex();
    if(( count != elements )||(ecount != elements)) {
       std::cerr << "Allocated elements2 incorrect: " <<count<<"!="<<elements
                 << "||"<<ecount<<"!="<<elements<< endl;
@@ -50,9 +50,9 @@ bool testExtendedBuffer()
    }
 
    //Assign one more set, this time  force another write
-   uint8Buffer.assignElements( 2, elements, ecount, true );
-   count = uint8Buffer.getElementCount();
-   ecount = uint8Buffer.getMaxIndex();
+   uint16Buffer.assignElements( 2, elements, ecount, true );
+   count = uint16Buffer.getElementCount();
+   ecount = uint16Buffer.getMaxIndex();
    if(( count != elements*2 )||(ecount != elements*2)) {
       std::cerr << "Allocated elements2 incorrect: " <<count<<"!="<<elements*2
                 << "||"<<ecount<<"!="<<elements*2<< endl;
@@ -60,27 +60,27 @@ bool testExtendedBuffer()
    }
 
    //Check some variables to see if we're getting good data
-   if(( uint8Buffer[0] != 0 ) ||
-      ( uint8Buffer[elements/2] != 1 ) ||
-      ( uint8Buffer[elements] != 2 ) ||
-      ( uint8Buffer[elements*2-1] != 2 )) {
+   if(( uint16Buffer[0] != 0 ) ||
+      ( uint16Buffer[elements/2] != 1 ) ||
+      ( uint16Buffer[elements] != 2 ) ||
+      ( uint16Buffer[elements*2-1] != 2 )) {
       std::cerr << "ExtendedBuffer failure:\n"
-                << "\t" << (int)uint8Buffer[0] <<"\n"
-                << "\t" << (int)uint8Buffer[elements/2] <<"\n"
-                << "\t" << (int)uint8Buffer[elements] <<"\n"
-                << "\t" << (int)uint8Buffer[elements*2-1] <<"\n";
+                << "\t" << (int)uint16Buffer[0] <<"\n"
+                << "\t" << (int)uint16Buffer[elements/2] <<"\n"
+                << "\t" << (int)uint16Buffer[elements] <<"\n"
+                << "\t" << (int)uint16Buffer[elements*2-1] <<"\n";
 
       return false;
    }
 
    //Try a valid elementCount
-   if( uint8Buffer.setMaxIndex ( elements*10)) {
+   if( uint16Buffer.setMaxIndex ( elements*10)) {
       std::cerr << "False success setting elementCount" << std::endl;
       return false;
    }
 
    //Try a valid elementCount
-   if( ! uint8Buffer.setMaxIndex( elements/2)) {
+   if( ! uint16Buffer.setMaxIndex( elements/2)) {
       std::cerr << "Failed decrementing elementCount" << std::endl;
       return false;
    }
@@ -100,6 +100,8 @@ bool testExtendedBuffer()
       std::cerr<<"Wrote "<<result<<" elements when expecting 0"<<std::endl;
       return false;
    }
+
+
    //Try to add elements with default values
    result = uint8Buffer2.setElements(buffer, elements, 0, true);
    if( result != elements ) {
@@ -107,7 +109,28 @@ bool testExtendedBuffer()
       return false;
    }
 
+   size_t mi = uint16Buffer.getMaxIndex();
+   for( int i = 0; i < mi; i ++ ) {
+      uint16Buffer[i] = i;
+   }
 
-   return true;
+   TypeBuffer<uint16_t> tb = uint16Buffer.getTypeBufferAndFree();
+   if(( tb.m_buffer == NULL )||(tb.m_elements == 0 )) {
+      std::cerr << "Failed to get elements in typebuffer" << std::endl;
+      return false;
+   }
+
+   bool rc = true;
+   for( uint8_t i = 0; i < tb.m_elements ; i++ ) {
+      if( tb.m_buffer[i] != i ) {
+         std::cout << "Element mismatch!: "<<(int)i<<"~="<<(int)tb.m_buffer[i]<<endl;
+         rc = false;
+      }
+
+   }
+
+   tb.deallocate();
+
+   return rc;
 }
 

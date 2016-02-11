@@ -261,11 +261,11 @@ size_t ExtendedBuffer<T>::assignElements( T element, size_t count, size_t startI
  * \return TypeBuffer with the data pointer and number fo elements
  **/
 template <typename T>
-TypeBuffer<T> getTypeBufferAndFree()
+TypeBuffer<T> ExtendedBuffer<T>::getTypeBufferAndFree()
 {
    //Create the typebuffer with the output info
    TypeBuffer<T> tbuffer;
-   tbuffer.m_buffer = static_cast<T *>(DataBuffer::m_buffer);
+   tbuffer.m_buffer = (T *)(DataBuffer::m_buffer);
    tbuffer.m_elements = m_maxIndex;
 
    //Clear Extended Buffer variables

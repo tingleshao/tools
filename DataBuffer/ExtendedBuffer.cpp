@@ -11,18 +11,18 @@ bool testExtendedBuffer()
    size_t elements = 100;
 
    //Create some buffers
-   ExtendedBuffer<uint8_t> uint8Buffer;
+   ExtendedBuffer<uint16_t> uint8Buffer;
    
    //Allocate buffers - test default resize flag operation
-   uint8Buffer.assignElements( 0, elements);
-   size_t count = uint8Buffer.getElementCount();
-   if( count != 0 ) {
+   uint8Buffer.assignElements( 10, 10);
+   size_t count = uint8Buffer.getMaxIndex();
+   if( count != 10 ) {
       std::cerr << "Allocated elements when not supposed to" <<count<<"!= 0" << endl;
       return false;
    }
 
    //Preallocate a buffer without assigning values
-   uint8Buffer.allocate( elements );
+   uint8Buffer.allocate( elements, true );
    count = uint8Buffer.getElementCount();
    if( count != elements ) {
       std::cerr << "Allocated elements incorrect: " <<count<<"!="<<elements<< endl;
@@ -41,8 +41,8 @@ bool testExtendedBuffer()
 
    //Assign another set of elements to array. Should top out at count elements
    uint8Buffer.assignElements( 1, elements, ecount, false);
-   count = uint8Buffer.getElementCount();
-   ecount = uint8Buffer.getElementCount();
+   count = uint8Buffer.getMaxIndex();
+   ecount = uint8Buffer.getMaxIndex();
    if(( count != elements )||(ecount != elements)) {
       std::cerr << "Allocated elements2 incorrect: " <<count<<"!="<<elements
                 << "||"<<ecount<<"!="<<elements<< endl;
@@ -52,7 +52,7 @@ bool testExtendedBuffer()
    //Assign one more set, this time  force another write
    uint8Buffer.assignElements( 2, elements, ecount, true );
    count = uint8Buffer.getElementCount();
-   ecount = uint8Buffer.getElementCount();
+   ecount = uint8Buffer.getMaxIndex();
    if(( count != elements*2 )||(ecount != elements*2)) {
       std::cerr << "Allocated elements2 incorrect: " <<count<<"!="<<elements*2
                 << "||"<<ecount<<"!="<<elements*2<< endl;

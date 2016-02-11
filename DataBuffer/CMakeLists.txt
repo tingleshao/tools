@@ -10,23 +10,37 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fexpensive-optimizations")
 include(GenerateExportHeader)
 
 #specifies a list of source files to be compiled
-set( BASE_SOURCES 
+set( LIB_SOURCES 
    DataBuffer.cpp
-   ExtendedBuffer.cpp
 )
 
 #specifies the library to create. The name will be libbase_static.a and libbase.so in this case.
-add_library( DataBuffer_static ${BASE_SOURCES})
-add_library( DataBuffer SHARED ${BASE_SOURCES})
+add_library( DataBuffer SHARED ${LIB_SOURCES})
+add_library( DataBuffer_static ${LIB_SOURCES})
+
+#specifies an executable for testing
+add_executable( bufferTest
+   BufferTest.cpp
+   ExtendedBuffer.cpp
+)
+
+target_link_libraries( bufferTest
+   DataBuffer_static
+)
+
+
+
 
 #install library files
 install(TARGETS 
+   bufferTest
    DataBuffer
    DataBuffer_static
    LIBRARY DESTINATION lib
    ARCHIVE DESTINATION lib
    INCLUDES DESTINATION include
    PUBLIC_HEADER DESTINATION include
+   RUNTIME DESTINATION bin
 )
 
 #install include files

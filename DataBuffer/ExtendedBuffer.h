@@ -10,22 +10,35 @@
 using namespace std;
 
 /**
- * \brief Extends the DataBuffer class to handle data merging
+ * \brief Extends the DataBuffer class to manage arrays of data.
+ *
+ * This class is templated so data can be accessed in terms of elements
+ * as opposed to being restricted to a single type
  **/
 template <typename T>
-class ExtendedBuffer : public DataBuffer<T>
+class ExtendedBuffer : public DataBuffer
 {
    protected:
-      size_t m_maxIndex = 0;                   //!< Number of elements set in the array
+      uint8_t m_elementSize = sizeof(T);        //!< Base size of the template elment
+      size_t  m_maxIndex = 0;                   //!< Number of elements set in the array
+      size_t  m_elementCount = 0;               //!< Tracks the number of elements in the buffer
    public:
       ExtendedBuffer(size_t elements=0);
 
+      bool   allocate( size_t elements, bool resizeFlag = false);
       void   deallocate();
+      size_t getElementCount();
       size_t getMaxIndex();
       bool   setMaxIndex( size_t value );
       size_t setElements( T * array, size_t count, size_t startIndex = 0, bool resizeFlag = false);
       size_t getElements( T * dest, size_t count, size_t startIndex = 0);
       size_t assignElements( T element, size_t count, size_t startIndex = UINT_MAX, bool resizeFlag = false );
+
+      /** \brief returns the value at the index **/
+      uint8_t    operator [](size_t index) const   {return m_buffer[index*m_elementSize];}; 
+      /** \brief assigned the index to the value **/
+      uint8_t    & operator [](size_t index) {return m_buffer[index*m_elementSize];}; 
+
 };
 
 /**
@@ -36,8 +49,9 @@ class ExtendedBuffer : public DataBuffer<T>
 template<typename T>
 ExtendedBuffer<T>::ExtendedBuffer( size_t elements) 
 {
-   DataBuffer<T>::allocate(elements);
+   DataBuffer::allocate(elements * m_elementSize);
 }
+
 /**
  * \brief Sets the number of elements to the specified value
  * \return number of elements assigned to the array
@@ -47,13 +61,23 @@ bool ExtendedBuffer<T>::setMaxIndex( size_t value)
 {
    //We cannot force an element count to be greater than
    //the number of allocated elements
-   if( value > DataBuffer<T>::getElementCount()) {
+   if( value > m_elementCount) {
       return false;
    }
 
    //We're in range. Set teh value
    m_maxIndex = value;
    return true;
+}
+
+/**
+ * \brief Returns the number of elements allocated to the array
+ * \return number of elements allocated in the array
+ **/
+template<typename T>
+size_t ExtendedBuffer<T>::getElementCount()
+{
+   return m_elementCount;
 }
 
 /**
@@ -67,6 +91,28 @@ size_t ExtendedBuffer<T>::getMaxIndex()
 }
 
 /**
+ * \brief allocates the buffer and sets the elementCount
+ *
+ * \param [in] elements number of elements to allocate
+ * \param [in] resizeFlag boolean to indicate if we resize as needed
+ * \return true on success, false on failure
+ *
+ * This functions  wraps the DataBuffer::allocate call to provide a method
+ * to set the element count. This data will automatically be allocated if
+ * the underlying buffer is set to NULL
+ **/
+template<typename T>
+bool ExtendedBuffer<T>::allocate( size_t elements, bool resizeFlag )
+{
+   bool rc = DataBuffer::allocate( elements * m_elementSize, resizeFlag );
+   if(( rc )&&( elements > m_elementCount )) {
+      m_elementCount = elements;
+   }
+
+   return rc;
+}
+
+/**
  * \brief deallocates the buffer and clears the elementCount
  *
  * \return true on success, false on failure
@@ -77,7 +123,7 @@ size_t ExtendedBuffer<T>::getMaxIndex()
 template<typename T>
 void ExtendedBuffer<T>::deallocate()
 {
-   DataBuffer<T>::deallocate();
+   DataBuffer::deallocate();
    m_maxIndex = 0;
 
    return;
@@ -100,12 +146,35 @@ void ExtendedBuffer<T>::deallocate()
 template<typename T>
 size_t ExtendedBuffer<T>::setElements( T * array, size_t count, size_t startIndex, bool resizeFlag ) 
 {
-   size_t result = DataBuffer<T>::setElements( array, count, startIndex, resizeFlag );
+   size_t bytes = count * m_elementSize;
+   bytes = DataBuffer::setData( array, bytes, startIndex * m_elementSize, resizeFlag );
 
-//   if(result > 0 )
+   return bytes/m_elementSize;
+}
+/*
+ * \brief This function sets the number of elements at the specified offset to the given value.
+ *
+ * \param [in] element Element to copy to the array
+ * \param [in] count number of elements to copy
+ * \param [in] startIndex index to start to copy to
+ * \param [in] resizeFlag flag to indicate if array should be resized if needed.
+ * \return number of elements copied.
+ *
+ * If the resize flag is set, this function well expand the array to handle all
+ * of the input data. Otherwise, if the internal buffer is undersized, all 
+ * available space will be filled.
+ *
+template<typename T>
+size_t ExtendedBuffer<T>::assignElements( T element, size_t count, size_t startIndex, bool resizeFlag )
+{
+   //If we're set to UINT_MAX, the start with the highest element
+   if( startIndex == UINT_MAX ) {
+      startIndex = m_maxIndex;
+   size_t result = DataBuffer::setData( (void *)array, bytes, startIndex*m_elementSize, resizeFlag );
 
    return result;
 }
+*/
 
 /**
  * \brief Returns a copy of the elements at the given destination
@@ -130,7 +199,7 @@ size_t ExtendedBuffer<T>::getElements( T * dest, size_t count, size_t startIndex
       count = m_maxIndex - startIndex;
    }
 
-   DataBuffer<T>::getEelements( dest, count, startIndex );
+   DataBuffer::getData( dest, count * m_elementSize, startIndex*m_elementSize );
    
    return count; 
 }
@@ -158,21 +227,22 @@ size_t ExtendedBuffer<T>::assignElements( T element, size_t count, size_t startI
       startIndex = m_maxIndex;
    }
 
-   size_t elementCount = DataBuffer<T>::getElementCount();
-
    //Check to make sure we are bounded correctly. If not, resize if flag is set
-   if( count +startIndex > elementCount ) {
-      if( resizeFlag) {
-         DataBuffer<T>::allocate(count+startIndex, true);
+   if( count +startIndex > m_elementCount ) {
+      if(( resizeFlag )||(m_buffer == NULL )) {
+         allocate(count+startIndex, resizeFlag );
       }
       else {
-         count = elementCount - startIndex;
+         count = m_elementCount - startIndex;
       }
    }
+    
+
+   T * mem = (T *)m_buffer;
 
    //Loop to copy the given number of elements
    for( int i = 0; i < count; i++ ) {
-      DataBuffer<T>::m_buffer[startIndex+i] = element;
+      mem[startIndex+i] = element;
    }
 
    if( startIndex+count > m_maxIndex ) {

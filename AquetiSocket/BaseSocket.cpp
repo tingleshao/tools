@@ -123,7 +123,7 @@ bool BaseSocket::processSocketData() {
  **/
 bool BaseSocket::processSocketData( BaseSocketData sockData ) 
 {
-   if( sockData.data->getElementCount()> 0 ) {
+   if( sockData.data->getMaxIndex()> 0 ) {
       printf( "Client with fd %d received: \"%s\"\n"
          , sockData.fd
          , (char *)&sockData.data[0]

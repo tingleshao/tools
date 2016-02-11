@@ -9,7 +9,8 @@
  *<hr>
  */
 //==============================================================================
-#pragma once
+#ifndef BASESOCKET_H
+#define BASESOCKET_H
 
 //System header files
 
@@ -41,8 +42,6 @@ class BaseSocketData {
       int     fd = -1;          //!< File descriptor for the socket
       int     port = -1;        //!< port number of the socket
       int     index = 0;        //!< Array index of the socket data
-//      int     bytes = 0;        //!< size of data requested or read in (not Buffer size)
-//      int64_t offset = 0;       //!< Current buffer offset
       std::string hostname;     //!< IP Address of the socket
       ExtendedBuffer<uint8_t> * data = NULL;
 
@@ -171,3 +170,4 @@ int create_tcp_client( const char * addr, int port );
 
 bool testBaseSocket(void);
 
+#endif

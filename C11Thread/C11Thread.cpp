@@ -21,22 +21,16 @@ using namespace std;
  **/
 C11Thread::~C11Thread()
 {
-   std::lock_guard<std::mutex> guard (threadMutex);
    Join();
 }
 
 /** 
  * \brief Function called to start thread execution
  *
- * \param [in] arg generic pointer that represents shared data
- * \param [in] runFlag shared pointer to indicate when running is stopped.
+ * \param [in] runFlag boolean pointer to terminate thread execution
  * \return std::thread object for this threads
- *
- * This functions is the entry point for stand-alone thread execution. The optional 
- * runFlag pointer allows the calling process to terminate multiple threads by setting
- * the value of this shared pointer.
  **/
-bool C11Thread::Start( void * arg, bool * runFlag ) 
+bool C11Thread::Start( bool * runFlag ) 
 {
    if( threadObj != NULL ) {
       cout << "C11Thread threadObject already allocated!" << endl;
@@ -48,7 +42,7 @@ bool C11Thread::Start( void * arg, bool * runFlag )
 
    threadObj = new std::thread;
 
-   *threadObj = std::thread(&C11Thread::Execute, this, arg);
+   *threadObj = std::thread(&C11Thread::Execute, this);
    initialized = true;
    return true;
 }
@@ -56,12 +50,10 @@ bool C11Thread::Start( void * arg, bool * runFlag )
 /**
  * \brief Execution function that starts thread processing
  *
- * \param [in] arg generic pointer to shared data
- *
  * This function is entry point into thread operation. This
  * function exits when the runPtr or running flag are set to false.
  **/
-void C11Thread::Execute(void * arg ) 
+void C11Thread::Execute() 
 {
    while( running ) 
    {
@@ -101,6 +93,7 @@ void C11Thread::mainLoop()
  **/
 bool C11Thread::Join()
 {
+   std::lock_guard<std::mutex> guard (threadMutex);
    if( threadObj == NULL ) {
       return false;
    }
@@ -133,29 +126,33 @@ bool testC11Thread(void)
    bool rc = true;
    C11Thread cThread;
 
+   cout << "Test Stop function"<<endl;
    cThread.Start(NULL);
    std::this_thread::sleep_for(std::chrono::milliseconds(100));
    cThread.Stop();
    cThread.Join();
 
+   cout << "Test running flag"<<endl;
    static bool running = true;
-   cThread.Start(NULL, &running);
+   cThread.Start(&running);
    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+   std::cout << "Running being set to false!" << endl;
    running = false;
    rc = cThread.Join();
    if( !rc ) {
-      std::cerr << "Unable to join thread!"<<std::endl;
-      return false;
+      std::cout << "Unable to join thread!"<<std::endl;
    }
+   std::cout << "Joined"<<std::endl;
 
    //Vector tests (timed)
    size_t threadCount = 100;
    running = true;
    std::vector<C11Thread> threadVect(threadCount);
 
+   cout << "Testing vector "<<endl << endl;
    //Spawn threadCount threads
    for( int i = 0; i < threadCount; i++ ) {
-      threadVect[i].Start(NULL, &running);
+      threadVect[i].Start(&running);
    }
 
 
@@ -169,7 +166,7 @@ bool testC11Thread(void)
 
    //ReSpawn threadCount threads
    for( int i = 0; i < threadCount; i++ ) {
-      threadVect[i].Start(NULL, &running);
+      threadVect[i].Start(&running);
    }
 
    //Stop threadCount threads

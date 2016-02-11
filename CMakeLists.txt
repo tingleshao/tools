@@ -25,6 +25,14 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+#Add additional directories
+include_directories(include Timer)
+include_directories(include DataBuffer)
+include_directories(include C11Thread)
+include_directories(include ThreadSafeQueue)
+include_directories(include AquetiSocket)
+
+
 #Set up compiler options
 add_definitions(-std=c++11)     #Use C++11 
 
@@ -33,4 +41,38 @@ add_subdirectory(Timer)
 add_subdirectory(DataBuffer)
 add_subdirectory(C11Thread)
 add_subdirectory(ThreadSafeQueue)
+add_subdirectory(AquetiSocket)
+
+link_directories(${CMAKE_BINARY_DIR}/lib)
+add_library( AquetiTools wrapper.cpp)
+
+target_link_libraries( AquetiTools
+   Timer
+   DataBuffer
+   C11Thread
+   ThreadSafeQueue
+   AquetiSocket
+)
+
 add_subdirectory(test)
+
+#install library files
+install(TARGETS 
+   AquetiTools
+   LIBRARY DESTINATION lib
+   ARCHIVE DESTINATION lib
+   INCLUDES DESTINATION include
+   PUBLIC_HEADER DESTINATION include
+)
+
+
+
+
+
+#add_library( AquetToolLib_static STATIC
+#   Timer
+#   DataBuffer
+#   C11Thread
+#   ThreadSafeQueue
+#   AquetiSocket
+#)

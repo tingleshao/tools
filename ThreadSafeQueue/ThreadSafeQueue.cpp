@@ -1,6 +1,5 @@
 #include "ThreadSafeQueue.h"
 #include <iostream>
-#include <thread>
 #include <cstdio>
 #include <ctime>
 #include <random>
@@ -59,6 +58,8 @@ template<class T> bool ThreadSafeQueue<T>::enqueue(T* data, bool force)
 
 /**
 * @brief Removes and returns the head of the queue
+* @param blocking If empty, true blocks until queue is non-empty, false return nullptr immediately.
+* @param timeout How long to block before timeout in milliseconds.  0 for indefinite wait.
 *
 * @return The data contained in the head
 */
@@ -68,7 +69,14 @@ template<class T> T* ThreadSafeQueue<T>::dequeue(bool blocking, uint16_t timeout
     if(!blocking && length == 0) {
         return nullptr;
     }
-    cv.wait(lock, [this]{return length > 0;});
+    if(timeout == 0) {
+        cv.wait(lock, [this]{return length > 0;});
+    } else {
+       if(!cv.wait_for(lock, std::chrono::milliseconds(timeout), [this]{return length > 0;})) {
+            std::cerr << "Thread timed out with no data on queue.  Returning null" << std::endl;
+            return nullptr;
+        }
+    }
     QNode* temp = head;
     head = head->prev;
     if(head != nullptr) {
@@ -110,12 +118,14 @@ template<class T> bool ThreadSafeQueue<T>::push(T* data, bool force)
 
 /**
 * @brief Removes and returns the head of the queue (stack notation)
+* @param blocking If empty, true blocks until queue is non-empty, false return nullptr immediately.
+* @param timeout How long to block before timeout in milliseconds.  0 for indefinite wait.
 *
 * @return The data contained in the head
 */
 template<class T> T* ThreadSafeQueue<T>::pop(bool blocking, uint16_t timeout)
 {
-    return dequeue(blocking);
+    return dequeue(blocking, timeout);
 }
 
 /**
@@ -207,7 +217,8 @@ void add_to_queue(ThreadSafeQueue<int> &q, int num, bool print)
 */
 void remove_from_queue(ThreadSafeQueue<int> &q, bool print)
 {
-    int* num = q.dequeue(false);
+    std::cout<< "Removing from queue" << std::endl;
+    int* num = q.dequeue(true, 1000);
     if(print) {
         if(num != nullptr) {
             std::cout << "Removed " << *num << " from queue" << std::endl;
@@ -226,6 +237,7 @@ void remove_from_queue(ThreadSafeQueue<int> &q, bool print)
 */
 void peek_at_queue(ThreadSafeQueue<int> &q, bool print)
 {
+    std::cout << "Peeking" << std::endl;
     int* num = q.peek();
     if(print) {
         if(num != nullptr) {
@@ -259,10 +271,11 @@ void push_to_queue(ThreadSafeQueue<int> &q, int num, bool print)
 */
 void pop_from_queue(ThreadSafeQueue<int> &q, bool print)
 {
+    std::cout << "Popping from queue" << std::endl;
     int* num = q.pop(false);
     if(print) {
         if(num != nullptr) {
-            std::cout << "Removed " << *num << " from queue" << std::endl;
+            std::cout << "Popped " << *num << " from queue" << std::endl;
         } else {
             std::cerr << "Could not remove null element" << std::endl;
         }

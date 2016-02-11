@@ -32,7 +32,6 @@ include_directories(include C11Thread)
 include_directories(include ThreadSafeQueue)
 include_directories(include AquetiSocket)
 
-
 #Set up compiler options
 add_definitions(-std=c++11)     #Use C++11 
 

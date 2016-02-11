@@ -8,6 +8,7 @@ include_directories( ${CMAKE_SOURCE_DIR}/C11Thread)
 include_directories( ${CMAKE_SOURCE_DIR}/DataBuffer)
 include_directories( ${CMAKE_SOURCE_DIR}/AquetiSocket)
 include_directories( ${CMAKE_SOURCE_DIR}/ThreadSafeQueue)
+SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++11 -pthread")
 
 #Specify the output executable of this file
 add_executable( AquetiToolsTest
@@ -17,12 +18,14 @@ add_executable( AquetiToolsTest
 #Find OS Threads Library
 find_package(Threads REQUIRED)
 
+MESSAGE("THREADS: ${CMAKE_THREAD_LIBS_INIT}")
+
 #assign a library to link to this file. This shows a static library
 target_link_libraries( AquetiToolsTest
    Timer_static
    C11Thread_static
    DataBuffer_static
-   ThreadSafeQueue_static
+   ThreadSafeQueue
    AquetiSocket_static
    AquetiTools
    ${CMAKE_THREAD_LIBS_INIT}               #For threaded operation

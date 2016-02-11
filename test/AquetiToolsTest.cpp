@@ -1,7 +1,5 @@
 #include <iostream>
 
-using namespace std;
-
 #include <Timer.h>
 #include <C11Thread.h>
 #include <DataBuffer.h>
@@ -10,12 +8,14 @@ using namespace std;
 #include <BaseSocket.h>
 #include <SocketServer.h>
 
+using namespace std;
+
 /**
  * Main test function
  **/
 int main(void)
 {
-
+/*
    if( !testTimer() )
    {
       cout << "Timer Unit Test Failed!" << endl;
@@ -39,11 +39,12 @@ int main(void)
       cout << "ExtendedBuffer Test Failed!" << endl;
       return 1;
    }
-   
+   */
    if( !test_ThreadSafeQueue())
    {
       cout << "Threadsafe Queue Test Failed!" << endl;
    }
+/*
    if( !testBaseSocket())
    {
       cout << "BaseSocket Test Failed!" << endl;
@@ -55,6 +56,7 @@ int main(void)
       cout << "SocketServer Test Failed!" << endl;
       return 1;
    }
+*/
    cout << "All tests completed successfully!" << endl;
    return 0;
 }

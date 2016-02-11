@@ -2,6 +2,7 @@
 #define DATABUFFER_H
 
 #include <climits>
+#include <stddef.h>
 
 /**
  * \brief Low level data structure to associate pointer with a data size

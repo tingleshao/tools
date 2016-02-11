@@ -37,8 +37,7 @@ class SocketServer : public BaseSocket, public C11Thread
 
 
       int  addConnection();
-//      DataBuffer<uint8_t> readIndex( size_t index );
-      ExtendedBuffer<uint8_t> * readIndex( size_t index );
+      RawDataBuffer readIndex( size_t index );
       void mainLoop( void );
 
    public:

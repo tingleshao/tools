@@ -19,8 +19,8 @@
 #include <string>
 
 #include <Timer.h>
+#include <TypeBuffer.h>
 #include <ExtendedBuffer.h>
-
 
 //Socket status variables
 #define SOCK_ERROR        -1            //!<Code shown for the socket if there is an error
@@ -39,13 +39,13 @@
  **/
 class BaseSocketData {
    public:
-      int     fd = -1;          //!< File descriptor for the socket
-      int     port = -1;        //!< port number of the socket
-      int     index = 0;        //!< Array index of the socket data
-      std::string hostname;     //!< IP Address of the socket
-      ExtendedBuffer<uint8_t> * data = NULL;  //!< Pointer to the data structure for recieving data
+      int     fd = -1;                  //!< File descriptor for the socket
+      int     port = -1;                //!< port number of the socket
+      int     index = 0;                //!< Array index of the socket data
+      std::string hostname;             //!< IP Address of the socket
+      ExtendedBuffer<uint8_t> data;     //!< Pointer to the data structure for recieving data
 
-      ExtendedBuffer<uint8_t> * extractData(); 
+      RawDataBuffer extractData(); 
       int sendData( uint8_t * buffer,  size_t bytes );
 }; 
 

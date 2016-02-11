@@ -25,18 +25,23 @@
 /**
  * \brief Extracts the data buffer and releases data internally
  *
- * \return Pointer to the dataBuffer object
+ * \return TypeBuffer object with the data
  *
  * This function returns a pointer to the current data buffer and
  * then removes internal references. The calling function is responsible
  * for deleting the data (which is integrated in the DataBuffer class)
  **/
-ExtendedBuffer<uint8_t> * BaseSocketData::extractData() 
+RawDataBuffer BaseSocketData::extractData() 
 {
-   ExtendedBuffer<uint8_t> * result = data;
-   data = NULL;
+   RawDataBuffer rdb;
+   rdb.m_buffer = data.m_buffer;
+   rdb.m_bufferSize = data.m_bufferSize;
 
-   return result;
+   //Clear data
+   data.m_buffer = NULL;
+   data.m_bufferSize = 0;
+
+   return rdb;
 }
 
 
@@ -99,7 +104,7 @@ BaseSocket::~BaseSocket() {
 bool BaseSocket::processSocketData() {
 
    //See if we have received any elements
-   if( socketData.data->getMaxIndex() > 0 )
+   if( socketData.data.m_bufferSize > 0 )
    {
       printf( "Client with fd %d received: \"%s\"\n"
          , socketData.fd
@@ -107,13 +112,10 @@ bool BaseSocket::processSocketData() {
          );
 
       received++;
-
-
       return true;
    }
-   else {
-      return false;
-   }
+
+   return false;
 }
 
 /**
@@ -123,7 +125,7 @@ bool BaseSocket::processSocketData() {
  **/
 bool BaseSocket::processSocketData( BaseSocketData sockData ) 
 {
-   if( sockData.data->getMaxIndex()> 0 ) {
+   if( sockData.data.getElementCount() > 0 ) {
       printf( "Client with fd %d received: \"%s\"\n"
          , sockData.fd
          , (char *)&sockData.data[0]
@@ -974,21 +976,13 @@ bool BaseSocket::prepSocketData()
    int rc = 0;                          //!< return code
 
    //Check the BaseData is defined
-   if( socketData.data == NULL ) {
-      socketData.data = new ExtendedBuffer<uint8_t>( bufferSize);
+   if( socketData.data.m_buffer == NULL ) {
+      socketData.data.allocate(bufferSize);
    }
 
-   //If we have elements, reallocate buffer if necessary. Otherwise
-   //Update elementCount to 0
-   if(socketData.data->getMaxIndex() > 0 ) {
-      //If we are not the correct size, reallocate the buffer
-      if( socketData.data->getElementCount() < bufferSize ) {
-         socketData.data->allocate(bufferSize, true );
-      }
-
-      //All is good 
-      socketData.data->setMaxIndex(0);
-      return 1;
+   //reallocate buffer if necessary. Otherwise
+   if(socketData.data.m_bufferSize < bufferSize ) {
+     socketData.data.allocate(bufferSize, true );
    }
 
    //0 indicates no change
@@ -1001,14 +995,12 @@ bool BaseSocket::prepSocketData()
  **/
 int BaseSocket::recvSocketData() 
 {
-   size_t maxIndex = socketData.data->getMaxIndex();
-   size_t elementCount = socketData.data->getElementCount();
-
    //Read in the data
-   int rc = recvData(&(*socketData.data)[maxIndex], elementCount-maxIndex);
+   int rc = recvData(socketData.data.m_buffer, socketData.data.m_bufferSize - socketData.data.getMaxIndex());
+
    //If we read valid bytes, increment the offset
    if( rc > 0 ) {
-      socketData.data->setMaxIndex( maxIndex+rc);
+      socketData.data.setMaxIndex( socketData.data.getMaxIndex()+rc);
    }
 
    //Return number of bytes read

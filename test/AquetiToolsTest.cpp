@@ -15,7 +15,6 @@ using namespace std;
  **/
 int main(void)
 {
-/*
    if( !testTimer() )
    {
       cout << "Timer Unit Test Failed!" << endl;
@@ -39,12 +38,10 @@ int main(void)
       cout << "ExtendedBuffer Test Failed!" << endl;
       return 1;
    }
-   */
    if( !test_ThreadSafeQueue())
    {
       cout << "Threadsafe Queue Test Failed!" << endl;
    }
-/*
    if( !testBaseSocket())
    {
       cout << "BaseSocket Test Failed!" << endl;
@@ -56,7 +53,6 @@ int main(void)
       cout << "SocketServer Test Failed!" << endl;
       return 1;
    }
-*/
    cout << "All tests completed successfully!" << endl;
    return 0;
 }

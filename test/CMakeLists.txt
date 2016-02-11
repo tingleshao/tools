@@ -18,8 +18,6 @@ add_executable( AquetiToolsTest
 #Find OS Threads Library
 find_package(Threads REQUIRED)
 
-MESSAGE("THREADS: ${CMAKE_THREAD_LIBS_INIT}")
-
 #assign a library to link to this file. This shows a static library
 target_link_libraries( AquetiToolsTest
    Timer_static

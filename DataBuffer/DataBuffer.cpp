@@ -38,8 +38,6 @@ bool RawDataBuffer::allocate( size_t bytes, bool resizeFlag)
       }
    }
 
-   m_bufferSize = bytes;
-
    return true;
 }
 

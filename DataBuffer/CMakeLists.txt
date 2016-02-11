@@ -22,6 +22,7 @@ add_library( DataBuffer_static ${LIB_SOURCES})
 #specifies an executable for testing
 add_executable( bufferTest
    BufferTest.cpp
+   TypeBuffer.cpp
 )
 
 target_link_libraries( bufferTest

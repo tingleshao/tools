@@ -5,6 +5,7 @@
 #include <iostream>
 #include <climits>
 #include <cstring>
+#include "TypeBuffer.h"
 #include "DataBuffer.h"
 
 using namespace std;
@@ -33,6 +34,9 @@ class ExtendedBuffer : public DataBuffer
       size_t setElements( T * array, size_t count, size_t startIndex = 0, bool resizeFlag = false);
       size_t getElements( T * dest, size_t count, size_t startIndex = 0);
       size_t assignElements( T element, size_t count, size_t startIndex = UINT_MAX, bool resizeFlag = false );
+
+      TypeBuffer<T> getTypeBufferAndFree();
+
 
       /** \brief returns the value at the index **/
       uint8_t    operator [](size_t index) const   {return m_buffer[index*m_elementSize];}; 
@@ -250,6 +254,29 @@ size_t ExtendedBuffer<T>::assignElements( T element, size_t count, size_t startI
    }
 
    return count;
+}
+
+/**
+ * \brief Gets a pointer to the buffer and clears class values (no deallocatoin)
+ * \return TypeBuffer with the data pointer and number fo elements
+ **/
+template <typename T>
+TypeBuffer<T> getTypeBufferAndFree()
+{
+   //Create the typebuffer with the output info
+   TypeBuffer<T> tbuffer;
+   tbuffer.m_buffer = static_cast<T *>(DataBuffer::m_buffer);
+   tbuffer.m_elements = m_maxIndex;
+
+   //Clear Extended Buffer variables
+   m_maxIndex = 0;
+   m_elementCount = 0;
+
+   //Clear DataBuffer variables
+   DataBuffer::m_buffer = NULL;
+   DataBuffer::m_bufferSize = 0;
+ 
+   return tbuffer;  
 }
 
 //Test function

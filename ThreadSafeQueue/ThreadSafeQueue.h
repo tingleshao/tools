@@ -1,5 +1,6 @@
 #include <vector>
 #include <mutex>
+#include <condition_variable>
 
 #pragma once
 
@@ -27,7 +28,8 @@ template <class T> class ThreadSafeQueue
     public:
         ~ThreadSafeQueue();                     //<! Destructor.  Deletes all data in queue
         bool enqueue(T*, bool force=false);     //<! Add data to the tail of the queue
-        T* dequeue(bool blocking=true);         //<! Remove and return data from the head of the queue
+        T* dequeue(bool blocking=true, uint16_t timeout=0);
+                                                //<! Remove and return data from the head of the queue
         bool push(T*, bool force=false);        //<! Add data to the head of the queue (as a stack)
         T* pop(bool blocking=true, uint16_t timeout=0);
                                                 //<! Pop data off the head of the queue (as a stack)

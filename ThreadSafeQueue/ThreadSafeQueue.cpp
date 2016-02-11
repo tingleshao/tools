@@ -62,24 +62,24 @@ template<class T> bool ThreadSafeQueue<T>::enqueue(T* data, bool force)
 *
 * @return The data contained in the head
 */
-template<class T> T* ThreadSafeQueue<T>::dequeue()
+template<class T> T* ThreadSafeQueue<T>::dequeue(bool blocking, uint16_t timeout)
 {
-    std::lock_guard<std::mutex> lock(m);
-    QNode* temp = head;
-    if(head != nullptr) {
-        head = head->prev;
-        if(head != nullptr) {
-            head->next = nullptr;
-        } else {
-            tail = nullptr;
-        }
-        T* data = temp->data;
-        delete temp;
-        length--;
-        return data;
-    } else {
+    std::unique_lock<std::mutex> lock(m);
+    if(!blocking && length == 0) {
         return nullptr;
     }
+    cv.wait(lock, [this]{return length > 0;});
+    QNode* temp = head;
+    head = head->prev;
+    if(head != nullptr) {
+        head->next = nullptr;
+    } else {
+        tail = nullptr;
+    }
+    T* data = temp->data;
+    delete temp;
+    length--;
+    return data;
 }
 
 /**
@@ -90,7 +90,7 @@ template<class T> T* ThreadSafeQueue<T>::dequeue()
 */
 template<class T> bool ThreadSafeQueue<T>::push(T* data, bool force)
 {
-    std::lock_guard<std::mutex> lock(m);
+    std::unique_lock<std::mutex> lock(m);
     if(!force && length >= max_size)
         return false;
     QNode* temp = new QNode(data);
@@ -103,6 +103,8 @@ template<class T> bool ThreadSafeQueue<T>::push(T* data, bool force)
         tail = temp;
     }
     length++;
+    lock.unlock();
+    cv.notify_one();
     return true;
 }
 
@@ -111,9 +113,9 @@ template<class T> bool ThreadSafeQueue<T>::push(T* data, bool force)
 *
 * @return The data contained in the head
 */
-template<class T> T* ThreadSafeQueue<T>::pop()
+template<class T> T* ThreadSafeQueue<T>::pop(bool blocking, uint16_t timeout)
 {
-    return dequeue();
+    return dequeue(blocking);
 }
 
 /**

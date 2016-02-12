@@ -16,8 +16,12 @@ int main(void)
    cout << "Starting"<<endl;
    server.Start();
 
-   while(1) {
-   }
+
+   std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+   
+
    cout << "Done"<<endl;
 
+   server.Stop();
+   server.Join();
 }

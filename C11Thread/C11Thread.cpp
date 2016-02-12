@@ -38,13 +38,31 @@ bool C11Thread::Start( bool * runFlag )
    }
 
    runPtr = runFlag;
-   running = true;
 
    threadObj = new std::thread;
 
-   *threadObj = std::thread(&C11Thread::Execute, this);
+   *threadObj = std::thread(&C11Thread::EntryPoint, this);
    initialized = true;
    return true;
+}
+
+/**
+ * \brief EntryPointer to transfer control to the run method
+ **/
+void * C11Thread::EntryPoint(void * pthis) 
+{
+    C11Thread * ptr = (C11Thread *) pthis;
+    ptr->Run();
+
+    return NULL;
+}
+
+/**
+ * \brief Function to start thread execution.
+ **/ 
+void C11Thread::Run(void) 
+{
+   Execute();
 }
 
 /**

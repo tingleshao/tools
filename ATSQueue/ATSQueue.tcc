@@ -31,10 +31,10 @@ template <class T> class ATSQueue
     public:
         ~ATSQueue();                     //<! Destructor.  Deletes all data in queue
         bool enqueue(T*, bool force=false);     //<! Add data to the tail of the queue
-        T* dequeue(bool blocking=true, uint16_t timeout=0);
+        T* dequeue(uint16_t timeout=0);
                                                 //<! Remove and return data from the head of the queue
         bool push(T*, bool force=false);        //<! Add data to the head of the queue (as a stack)
-        T* pop(bool blocking=true, uint16_t timeout=0);
+        T* pop(uint16_t timeout=0);
                                                 //<! Pop data off the head of the queue (as a stack)
         T* peek();                              //<! Peek at the head of the queue
         size_t size();                          //<! Return the size of the queue
@@ -113,24 +113,16 @@ template<class T> bool ATSQueue<T>::enqueue(T* data, bool force)
 
 /**
 * @brief Removes and returns the head of the queue
-* @param blocking If empty, true blocks until queue is non-empty, false return nullptr immediately.
-* @param timeout How long to block before timeout in milliseconds.  0 for indefinite wait.
+* @param timeout How long to block before timeout in milliseconds.
 *
 * @return The data contained in the head
 */
-template<class T> T* ATSQueue<T>::dequeue(bool blocking, uint16_t timeout)
+template<class T> T* ATSQueue<T>::dequeue(uint16_t timeout)
 {
     std::unique_lock<std::mutex> lock(m);
-    if(!blocking && length == 0) {
-        return nullptr;
-    }
-    if(timeout == 0) {
-        cv.wait(lock, [this]{return length > 0;});
-    } else {
-       if(!cv.wait_for(lock, std::chrono::milliseconds(timeout), [this]{return length > 0;})) {
+    if(!cv.wait_for(lock, std::chrono::milliseconds(timeout), [this]{return length > 0;})) {
             std::cerr << "Thread timed out with no data on queue.  Returning null" << std::endl;
             return nullptr;
-        }
     }
     QNode* temp = head;
     head = head->prev;
@@ -173,14 +165,13 @@ template<class T> bool ATSQueue<T>::push(T* data, bool force)
 
 /**
 * @brief Removes and returns the head of the queue (stack notation)
-* @param blocking If empty, true blocks until queue is non-empty, false return nullptr immediately.
-* @param timeout How long to block before timeout in milliseconds.  0 for indefinite wait.
+* @param timeout How long to block before timeout in milliseconds.
 *
 * @return The data contained in the head
 */
-template<class T> T* ATSQueue<T>::pop(bool blocking, uint16_t timeout)
+template<class T> T* ATSQueue<T>::pop(uint16_t timeout)
 {
-    return dequeue(blocking, timeout);
+    return dequeue(timeout);
 }
 
 /**

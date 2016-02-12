@@ -43,7 +43,7 @@ void add_to_queue(ATSQueue<int> &q, int num, bool print)
 void remove_from_queue(ATSQueue<int> &q, bool print)
 {
     std::cout<< "Removing from queue" << std::endl;
-    int* num = q.dequeue(true, 1000);
+    int* num = q.dequeue(1000);
     if(print) {
         if(num != nullptr) {
             std::cout << "Removed " << *num << " from queue" << std::endl;
@@ -97,7 +97,7 @@ void push_to_queue(ATSQueue<int> &q, int num, bool print)
 void pop_from_queue(ATSQueue<int> &q, bool print)
 {
     std::cout << "Popping from queue" << std::endl;
-    int* num = q.pop(false);
+    int* num = q.pop(0);
     if(print) {
         if(num != nullptr) {
             std::cout << "Popped " << *num << " from queue" << std::endl;

@@ -28,7 +28,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 #Add additional directories
 include_directories(include Timer)
 include_directories(include DataBuffer)
-include_directories(include C11Thread)
+include_directories(include AThreads)
 include_directories(include ThreadSafeQueue)
 include_directories(include AquetiSocket)
 
@@ -38,7 +38,7 @@ add_definitions(-std=c++11)     #Use C++11
 #setup into subdirectories to combile code
 add_subdirectory(Timer)
 add_subdirectory(DataBuffer)
-add_subdirectory(C11Thread)
+add_subdirectory(AThreads)
 add_subdirectory(ThreadSafeQueue)
 add_subdirectory(AquetiSocket)
 
@@ -48,7 +48,7 @@ add_library( AquetiTools wrapper.cpp)
 target_link_libraries( AquetiTools
    Timer
    DataBuffer
-   C11Thread
+   AThreads
    ThreadSafeQueue
    AquetiSocket
 )
@@ -71,7 +71,7 @@ install(TARGETS
 #add_library( AquetToolLib_static STATIC
 #   Timer
 #   DataBuffer
-#   C11Thread
+#   AThreads
 #   ThreadSafeQueue
 #   AquetiSocket
 #)

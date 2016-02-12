@@ -7,17 +7,17 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fexpensive-optimizations")
 
 #specifies a list of source files to be compiled
 set( BASE_SOURCES 
-   C11Thread.cpp
+   AThreads.cpp
 )
 
 #specifies the library to create. The name will be libbase_static.a and libbase.so in this case.
-add_library( C11Thread_static ${BASE_SOURCES})
-add_library( C11Thread SHARED ${BASE_SOURCES})
+add_library( AThreads_static ${BASE_SOURCES})
+add_library( AThreads SHARED ${BASE_SOURCES})
 
 #install library files
 install(TARGETS 
-   C11Thread
-   C11Thread_static
+   AThreads
+   AThreads_static
    LIBRARY DESTINATION lib
    ARCHIVE DESTINATION lib
    INCLUDES DESTINATION include
@@ -25,7 +25,7 @@ install(TARGETS
 )
 
 install(FILES
-   C11Thread.h
+   AThreads.h
    DESTINATION include
 )
 

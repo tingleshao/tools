@@ -20,7 +20,7 @@
 #include <string>
 #include <thread>
 
-#include <C11Thread.h>
+#include <AThreads.h>
 #include "BaseSocket.h"
 
 #define SKT_BACKLOG 1000
@@ -28,7 +28,7 @@
 /**
  *!\brief Class to create a stand-alone server
  **/
-class SocketServer : public BaseSocket, public C11Thread
+class SocketServer : public BaseSocket, public jthread
 {
    private:
 //      double waitTime = 0.1;                      //!< How long to wait while reading
@@ -38,6 +38,9 @@ class SocketServer : public BaseSocket, public C11Thread
 
       int  addConnection();
       RawDataBuffer readIndex( size_t index );
+
+   protected:
+      void Execute( void );
       void mainLoop( void );
 
    public:

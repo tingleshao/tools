@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include <Timer.h>
-#include <C11Thread.h>
+//#include <C11Thread.h>
 #include <DataBuffer.h>
 #include <ThreadSafeQueue.h>
 #include <ExtendedBuffer.h>
@@ -20,12 +20,13 @@ int main(void)
       cout << "Timer Unit Test Failed!" << endl;
       return 1;
    }
+/*
    if( !testC11Thread() )
    {
       cout << "C11Thread Unit Test Failed!" << endl;
       return 1;
    }
-
+*/
    cout << "Testing DataBuffer"<<endl;
    if( !testDataBuffer() )
    {

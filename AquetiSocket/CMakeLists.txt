@@ -8,7 +8,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fexpensive-optimizations")
 #add external include files
 include_directories( include ../Timer)
 include_directories( include ../DataBuffer)
-include_directories( include ../C11Thread)
+include_directories( include ../AThreads)
 
 #specifies a list of source files to be compiled
 set( BASE_SOURCES 

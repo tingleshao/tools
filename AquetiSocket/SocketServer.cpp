@@ -150,10 +150,13 @@ int SocketServer::Initialize( int port, int listenSize )
 /**
  *!\brief main processing loop
  **/
-void SocketServer::mainLoop( void )
+void SocketServer::Execute( void )
 {
-   std::cout << "SocketServer mainLoop"<<endl;
+   while(running) 
+   {
+   std::cout << "SocketServer Execute"<<endl;
    receiveData( waitTime );
+   }
 }
 
 /*

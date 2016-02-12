@@ -4,7 +4,7 @@ PROJECT(AquetiTools)
 
 #specify location of include directories within this project
 include_directories( ${CMAKE_SOURCE_DIR}/Timer)
-include_directories( ${CMAKE_SOURCE_DIR}/C11Thread)
+include_directories( ${CMAKE_SOURCE_DIR}/AThreads)
 include_directories( ${CMAKE_SOURCE_DIR}/DataBuffer)
 include_directories( ${CMAKE_SOURCE_DIR}/AquetiSocket)
 include_directories( ${CMAKE_SOURCE_DIR}/ThreadSafeQueue)
@@ -20,7 +20,7 @@ add_executable( AquetiToolsTest
 #assign a library to link to this file. This shows a static library
 target_link_libraries( AquetiToolsTest
    Timer_static
-   C11Thread_static
+   AThreads_static
    DataBuffer_static
    ThreadSafeQueue
    AquetiSocket_static
@@ -35,7 +35,7 @@ add_executable( SampleServer
 #assign a library to link to this file. This shows a static library
 target_link_libraries( SampleServer
    Timer_static
-   C11Thread_static
+   AThreads_static
    DataBuffer_static
    AquetiSocket_static
    AquetiTools

@@ -29,7 +29,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 include_directories(include ATimer)
 include_directories(include ABuffer)
 include_directories(include AThread)
-include_directories(include ThreadSafeQueue)
+include_directories(include ATSQueue)
 include_directories(include ASocket)
 
 #Set up compiler options
@@ -39,7 +39,7 @@ add_definitions(-std=c++11)     #Use C++11
 add_subdirectory(ATimer)
 add_subdirectory(ABuffer)
 add_subdirectory(AThread)
-add_subdirectory(ThreadSafeQueue)
+add_subdirectory(ATSQueue)
 add_subdirectory(ASocket)
 
 link_directories(${CMAKE_BINARY_DIR}/lib)
@@ -49,7 +49,6 @@ target_link_libraries( ATools
    ATimer
    ABuffer
    AThread
-   ThreadSafeQueue
    ASocket
 )
 

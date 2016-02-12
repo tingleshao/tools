@@ -22,7 +22,6 @@ target_link_libraries( AToolsTest
    ATimer_static
    AThread_static
    ABuffer_static
-   ThreadSafeQueue
    ASocket_static
    ATools
    ${CMAKE_THREAD_LIBS_INIT}               #For threaded operation

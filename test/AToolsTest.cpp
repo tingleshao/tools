@@ -3,7 +3,6 @@
 #include <Timer.h>
 #include <AThread.h>
 #include <DataBuffer.h>
-#include <ThreadSafeQueue.h>
 #include <ExtendedBuffer.tcc>
 #include <BaseSocket.h>
 #include <SocketServer.h>
@@ -25,7 +24,6 @@ int main(void)
       cout << "C11Thread Unit Test Failed!" << endl;
       return 1;
    }
-
    cout << "Testing DataBuffer"<<endl;
    if( !testDataBuffer() )
    {
@@ -37,10 +35,6 @@ int main(void)
    {
       cout << "ExtendedBuffer Test Failed!" << endl;
       return 1;
-   }
-   if( !test_ThreadSafeQueue())
-   {
-      cout << "Threadsafe Queue Test Failed!" << endl;
    }
    if( !testBaseSocket())
    {

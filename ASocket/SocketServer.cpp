@@ -274,8 +274,8 @@ int SocketServer::receiveData( double timeout )
       //we are done receiving data.
       int rc = select( servFdMax+1, &readSet, NULL, NULL, &tv );
       if( rc < 0 ) {
-         perror( "error select");
-         fprintf(stderr, "SocketServer select error\n");
+         perror( "SocketServer error: select");
+         fprintf(stderr, "SocketServer select error: %d\n", rc );
       }
       else if ( rc == 0 ) {
          done = true;

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <climits>
 #include <cstring>
-#include "TypeBuffer.h"
+#include "TypeBuffer.tcc"
 #include "DataBuffer.h"
 
 using namespace std;

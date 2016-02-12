@@ -4,8 +4,8 @@
 #include <iostream>
 
 #include "DataBuffer.h"
-#include "ExtendedBuffer.h"
-#include "TypeBuffer.h"
+#include "ExtendedBuffer.tcc"
+#include "TypeBuffer.tcc"
 
 using namespace std;
 int main( void ) 

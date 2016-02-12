@@ -4,7 +4,7 @@
 #include <AThread.h>
 #include <DataBuffer.h>
 #include <ThreadSafeQueue.h>
-#include <ExtendedBuffer.h>
+#include <ExtendedBuffer.tcc>
 #include <BaseSocket.h>
 #include <SocketServer.h>
 

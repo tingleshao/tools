@@ -47,7 +47,7 @@ install(TARGETS
 #install include files
 install(FILES
    DataBuffer.h
-   ExtendedBuffer.h
-   TypeBuffer.h
+   ExtendedBuffer.tcc
+   TypeBuffer.tcc
    DESTINATION include
 )

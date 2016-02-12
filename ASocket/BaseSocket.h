@@ -19,8 +19,8 @@
 #include <string>
 
 #include <Timer.h>
-#include <TypeBuffer.h>
-#include <ExtendedBuffer.h>
+#include <TypeBuffer.tcc>
+#include <ExtendedBuffer.tcc>
 
 //Socket status variables
 #define SOCK_ERROR        -1            //!<Code shown for the socket if there is an error

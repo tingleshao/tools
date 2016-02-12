@@ -1,5 +1,5 @@
 #include <iostream>
-#include "ExtendedBuffer.h"
+#include "ExtendedBuffer.tcc"
 
 using namespace std;
 

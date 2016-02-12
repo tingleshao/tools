@@ -1,5 +1,5 @@
 #include <iostream>
-#include "TypeBuffer.h"
+#include "TypeBuffer.tcc"
 
 using namespace std;
 

@@ -15,6 +15,9 @@ int main(void)
 
    cout << "Starting"<<endl;
    server.Start();
+
+   while(1) {
+   }
    cout << "Done"<<endl;
 
 }

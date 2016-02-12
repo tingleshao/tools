@@ -30,18 +30,19 @@ class C11Thread
        std::thread * threadObj = NULL;    //!< Thread variable
        bool * runPtr = NULL;              //!< Flag to stop running by a shared pointer
        bool running = false;              //!< Internal flag to stop execution due to function call
+       static void   EntryPoint(C11Thread *);
+       void          Execute(void);
 
     protected:
-       static void * EntryPoint(void *);
-       virtual void  Execute(void);
 
     public:
-       void          mainLoop(void);
+       ~C11Thread();
+
        void          Run(void); 
        bool          Start(bool * runFlag=NULL );
        void          Stop(void);
        bool          Join(void);
-       ~C11Thread();
+       virtual void  mainLoop(void);
 };
 
 bool testC11Thread();

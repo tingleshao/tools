@@ -49,12 +49,12 @@ bool C11Thread::Start( bool * runFlag )
 /**
  * \brief EntryPointer to transfer control to the run method
  **/
-void * C11Thread::EntryPoint(void * pthis) 
+void C11Thread::EntryPoint(C11Thread * pthis) 
 {
-    C11Thread * ptr = (C11Thread *) pthis;
-    ptr->Run();
+//    C11Thread * ptr = (C11Thread *) pthis;
+    pthis->Execute();
 
-    return NULL;
+    return;
 }
 
 /**
@@ -73,6 +73,7 @@ void C11Thread::Run(void)
  **/
 void C11Thread::Execute() 
 {
+   running = true;
    while( running ) 
    {
       //Adjust based on the runPtr, if it is defined.

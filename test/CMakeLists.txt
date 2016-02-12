@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 2.8)
 
-PROJECT(AquetiTools)
+PROJECT(ATools)
 
 #specify location of include directories within this project
-include_directories( ${CMAKE_SOURCE_DIR}/Timer)
-include_directories( ${CMAKE_SOURCE_DIR}/C11Thread)
-include_directories( ${CMAKE_SOURCE_DIR}/DataBuffer)
-include_directories( ${CMAKE_SOURCE_DIR}/AquetiSocket)
+include_directories( ${CMAKE_SOURCE_DIR}/ATimer)
+include_directories( ${CMAKE_SOURCE_DIR}/AThread)
+include_directories( ${CMAKE_SOURCE_DIR}/ABuffer)
+include_directories( ${CMAKE_SOURCE_DIR}/ASocket)
 include_directories( ${CMAKE_SOURCE_DIR}/ThreadSafeQueue)
 SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++11 -pthread")
 
@@ -14,17 +14,17 @@ SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++11 -pthread")
 find_package(Threads REQUIRED)
 
 #Specify the output executable of this file
-add_executable( AquetiToolsTest
-   AquetiToolsTest.cpp
+add_executable( AToolsTest
+   AToolsTest.cpp
 )
 #assign a library to link to this file. This shows a static library
-target_link_libraries( AquetiToolsTest
-   Timer_static
-   C11Thread_static
-   DataBuffer_static
+target_link_libraries( AToolsTest
+   ATimer_static
+   AThread_static
+   ABuffer_static
    ThreadSafeQueue
-   AquetiSocket_static
-   AquetiTools
+   ASocket_static
+   ATools
    ${CMAKE_THREAD_LIBS_INIT}               #For threaded operation
 )
 
@@ -34,11 +34,11 @@ add_executable( SampleServer
 )
 #assign a library to link to this file. This shows a static library
 target_link_libraries( SampleServer
-   Timer_static
-   C11Thread_static
-   DataBuffer_static
-   AquetiSocket_static
-   AquetiTools
+   ATimer_static
+   AThread_static
+   ABuffer_static
+   ASocket_static
+   ATools
    ${CMAKE_THREAD_LIBS_INIT}               #For threaded operation
 )
 
@@ -46,7 +46,7 @@ target_link_libraries( SampleServer
 
 #Specify where the targets are installed when a "make install" is executed
 install(TARGETS
-   AquetiToolsTest
+   AToolsTest
    SampleServer
    RUNTIME DESTINATION bin
 )

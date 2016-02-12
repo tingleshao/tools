@@ -1,0 +1,1 @@
+/usr/bin/c++  -fPIC  -std=c++11 -fexpensive-optimizations   -shared -Wl,-soname,libC11Thread.so -o libC11Thread.so CMakeFiles/C11Thread.dir/C11Thread.cpp.o 

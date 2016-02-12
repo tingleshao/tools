@@ -1,0 +1,2 @@
+/usr/bin/ar cr libDataBuffer_static.a  CMakeFiles/DataBuffer_static.dir/DataBuffer.cpp.o CMakeFiles/DataBuffer_static.dir/ExtendedBuffer.cpp.o
+/usr/bin/ranlib libDataBuffer_static.a

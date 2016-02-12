@@ -1,0 +1,2 @@
+/home/sfeller/develop/Aqueti/tools/C11Thread/build/CMakeFiles/C11Thread.dir
+/home/sfeller/develop/Aqueti/tools/C11Thread/build/CMakeFiles/C11Thread_static.dir

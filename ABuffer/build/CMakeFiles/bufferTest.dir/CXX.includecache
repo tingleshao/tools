@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/sfeller/develop/Aqueti/tools/DataBuffer/DataBuffer.h
+climits
+-
+stddef.h
+-
+
+/home/sfeller/develop/Aqueti/tools/DataBuffer/TypeBuffer.cpp
+iostream
+-
+TypeBuffer.h
+/home/sfeller/develop/Aqueti/tools/DataBuffer/TypeBuffer.h
+
+/home/sfeller/develop/Aqueti/tools/DataBuffer/TypeBuffer.h
+cstdlib
+-
+iostream
+-
+climits
+-
+cstring
+-
+DataBuffer.h
+/home/sfeller/develop/Aqueti/tools/DataBuffer/DataBuffer.h
+

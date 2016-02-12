@@ -1,0 +1,2 @@
+/usr/bin/ar cr libC11Thread_static.a  CMakeFiles/C11Thread_static.dir/C11Thread.cpp.o
+/usr/bin/ranlib libC11Thread_static.a

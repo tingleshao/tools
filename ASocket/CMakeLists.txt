@@ -21,10 +21,16 @@ set( BASE_SOURCES
 add_library( ASocket SHARED ${BASE_SOURCES})
 add_library( ASocket_static ${BASE_SOURCES})
 
-#target_link_libraries( AquetiSocket
-#   Timer
-#   DataBuffer
-#   C11THread
+link_directories(${CMAKE_BINARY_DIR}/lib)
+target_link_libraries( ASocket
+   ATimer_static
+   ABuffer_static
+   AThread_static
+)
+#target_link_libraries( ASocket_static
+#   ATimer_static
+#   ABuffer_static
+#   AThread_static
 #)
 
 #install library files

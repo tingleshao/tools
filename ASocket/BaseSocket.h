@@ -46,7 +46,7 @@ class BaseSocketData {
       ExtendedBuffer<uint8_t> data;     //!< Pointer to the data structure for recieving data
 
       RawDataBuffer extractData(); 
-      int sendData( uint8_t * buffer,  size_t bytes );
+      int sendData( void * buffer,  size_t bytes );
 }; 
 
 /**
@@ -84,7 +84,7 @@ class BaseSocket
       uint64_t sent     = 0;                //!< Number of messages sent
       double waitTime = 0.0;                //!< How long to wait for socket data
 
-      size_t bufferSize = 0;                //!< Size of the data buffer for incoming info
+      size_t bufferSize = 1024;                //!< Size of the data buffer for incoming info
 
       //Initialization and exit functions
       bool createTcpClient( std::string hostname, int port);
@@ -96,9 +96,9 @@ class BaseSocket
       //Data transmission functions
 //      int  sendData( int index, uint8_t * buffer, size_t size );
 //      int  readIndex( int index );
-      int sendData( uint8_t * buffer,  int bytes );
-      int recvData( uint8_t * buffer,  int bytes );
-      int recvDataSize( uint8_t * buffer,  int bytes, double timeout );
+      int sendData( void * buffer,  int bytes );
+      int recvData( void * buffer,  int bytes );
+      int recvDataSize( void * buffer,  int bytes, double timeout );
 
       bool closeIndex( int index );
       void setWaitTime( double wtime );

@@ -172,17 +172,19 @@ bool SocketServer::processSocketIndex( int index )
  * \brief Processes the data in incoming databuffer object
  * \param [in] sockData BaseSocketData struct with received data
  **/
-bool SocketServer::processSocketData( BaseSocketData sockData)
+bool SocketServer::processSocketData( BaseSocketData * sockData)
 {
-   size_t maxIndex = socketData.data.getMaxIndex();
+   size_t maxIndex = sockData->data.getMaxIndex();
    if(maxIndex == 0 ) {
-      cout << "Socket at index "<<sockData.index<<" receive error"<<endl;
+      cout << "Socket at index "<<sockData->index<<" receive error:"<<maxIndex<<endl;
       return false;
    }
    else {
-      cout << "Socket at index "<<sockData.index<<" received: "<<sockData.data[0]<<endl;
+      cout << "Socket at index "<<sockData->index<<" received: "<< (char *)&sockData->data[0]<<endl;
       received++;
    }
+
+   sockData->data.deallocate();
 
    return true;
 }
@@ -201,18 +203,13 @@ size_t SocketServer::readSocketData( BaseSocketData * refSocketData )
    int nbytes = 0;
    int ret = 0;
 
-   size_t elementCount = refSocketData->data.getElementCount();
-   size_t maxIndex  = refSocketData->data.getMaxIndex();
-
-   //Verify that the bufferSize is greater than the data size
-   if(( elementCount - maxIndex )<= 0 ) {
-      fprintf(stderr, "Available buffer size of %ld is not large enough\n"
-             , elementCount - maxIndex
-             );
-
-      return -1;
+   //Prep reference data
+   if( refSocketData->data.getElementCount() < bufferSize ) {
+      refSocketData->data.allocate(bufferSize);
    }
 
+   size_t elementCount = refSocketData->data.getElementCount();
+   size_t maxIndex  = refSocketData->data.getMaxIndex();
    size_t count = elementCount-maxIndex;
 
    //Read map data at the file descriptor into the refSocketData buffer
@@ -231,15 +228,18 @@ size_t SocketServer::readSocketData( BaseSocketData * refSocketData )
       return -1;
    }
    else if (nbytes == 0) {
-      // End-of-file.
+      cout<<"read "<<nbytes<<" bytes"<<endl;
       return 0;
    }
 
    // Data read. 
    refSocketData->data.setMaxIndex(nbytes+maxIndex);
 
+   cout<<"read "<<nbytes<<" bytes. Max Index:"<<nbytes+maxIndex
+       <<", "<<refSocketData->data.getMaxIndex()<<endl;
+
    //This would be changed here to check if a given number of bytes were received.
-   return nbytes;
+   return nbytes+maxIndex;
 }
 
 
@@ -263,6 +263,7 @@ int SocketServer::receiveData( double timeout )
    //While we're still not done reading file descriptors...
    do
    {
+
       //Calculate timeout value, if any.
       double endTime = getTime() + timeout;
       timeval tv = convertDoubleToTimeVal( endTime - getTime());
@@ -270,6 +271,7 @@ int SocketServer::receiveData( double timeout )
       //Set the list of socket descriptors to check if data is available
       fd_set readSet = servFds;
 
+      cout << "servFdMax: "<<servFdMax<<endl;
       //Select file descriptors with waiting data. If none is available,
       //we are done receiving data.
       int rc = select( servFdMax+1, &readSet, NULL, NULL, &tv );
@@ -295,6 +297,8 @@ int SocketServer::receiveData( double timeout )
                }
                else
                {
+                  cout << "Reading data from fd: "<< socketDataVector[i].fd << endl;  
+
                   //Read the socketDSata 
                   int rc =readSocketData(&socketDataVector[i]);
                   if( rc < 0 ) {
@@ -303,15 +307,18 @@ int SocketServer::receiveData( double timeout )
                             , i 
                             );
                      close(i);
-                     FD_CLR( i, &servFds );
+                     FD_CLR( socketDataVector[i].fd, &servFds );
                      return -1;
                   }
                   else {
                      if(rc > 0 ) {
                         printf("Received %d bytes\n", rc );
+                        processSocketData( &socketDataVector[i] );
                      }
-//                     processSocketIndex( i );
-                     processSocketData( socketDataVector[i] );
+                     else if( rc == 0 ) {
+                        FD_CLR( socketDataVector[i].fd, &servFds );
+                        return -1;
+                     }
                   }
                }
             }
@@ -388,6 +395,7 @@ RawDataBuffer SocketServer::readIndex( size_t index )
    //Return a valid index 
    RawDataBuffer result = socketDataVector[index].extractData();
 
+   cout << "Result: "<<result.m_bufferSize<<endl;
    return result;
 }
 
@@ -526,7 +534,7 @@ bool testSocketServer(void)
 
       //Receive message
       for( int i = 0; i < recvCount; i++ ) {
-         baseSocketVector[i].recvData((uint8_t *)&data2, strlen( data ));
+         baseSocketVector[i].recvData(&data2, strlen( data ));
       }
    }
 /*

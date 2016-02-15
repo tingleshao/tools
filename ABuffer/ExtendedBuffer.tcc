@@ -66,6 +66,7 @@ bool ExtendedBuffer<T>::setMaxIndex( size_t value)
    //We cannot force an element count to be greater than
    //the number of allocated elements
    if( value > m_elementCount) {
+      cerr << "EB: Unable to set MaxIndex higher than elementCount"<<endl;
       return false;
    }
 

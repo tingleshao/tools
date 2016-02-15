@@ -33,7 +33,7 @@ include_directories(include ThreadSafeQueue)
 include_directories(include ASocket)
 
 #Set up compiler options
-add_definitions(-std=c++11)     #Use C++11 
+add_definitions(-std=c++11 -fPIC)     #Use C++11 
 
 #setup into subdirectories to combile code
 add_subdirectory(ATimer)

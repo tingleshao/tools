@@ -55,7 +55,7 @@ RawDataBuffer BaseSocketData::extractData()
  * This function assumes that the buffer passed is allocated
  * memory with the provided number of bytes. 
  **/
-int BaseSocketData::sendData( uint8_t * buffer,  size_t bytes )
+int BaseSocketData::sendData( void * buffer,  size_t bytes )
 {
    //Make sure we're writing to a valid file descriptor
    if( fd < 0 ) {
@@ -859,7 +859,7 @@ void BaseSocket::setWaitTime( double wTime ) {
  * \return negative number on failure, number of bytes written on success
  **/
 //int BaseSocket::sendData( int index, uint8_t * buffer, size_t size ) 
-int BaseSocket::sendData( uint8_t * buffer, int bytes )
+int BaseSocket::sendData( void * buffer, int bytes )
 {
    int rc = socketData.sendData( buffer, bytes);
 
@@ -879,8 +879,11 @@ int BaseSocket::sendData( uint8_t * buffer, int bytes )
  * This function receives at most count bytes and writes them into the provided
  * buffer.
  **/
-int BaseSocket::recvData( uint8_t * buffer, int count )
+int BaseSocket::recvData( void * buffer, int count )
 {
+
+   prepSocketData();
+
    //Begin regular processing
    int rc = 0;
 
@@ -911,7 +914,9 @@ int BaseSocket::recvData( uint8_t * buffer, int count )
       return -1;
    }
    //SDF rc = read( socketData.fd, buffer, count );
+   cout << "receiving "<<count<<" bytes from fd "<<socketData.fd<<endl;
    rc = recv( socketData.fd, buffer, count, 0 );
+   cout << "received "<<count<<" bytes from fd "<<socketData.fd<< " with code"<<rc<<endl;
 
 
 /*
@@ -927,7 +932,7 @@ int BaseSocket::recvData( uint8_t * buffer, int count )
 */
    //If we got any data, increment hte count of how many we have
    if( rc > 0 ) {
-      printf("Received: %s\n", buffer );
+      printf("Received: %s\n", (char *)buffer );
       received++;
    }
 
@@ -939,13 +944,13 @@ int BaseSocket::recvData( uint8_t * buffer, int count )
  *
  * This function will wait at most timeout seconds
  **/
-int BaseSocket::recvDataSize( uint8_t * buffer, int count, double timeout )
+int BaseSocket::recvDataSize( void * buffer, int count, double timeout )
 {
    int nbytes = 0;
    Timer timer;
    //Wait until timeout (if it is not 0 )
    while(( nbytes < count )&&((timer.elapsed() < timeout )||(timeout == 0.0 )))  {
-      int rc = recvData( buffer + nbytes, count - nbytes );
+      int rc = recvData( (char *)buffer + nbytes, count - nbytes );
       if( rc < 0 ){
          printf("recvDataSize Error\n");
          return -1;
@@ -975,6 +980,7 @@ bool BaseSocket::prepSocketData()
 { 
    int rc = 0;                          //!< return code
 
+   cout <<"SDF prepSocketData for size "<<bufferSize<<endl;
    //Check the BaseData is defined
    if( socketData.data.m_buffer == NULL ) {
       socketData.data.allocate(bufferSize);
@@ -986,7 +992,7 @@ bool BaseSocket::prepSocketData()
    }
 
    //0 indicates no change
-   return 1;
+   return true;
 }
 
 
@@ -1074,7 +1080,7 @@ bool testBaseSocket(void)
    char data2[256];
    memset( data2, 0, 256 );
 
-   udpClient.sendData( (uint8_t *)&data, strlen(data)); 
+   udpClient.sendData( &data, strlen(data)); 
 
    udpListener.recvData( (uint8_t *)&data2,  strlen(data));
 

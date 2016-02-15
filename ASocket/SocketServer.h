@@ -51,7 +51,7 @@ class SocketServer : public BaseSocket, public AThread
 
       size_t readSocketData(BaseSocketData * socketData );
 //      virtual int processSocketIndex( int index );
-      virtual bool processSocketData( BaseSocketData data);
+      virtual bool processSocketData( BaseSocketData * data);
 
       
 };

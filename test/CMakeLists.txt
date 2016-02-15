@@ -19,11 +19,11 @@ add_executable( AToolsTest
 )
 #assign a library to link to this file. This shows a static library
 target_link_libraries( AToolsTest
-   ATimer_static
-   AThread_static
-   ABuffer_static
-   ThreadSafeQueue
-   ASocket_static
+#   ATimer_static
+#   AThread_static
+#   ABuffer_static
+#   ThreadSafeQueue
+#   ASocket_static
    ATools
    ${CMAKE_THREAD_LIBS_INIT}               #For threaded operation
 )
@@ -34,10 +34,20 @@ add_executable( SampleServer
 )
 #assign a library to link to this file. This shows a static library
 target_link_libraries( SampleServer
-   ATimer_static
-   AThread_static
-   ABuffer_static
-   ASocket_static
+#   ATimer_static
+#   AThread_static
+#   ABuffer_static
+#   ASocket_static
+   ATools
+   ${CMAKE_THREAD_LIBS_INIT}               #For threaded operation
+)
+
+#Create the SocketTerminal
+add_executable( SocketTerminal
+   SocketTerminal.cpp
+)
+
+target_link_libraries( SocketTerminal
    ATools
    ${CMAKE_THREAD_LIBS_INIT}               #For threaded operation
 )
@@ -48,6 +58,7 @@ target_link_libraries( SampleServer
 install(TARGETS
    AToolsTest
    SampleServer
+   SocketTerminal
    RUNTIME DESTINATION bin
 )
 

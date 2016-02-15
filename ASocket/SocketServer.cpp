@@ -188,7 +188,7 @@ bool SocketServer::processSocketData( BaseSocketData * sockData)
       return false;
    }
    else {
-      cout << (char *)&sockData->data[0]<<endl;
+      handleMessage( sockData->data.getTypeBufferAndFree());
       received++;
    }
 
@@ -391,12 +391,12 @@ int SocketServer::sendData( BaseSocketData data, uint8_t * buffer, size_t bytes 
  **/
 RawDataBuffer SocketServer::readIndex( size_t index )
 {
+
    int rc = readSocketData( &socketDataVector[index] );
  
    //Return a valid index 
    RawDataBuffer result = socketDataVector[index].extractData();
 
-   cout << "Result: "<<result.m_bufferSize<<endl;
    return result;
 }
 

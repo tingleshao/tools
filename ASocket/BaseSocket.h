@@ -12,6 +12,8 @@
 #ifndef BASESOCKET_H
 #define BASESOCKET_H
 
+#include <functional>
+
 //System header files
 
 //Application header files
@@ -29,6 +31,7 @@
 
 #define DEFAULT_SOCKET_BUFFER_SIZE 1024 //!< Default size of a socket buffer
 
+using namespace std::placeholders;
 /**
  * \brief datastructure to manage incoming socket data 
  *
@@ -61,13 +64,8 @@ class BaseSocket
    public:
       BaseSocket();
       virtual ~BaseSocket();
-//      bool    disconnect(void);
 
       BaseSocketData socketData;              //!< Structure containing information about a socket
-//      size_t socketDataBufferSize = 256;    //!< size of data in BaseSocketData structures
-//      std::vector<BaseSocketData> socketDataVector;
-//      int portNumber = 9000;                   //!< Port number of socket
-//      int fd;                               //!< file descriptor
 
       //File descriptors for read, write, and select operations
       fd_set servFds;                       //!< file descriptors for read/write 
@@ -87,6 +85,10 @@ class BaseSocket
 
       size_t bufferSize = 1024;                //!< Size of the data buffer for incoming info
 
+      //Implement a callback
+      bool setHandleMessageCallback( std::function<void(TypeBuffer<uint8_t>)> callback );
+      std::function<void(TypeBuffer<uint8_t>)> handleMessage;
+
       //Initialization and exit functions
       bool createTcpClient( std::string hostname, int port);
 //      int  createTcpServer( std::string hostname, int port);
@@ -95,8 +97,6 @@ class BaseSocket
       bool createUdpListener( int port);
 
       //Data transmission functions
-//      int  sendData( int index, uint8_t * buffer, size_t size );
-//      int  readIndex( int index );
       int sendData( void * buffer,  int bytes );
       int recvData( void * buffer,  int bytes );
       int recvDataSize( void * buffer,  int bytes, double timeout );
@@ -105,11 +105,12 @@ class BaseSocket
       void setWaitTime( double wtime );
       void setBufferSize( size_t size );
 
-      virtual int Initialize( std::string hostname, int port);
+      virtual int  Initialize( std::string hostname, int port);
       virtual bool prepSocketData();
-      virtual int recvSocketData();
+      virtual int  recvSocketData();
       virtual bool processSocketData(BaseSocketData sockData);
       virtual bool processSocketData();
+
 
    private:
       std::string sourceUrl;                //!< Network URL to listen on
@@ -168,6 +169,7 @@ static int noint_select(int width, fd_set *readfds, fd_set *writefds,
 int create_udp_client( const char * addr, int port ); 
 int create_tcp_client( const char * addr, int port ); 
 
+void printMessage(TypeBuffer<uint8_t> data );
 bool testBaseSocket(void);
 
 #endif

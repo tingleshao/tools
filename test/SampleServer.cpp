@@ -21,11 +21,10 @@ bool printHelp( void )
 }
 
 /**
- * \brief Callback to handle incoming data
+ * \brief Message callback
  **/
-void handleMessage( char * message )
-{
-   cout<<message<<endl;
+void handleMessage( TypeBuffer<uint8_t>data) {
+   cout << "Server:"<< (char *)&data.m_buffer[0] << endl;
 }
 
 /**
@@ -58,18 +57,19 @@ int main(int argc, char ** argv)
    SocketServer server;
    server.setWaitTime(1);
    server.Initialize( port );
+   server.setHandleMessageCallback(handleMessage);
 
 
    cout << "Starting SampleServer on port "<<port<<"\n"<<endl;
    server.Start();
 
    Timer timer;
-   while(timer.elapsed() < 60 ) 
+   while(timer.elapsed() < 180 ) 
    {
       server.receiveData(1);
    }
 
-   cout << "Done"<<endl;
+   cout << "Sample Server Exiting\n"<<endl;
 
    server.Stop();
    server.Join();

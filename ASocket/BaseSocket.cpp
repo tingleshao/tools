@@ -87,6 +87,7 @@ void BaseSocketData::closeSocket()
  *!\brief constructor 
  **/
 BaseSocket::BaseSocket() {
+   setHandleMessageCallback( printMessage );
 }
 
 /**
@@ -108,25 +109,48 @@ BaseSocket::~BaseSocket() {
 }
 
 /**
+ * \brief Adds a callback handler
+ * 
+ * \param [in] callback pointer to the callback function
+ **/
+bool BaseSocket::setHandleMessageCallback( std::function<void(TypeBuffer<uint8_t>)> callback )
+{
+   handleMessage = std::bind(callback, _1 );
+}
+
+
+
+/**
  * \brief function that processes data received from a socket
  *
  * For the base case, just print the incoming buffer size
  **/
-bool BaseSocket::processSocketData() {
-
-   //See if we have received any elements
-   if( socketData.data.m_bufferSize > 0 )
+bool BaseSocket::processSocketData() 
+{
+   try {
+      handleMessage( socketData.data.getTypeBufferAndFree());
+   } catch(std::bad_function_call& e) 
    {
-      printf( "Client with fd %d received: \"%s\"\n"
-         , socketData.fd
-         , (char *)&socketData.data[0]
-         );
+      cerr << "handleMessage callback not set!" << endl;
+      /*
+      //See if we have received any elements
+      if( socketData.data.m_bufferSize > 0 )
+      {
+         printf( "Client with fd %d received: \"%s\"\n"
+            , socketData.fd
+            , (char *)&socketData.data[0]
+            );
 
-      received++;
-      return true;
+         received++;
+         return true;
+      }
+
+
+      return false;
+      */
    }
 
-   return false;
+   return true;
 }
 
 /**
@@ -1051,12 +1075,19 @@ BaseSocketData createBaseSocketData( size_t dataSize)
 
 //============================================================
 // TEST Code
+//============================================================
+/**
+ * \brief Callback for received data
+ **/
+void printMessage( TypeBuffer<uint8_t> data ) {
+   cout << "Default:"<< (char *)&data.m_buffer[0] << endl;
+}
+
 /** 
  *!\brief BaseSocket test function
  *
  * Creates a number of clients an receives a message from each
  **/
-//============================================================
 bool testBaseSocket(void)
 {
    BaseSocket udpClient;

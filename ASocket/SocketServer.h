@@ -44,6 +44,7 @@ class SocketServer : public BaseSocket, public AThread
       SocketServer();
       ~SocketServer();
       int  Initialize( int port, int backlog=SKT_BACKLOG );
+      bool closeIndex( size_t index );
       int receiveData( double timeout );   
       int bcastData( uint8_t * buffer, size_t bytes );
       int sendData( BaseSocketData data, uint8_t * buffer, size_t bytes );

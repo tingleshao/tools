@@ -49,14 +49,20 @@ SocketServer::~SocketServer()
 
       //If we are the same object as our socketData, then we'll clear that 
       //with the base BaseSocket destructor
-      //SDF - hackish
-      if( socketDataVector[i].fd != socketData.fd ) {
-         if( socketDataVector[i].fd != -1 ) {
-            close( socketDataVector[i].fd );
-            socketDataVector[i].fd = -1;
-         }
-      }
+      closeIndex(i);
    }
+}
+
+/**
+ * \brief Closes the socket at the specified index
+ *
+ * \param [in] index specifies which object in the socket vector to close
+ * \return true 
+ **/
+bool SocketServer::closeIndex( size_t index ) 
+{
+   socketDataVector[index].closeSocket();
+   return true;
 }
 
 /**
@@ -307,9 +313,8 @@ int SocketServer::receiveData( double timeout )
                      cout << "Socket fd "<< socketDataVector[i].fd
                           << " at index "<<i<<" closed"<<endl;
 
-                     close(socketDataVector[i].fd);
                      FD_CLR( socketDataVector[i].fd, &servFds );
-                     socketDataVector[i].fd = -1;
+                     closeIndex(i);
                   }
                   else {
                      if(rc > 0 ) {

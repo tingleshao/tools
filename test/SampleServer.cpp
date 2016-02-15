@@ -21,6 +21,14 @@ bool printHelp( void )
 }
 
 /**
+ * \brief Callback to handle incoming data
+ **/
+void handleMessage( char * message )
+{
+   cout<<message<<endl;
+}
+
+/**
  * Main test function
  **/
 int main(int argc, char ** argv)

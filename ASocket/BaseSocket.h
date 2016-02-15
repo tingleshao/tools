@@ -47,6 +47,7 @@ class BaseSocketData {
 
       RawDataBuffer extractData(); 
       int sendData( void * buffer,  size_t bytes );
+      void closeSocket();
 }; 
 
 /**

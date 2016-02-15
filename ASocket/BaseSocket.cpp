@@ -71,6 +71,17 @@ int BaseSocketData::sendData( void * buffer,  size_t bytes )
    return rc;
 }
 
+/**
+ * \brief Closes the existing connection
+ **/
+void BaseSocketData::closeSocket() 
+{
+   //Close the socket if it is open
+   if( fd > 0 ) {
+      close( fd );
+      fd = -1;
+   }
+}
 
 /**
  *!\brief constructor 
@@ -79,9 +90,9 @@ BaseSocket::BaseSocket() {
 }
 
 /**
- *!\brief destructor
+ * \brief destructore
  *
- * Closes open file descriptors
+ * Closes any open sockets on exit
  **/
 BaseSocket::~BaseSocket() {
 
@@ -881,9 +892,6 @@ int BaseSocket::sendData( void * buffer, int bytes )
  **/
 int BaseSocket::recvData( void * buffer, int count )
 {
-
-   prepSocketData();
-
    //Begin regular processing
    int rc = 0;
 
@@ -1020,7 +1028,7 @@ bool BaseSocket::closeIndex( int index )
 {
    printf("Closing index: %d, fd: %d\n", index, socketData.fd );
    FD_CLR( socketData.fd, &servFds ); 
-   close( socketData.fd );
+   socketData.closeSocket();
 
    return true;
 }

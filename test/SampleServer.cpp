@@ -52,7 +52,7 @@ int main(int argc, char ** argv)
    server.Initialize( port );
 
 
-   cout << "Starting"<<endl;
+   cout << "Starting SampleServer on port "<<port<<"\n"<<endl;
    server.Start();
 
    Timer timer;

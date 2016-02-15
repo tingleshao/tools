@@ -11,6 +11,8 @@
 #include <string.h>
 #include <sys/time.h>
 #include <math.h>
+#include <thread>
+#include <chrono>
 
 //#include <curl/curl.h>
 //#include <JsonBox.h>
@@ -419,6 +421,15 @@ bool TimevalEqual(const timeval &tv1, const timeval &tv2)
         return false;
 }
 
+/**
+ * \brief Sleeps for the given amount of time
+ *
+ * \param [in] double time to sleep in seconds
+ **/
+void ASleep( double time ) {
+   size_t msec = time*1e3;
+   std::this_thread::sleep_for(std::chrono::milliseconds(msec));
+}
 
 
 //***********************************************************

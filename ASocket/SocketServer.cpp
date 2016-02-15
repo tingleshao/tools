@@ -45,6 +45,8 @@ SocketServer::~SocketServer()
    //Close all socket vectors
    for(int i = 0; i < socketDataVector.size(); i++ ) 
    {
+      socketDataVector[i].data.deallocate();
+
       //If we are the same object as our socketData, then we'll clear that 
       //with the base BaseSocket destructor
       //SDF - hackish
@@ -180,11 +182,14 @@ bool SocketServer::processSocketData( BaseSocketData * sockData)
       return false;
    }
    else {
-      cout << "Socket at index "<<sockData->index<<" received: "<< (char *)&sockData->data[0]<<endl;
+      cout << (char *)&sockData->data[0]<<endl;
       received++;
    }
 
-   sockData->data.deallocate();
+   //Point back to the first element
+   sockData->data.setMaxIndex(0);
+
+//   sockData->data.deallocate();
 
    return true;
 }
@@ -204,9 +209,9 @@ size_t SocketServer::readSocketData( BaseSocketData * refSocketData )
    int ret = 0;
 
    //Prep reference data
-   if( refSocketData->data.getElementCount() < bufferSize ) {
+//   if( refSocketData->data.getElementCount() < bufferSize ) {
       refSocketData->data.allocate(bufferSize);
-   }
+//   }
 
    size_t elementCount = refSocketData->data.getElementCount();
    size_t maxIndex  = refSocketData->data.getMaxIndex();
@@ -228,20 +233,16 @@ size_t SocketServer::readSocketData( BaseSocketData * refSocketData )
       return -1;
    }
    else if (nbytes == 0) {
-      cout<<"read "<<nbytes<<" bytes"<<endl;
+//      cout<<"read "<<nbytes<<" bytes"<<" with maxIndex "<<maxIndex<<endl;
       return 0;
    }
 
    // Data read. 
    refSocketData->data.setMaxIndex(nbytes+maxIndex);
 
-   cout<<"read "<<nbytes<<" bytes. Max Index:"<<nbytes+maxIndex
-       <<", "<<refSocketData->data.getMaxIndex()<<endl;
-
    //This would be changed here to check if a given number of bytes were received.
    return nbytes+maxIndex;
 }
-
 
 
 /**
@@ -271,7 +272,6 @@ int SocketServer::receiveData( double timeout )
       //Set the list of socket descriptors to check if data is available
       fd_set readSet = servFds;
 
-      cout << "servFdMax: "<<servFdMax<<endl;
       //Select file descriptors with waiting data. If none is available,
       //we are done receiving data.
       int rc = select( servFdMax+1, &readSet, NULL, NULL, &tv );
@@ -287,6 +287,9 @@ int SocketServer::receiveData( double timeout )
          //Loop through file descriptors and process pending data
          for( int i = 0; i < socketDataVector.size(); i++ ) 
          {
+            if(  socketDataVector[i].fd == -1 ) {
+               continue;
+            }
             //If the file descriptor is erady to ready, then process it.
             if( FD_ISSET( socketDataVector[i].fd , &readSet ))
             {
@@ -297,27 +300,20 @@ int SocketServer::receiveData( double timeout )
                }
                else
                {
-                  cout << "Reading data from fd: "<< socketDataVector[i].fd << endl;  
-
                   //Read the socketDSata 
                   int rc =readSocketData(&socketDataVector[i]);
-                  if( rc < 0 ) {
-                     fprintf(stderr, "Error Reading from client with fd %d at index %d\n"
-                            , socketDataVector[i].fd
-                            , i 
-                            );
-                     close(i);
+                  if( rc == 0 ) {
+                     //Print message
+                     cout << "Socket fd "<< socketDataVector[i].fd
+                          << " at index "<<i<<" closed"<<endl;
+
+                     close(socketDataVector[i].fd);
                      FD_CLR( socketDataVector[i].fd, &servFds );
-                     return -1;
+                     socketDataVector[i].fd = -1;
                   }
                   else {
                      if(rc > 0 ) {
-                        printf("Received %d bytes\n", rc );
                         processSocketData( &socketDataVector[i] );
-                     }
-                     else if( rc == 0 ) {
-                        FD_CLR( socketDataVector[i].fd, &servFds );
-                        return -1;
                      }
                   }
                }

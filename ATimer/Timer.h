@@ -62,7 +62,6 @@ class Timer
 
 //Support functions
 double getTime();
-//uint64_t getIntTime();
 double convertTimeValToDouble( timeval tv );
 SMPTETime   convertTimeValToSMPTE( timeval tv, int fps ); 
 timeval     convertDoubleToTimeVal( double dTime );
@@ -80,6 +79,7 @@ timeval TimevalDiff(const timeval &tv1, const timeval &tv2);
 timeval TimevalNormalize(const timeval &in_tv);
 static inline void timevalNormalizeInPlace(timeval &in_tv);
 
+void ASleep(double time );
 
 
 //Functional test for the timer

@@ -36,5 +36,6 @@ install(TARGETS
 #install include files
 install(FILES
    BaseSocket.h
+   SocketServer.h
    DESTINATION include
 )

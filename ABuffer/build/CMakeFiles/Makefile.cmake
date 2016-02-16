@@ -43,7 +43,7 @@ SET(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 SET(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/DataBuffer.dir/DependInfo.cmake"
-  "CMakeFiles/DataBuffer_static.dir/DependInfo.cmake"
+  "CMakeFiles/ABuffer.dir/DependInfo.cmake"
+  "CMakeFiles/ABuffer_static.dir/DependInfo.cmake"
   "CMakeFiles/bufferTest.dir/DependInfo.cmake"
   )

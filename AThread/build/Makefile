@@ -42,10 +42,10 @@ EQUALS = =
 CMAKE_EDIT_COMMAND = /usr/bin/ccmake
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sfeller/develop/Aqueti/tools/C11Thread
+CMAKE_SOURCE_DIR = /home/sfeller/develop/Aqueti/tools/AThread
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sfeller/develop/Aqueti/tools/C11Thread/build
+CMAKE_BINARY_DIR = /home/sfeller/develop/Aqueti/tools/AThread/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -113,9 +113,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sfeller/develop/Aqueti/tools/C11Thread/build/CMakeFiles /home/sfeller/develop/Aqueti/tools/C11Thread/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sfeller/develop/Aqueti/tools/AThread/build/CMakeFiles /home/sfeller/develop/Aqueti/tools/AThread/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sfeller/develop/Aqueti/tools/C11Thread/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sfeller/develop/Aqueti/tools/AThread/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -143,57 +143,57 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named C11Thread
+# Target rules for targets named AThread
 
 # Build rule for target.
-C11Thread: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 C11Thread
-.PHONY : C11Thread
+AThread: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 AThread
+.PHONY : AThread
 
 # fast build rule for target.
-C11Thread/fast:
-	$(MAKE) -f CMakeFiles/C11Thread.dir/build.make CMakeFiles/C11Thread.dir/build
-.PHONY : C11Thread/fast
+AThread/fast:
+	$(MAKE) -f CMakeFiles/AThread.dir/build.make CMakeFiles/AThread.dir/build
+.PHONY : AThread/fast
 
 #=============================================================================
-# Target rules for targets named C11Thread_static
+# Target rules for targets named AThread_static
 
 # Build rule for target.
-C11Thread_static: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 C11Thread_static
-.PHONY : C11Thread_static
+AThread_static: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 AThread_static
+.PHONY : AThread_static
 
 # fast build rule for target.
-C11Thread_static/fast:
-	$(MAKE) -f CMakeFiles/C11Thread_static.dir/build.make CMakeFiles/C11Thread_static.dir/build
-.PHONY : C11Thread_static/fast
+AThread_static/fast:
+	$(MAKE) -f CMakeFiles/AThread_static.dir/build.make CMakeFiles/AThread_static.dir/build
+.PHONY : AThread_static/fast
 
-C11Thread.o: C11Thread.cpp.o
-.PHONY : C11Thread.o
+AThread.o: AThread.cpp.o
+.PHONY : AThread.o
 
 # target to build an object file
-C11Thread.cpp.o:
-	$(MAKE) -f CMakeFiles/C11Thread.dir/build.make CMakeFiles/C11Thread.dir/C11Thread.cpp.o
-	$(MAKE) -f CMakeFiles/C11Thread_static.dir/build.make CMakeFiles/C11Thread_static.dir/C11Thread.cpp.o
-.PHONY : C11Thread.cpp.o
+AThread.cpp.o:
+	$(MAKE) -f CMakeFiles/AThread.dir/build.make CMakeFiles/AThread.dir/AThread.cpp.o
+	$(MAKE) -f CMakeFiles/AThread_static.dir/build.make CMakeFiles/AThread_static.dir/AThread.cpp.o
+.PHONY : AThread.cpp.o
 
-C11Thread.i: C11Thread.cpp.i
-.PHONY : C11Thread.i
+AThread.i: AThread.cpp.i
+.PHONY : AThread.i
 
 # target to preprocess a source file
-C11Thread.cpp.i:
-	$(MAKE) -f CMakeFiles/C11Thread.dir/build.make CMakeFiles/C11Thread.dir/C11Thread.cpp.i
-	$(MAKE) -f CMakeFiles/C11Thread_static.dir/build.make CMakeFiles/C11Thread_static.dir/C11Thread.cpp.i
-.PHONY : C11Thread.cpp.i
+AThread.cpp.i:
+	$(MAKE) -f CMakeFiles/AThread.dir/build.make CMakeFiles/AThread.dir/AThread.cpp.i
+	$(MAKE) -f CMakeFiles/AThread_static.dir/build.make CMakeFiles/AThread_static.dir/AThread.cpp.i
+.PHONY : AThread.cpp.i
 
-C11Thread.s: C11Thread.cpp.s
-.PHONY : C11Thread.s
+AThread.s: AThread.cpp.s
+.PHONY : AThread.s
 
 # target to generate assembly for a file
-C11Thread.cpp.s:
-	$(MAKE) -f CMakeFiles/C11Thread.dir/build.make CMakeFiles/C11Thread.dir/C11Thread.cpp.s
-	$(MAKE) -f CMakeFiles/C11Thread_static.dir/build.make CMakeFiles/C11Thread_static.dir/C11Thread.cpp.s
-.PHONY : C11Thread.cpp.s
+AThread.cpp.s:
+	$(MAKE) -f CMakeFiles/AThread.dir/build.make CMakeFiles/AThread.dir/AThread.cpp.s
+	$(MAKE) -f CMakeFiles/AThread_static.dir/build.make CMakeFiles/AThread_static.dir/AThread.cpp.s
+.PHONY : AThread.cpp.s
 
 # Help Target
 help:
@@ -201,17 +201,17 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... C11Thread"
-	@echo "... C11Thread_static"
+	@echo "... AThread"
+	@echo "... AThread_static"
 	@echo "... edit_cache"
 	@echo "... install"
 	@echo "... install/local"
 	@echo "... install/strip"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
-	@echo "... C11Thread.o"
-	@echo "... C11Thread.i"
-	@echo "... C11Thread.s"
+	@echo "... AThread.o"
+	@echo "... AThread.i"
+	@echo "... AThread.s"
 .PHONY : help
 
 

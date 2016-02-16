@@ -2,10 +2,14 @@ cmake_minimum_required(VERSION 2.8)
 
 PROJECT(AquetiTools)
 
+
+add_definitions(-std=c++11 -fPIC)     #Use C++11 
+
 #specifies a list of source files to be compiled
 set( BASE_SOURCES 
-   Timer.cpp
+   ATimer.cpp
 )
+
 
 #specifies the library to create. The name will be libbase_static.a and libbase.so in this case.
 add_library( ATimer_static ${BASE_SOURCES})
@@ -23,6 +27,6 @@ install(TARGETS
 
 #install header files
 install( FILES
-   Timer.h
+   ATimer.h
    DESTINATION include
 )

@@ -4,14 +4,14 @@ SET(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 SET(CMAKE_DEPENDS_CHECK_CXX
-  "/home/sfeller/develop/Aqueti/tools/DataBuffer/BufferTest.cpp" "/home/sfeller/develop/Aqueti/tools/DataBuffer/build/CMakeFiles/bufferTest.dir/BufferTest.cpp.o"
-  "/home/sfeller/develop/Aqueti/tools/DataBuffer/TypeBuffer.cpp" "/home/sfeller/develop/Aqueti/tools/DataBuffer/build/CMakeFiles/bufferTest.dir/TypeBuffer.cpp.o"
+  "/home/sfeller/develop/Aqueti/tools/ABuffer/BufferTest.cpp" "/home/sfeller/develop/Aqueti/tools/ABuffer/build/CMakeFiles/bufferTest.dir/BufferTest.cpp.o"
+  "/home/sfeller/develop/Aqueti/tools/ABuffer/TypeBuffer.cpp" "/home/sfeller/develop/Aqueti/tools/ABuffer/build/CMakeFiles/bufferTest.dir/TypeBuffer.cpp.o"
   )
 SET(CMAKE_CXX_COMPILER_ID "GNU")
 
 # Targets to which this target links.
 SET(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/sfeller/develop/Aqueti/tools/DataBuffer/build/CMakeFiles/DataBuffer_static.dir/DependInfo.cmake"
+  "/home/sfeller/develop/Aqueti/tools/ABuffer/build/CMakeFiles/ABuffer_static.dir/DependInfo.cmake"
   )
 
 # The include file search paths:

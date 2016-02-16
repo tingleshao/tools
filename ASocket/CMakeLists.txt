@@ -6,9 +6,9 @@ PROJECT(AquetiTools)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fexpensive-optimizations")
 
 #add external include files
-include_directories( include ../Timer)
-include_directories( include ../DataBuffer)
-include_directories( include ../C11Thread)
+include_directories( include ../ATimer)
+include_directories( include ../ABuffer)
+include_directories( include ../AThread)
 
 #specifies a list of source files to be compiled
 set( BASE_SOURCES 
@@ -21,11 +21,7 @@ set( BASE_SOURCES
 add_library( ASocket SHARED ${BASE_SOURCES})
 add_library( ASocket_static ${BASE_SOURCES})
 
-#target_link_libraries( AquetiSocket
-#   Timer
-#   DataBuffer
-#   C11THread
-#)
+link_directories(${CMAKE_BINARY_DIR}/lib)
 
 #install library files
 install(TARGETS 

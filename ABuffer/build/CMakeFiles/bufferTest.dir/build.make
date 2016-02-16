@@ -38,10 +38,10 @@ EQUALS = =
 CMAKE_EDIT_COMMAND = /usr/bin/ccmake
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sfeller/develop/Aqueti/tools/DataBuffer
+CMAKE_SOURCE_DIR = /home/sfeller/develop/Aqueti/tools/ABuffer
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sfeller/develop/Aqueti/tools/DataBuffer/build
+CMAKE_BINARY_DIR = /home/sfeller/develop/Aqueti/tools/ABuffer/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/bufferTest.dir/depend.make
@@ -54,17 +54,17 @@ include CMakeFiles/bufferTest.dir/flags.make
 
 CMakeFiles/bufferTest.dir/BufferTest.cpp.o: CMakeFiles/bufferTest.dir/flags.make
 CMakeFiles/bufferTest.dir/BufferTest.cpp.o: ../BufferTest.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/sfeller/develop/Aqueti/tools/DataBuffer/build/CMakeFiles $(CMAKE_PROGRESS_1)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/sfeller/develop/Aqueti/tools/ABuffer/build/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/bufferTest.dir/BufferTest.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/bufferTest.dir/BufferTest.cpp.o -c /home/sfeller/develop/Aqueti/tools/DataBuffer/BufferTest.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/bufferTest.dir/BufferTest.cpp.o -c /home/sfeller/develop/Aqueti/tools/ABuffer/BufferTest.cpp
 
 CMakeFiles/bufferTest.dir/BufferTest.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bufferTest.dir/BufferTest.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/sfeller/develop/Aqueti/tools/DataBuffer/BufferTest.cpp > CMakeFiles/bufferTest.dir/BufferTest.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/sfeller/develop/Aqueti/tools/ABuffer/BufferTest.cpp > CMakeFiles/bufferTest.dir/BufferTest.cpp.i
 
 CMakeFiles/bufferTest.dir/BufferTest.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bufferTest.dir/BufferTest.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/sfeller/develop/Aqueti/tools/DataBuffer/BufferTest.cpp -o CMakeFiles/bufferTest.dir/BufferTest.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/sfeller/develop/Aqueti/tools/ABuffer/BufferTest.cpp -o CMakeFiles/bufferTest.dir/BufferTest.cpp.s
 
 CMakeFiles/bufferTest.dir/BufferTest.cpp.o.requires:
 .PHONY : CMakeFiles/bufferTest.dir/BufferTest.cpp.o.requires
@@ -77,17 +77,17 @@ CMakeFiles/bufferTest.dir/BufferTest.cpp.o.provides.build: CMakeFiles/bufferTest
 
 CMakeFiles/bufferTest.dir/TypeBuffer.cpp.o: CMakeFiles/bufferTest.dir/flags.make
 CMakeFiles/bufferTest.dir/TypeBuffer.cpp.o: ../TypeBuffer.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/sfeller/develop/Aqueti/tools/DataBuffer/build/CMakeFiles $(CMAKE_PROGRESS_2)
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/sfeller/develop/Aqueti/tools/ABuffer/build/CMakeFiles $(CMAKE_PROGRESS_2)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/bufferTest.dir/TypeBuffer.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/bufferTest.dir/TypeBuffer.cpp.o -c /home/sfeller/develop/Aqueti/tools/DataBuffer/TypeBuffer.cpp
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/bufferTest.dir/TypeBuffer.cpp.o -c /home/sfeller/develop/Aqueti/tools/ABuffer/TypeBuffer.cpp
 
 CMakeFiles/bufferTest.dir/TypeBuffer.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/bufferTest.dir/TypeBuffer.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/sfeller/develop/Aqueti/tools/DataBuffer/TypeBuffer.cpp > CMakeFiles/bufferTest.dir/TypeBuffer.cpp.i
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/sfeller/develop/Aqueti/tools/ABuffer/TypeBuffer.cpp > CMakeFiles/bufferTest.dir/TypeBuffer.cpp.i
 
 CMakeFiles/bufferTest.dir/TypeBuffer.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/bufferTest.dir/TypeBuffer.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/sfeller/develop/Aqueti/tools/DataBuffer/TypeBuffer.cpp -o CMakeFiles/bufferTest.dir/TypeBuffer.cpp.s
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/sfeller/develop/Aqueti/tools/ABuffer/TypeBuffer.cpp -o CMakeFiles/bufferTest.dir/TypeBuffer.cpp.s
 
 CMakeFiles/bufferTest.dir/TypeBuffer.cpp.o.requires:
 .PHONY : CMakeFiles/bufferTest.dir/TypeBuffer.cpp.o.requires
@@ -109,7 +109,7 @@ bufferTest_EXTERNAL_OBJECTS =
 bufferTest: CMakeFiles/bufferTest.dir/BufferTest.cpp.o
 bufferTest: CMakeFiles/bufferTest.dir/TypeBuffer.cpp.o
 bufferTest: CMakeFiles/bufferTest.dir/build.make
-bufferTest: libDataBuffer_static.a
+bufferTest: libABuffer_static.a
 bufferTest: CMakeFiles/bufferTest.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable bufferTest"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/bufferTest.dir/link.txt --verbose=$(VERBOSE)
@@ -127,6 +127,6 @@ CMakeFiles/bufferTest.dir/clean:
 .PHONY : CMakeFiles/bufferTest.dir/clean
 
 CMakeFiles/bufferTest.dir/depend:
-	cd /home/sfeller/develop/Aqueti/tools/DataBuffer/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sfeller/develop/Aqueti/tools/DataBuffer /home/sfeller/develop/Aqueti/tools/DataBuffer /home/sfeller/develop/Aqueti/tools/DataBuffer/build /home/sfeller/develop/Aqueti/tools/DataBuffer/build /home/sfeller/develop/Aqueti/tools/DataBuffer/build/CMakeFiles/bufferTest.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/sfeller/develop/Aqueti/tools/ABuffer/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/sfeller/develop/Aqueti/tools/ABuffer /home/sfeller/develop/Aqueti/tools/ABuffer /home/sfeller/develop/Aqueti/tools/ABuffer/build /home/sfeller/develop/Aqueti/tools/ABuffer/build /home/sfeller/develop/Aqueti/tools/ABuffer/build/CMakeFiles/bufferTest.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/bufferTest.dir/depend
 

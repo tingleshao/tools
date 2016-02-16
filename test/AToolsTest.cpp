@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include <Timer.h>
+#include <ATimer.h>
 #include <AThread.h>
 #include <DataBuffer.h>
 #include <ExtendedBuffer.tcc>
@@ -8,6 +8,7 @@
 #include <SocketServer.h>
 
 using namespace std;
+using namespace atl;
 
 /**
  * Main test function

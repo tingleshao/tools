@@ -33,7 +33,7 @@ include_directories(include ATSQueue)
 include_directories(include ASocket)
 
 #Set up compiler options
-add_definitions(-std=c++11)     #Use C++11 
+add_definitions(-std=c++11 -fPIC)     #Use C++11 
 
 #setup into subdirectories to combile code
 add_subdirectory(ATimer)
@@ -46,10 +46,11 @@ link_directories(${CMAKE_BINARY_DIR}/lib)
 add_library( ATools wrapper.cpp)
 
 target_link_libraries( ATools
-   ATimer
-   ABuffer
-   AThread
-   ASocket
+   ATimer_static
+   ABuffer_static
+   AThread_static
+   ThreadSafeQueue
+   ASocket_static
 )
 
 add_subdirectory(test)

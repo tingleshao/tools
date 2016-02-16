@@ -117,6 +117,7 @@ namespace atl
    bool BaseSocket::setHandleMessageCallback( std::function<void(TypeBuffer<uint8_t>)> callback )
    {
       handleMessage = std::bind(callback, _1 );
+      return true;
    }
    
    

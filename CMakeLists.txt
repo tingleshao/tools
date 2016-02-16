@@ -43,14 +43,14 @@ add_subdirectory(ATSQueue)
 add_subdirectory(ASocket)
 
 link_directories(${CMAKE_BINARY_DIR}/lib)
-add_library( ATools wrapper.cpp)
+add_library( ATools SHARED wrapper.cpp)
 
 target_link_libraries( ATools
+   ASocket_static
    ATimer_static
    ABuffer_static
    AThread_static
-   ThreadSafeQueue
-   ASocket_static
+#   ThreadSafeQueue
 )
 
 add_subdirectory(test)

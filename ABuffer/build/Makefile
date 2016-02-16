@@ -42,10 +42,10 @@ EQUALS = =
 CMAKE_EDIT_COMMAND = /usr/bin/ccmake
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sfeller/develop/Aqueti/tools/DataBuffer
+CMAKE_SOURCE_DIR = /home/sfeller/develop/Aqueti/tools/ABuffer
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sfeller/develop/Aqueti/tools/DataBuffer/build
+CMAKE_BINARY_DIR = /home/sfeller/develop/Aqueti/tools/ABuffer/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -113,9 +113,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sfeller/develop/Aqueti/tools/DataBuffer/build/CMakeFiles /home/sfeller/develop/Aqueti/tools/DataBuffer/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sfeller/develop/Aqueti/tools/ABuffer/build/CMakeFiles /home/sfeller/develop/Aqueti/tools/ABuffer/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sfeller/develop/Aqueti/tools/DataBuffer/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sfeller/develop/Aqueti/tools/ABuffer/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -143,30 +143,30 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named DataBuffer
+# Target rules for targets named ABuffer
 
 # Build rule for target.
-DataBuffer: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 DataBuffer
-.PHONY : DataBuffer
+ABuffer: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ABuffer
+.PHONY : ABuffer
 
 # fast build rule for target.
-DataBuffer/fast:
-	$(MAKE) -f CMakeFiles/DataBuffer.dir/build.make CMakeFiles/DataBuffer.dir/build
-.PHONY : DataBuffer/fast
+ABuffer/fast:
+	$(MAKE) -f CMakeFiles/ABuffer.dir/build.make CMakeFiles/ABuffer.dir/build
+.PHONY : ABuffer/fast
 
 #=============================================================================
-# Target rules for targets named DataBuffer_static
+# Target rules for targets named ABuffer_static
 
 # Build rule for target.
-DataBuffer_static: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 DataBuffer_static
-.PHONY : DataBuffer_static
+ABuffer_static: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ABuffer_static
+.PHONY : ABuffer_static
 
 # fast build rule for target.
-DataBuffer_static/fast:
-	$(MAKE) -f CMakeFiles/DataBuffer_static.dir/build.make CMakeFiles/DataBuffer_static.dir/build
-.PHONY : DataBuffer_static/fast
+ABuffer_static/fast:
+	$(MAKE) -f CMakeFiles/ABuffer_static.dir/build.make CMakeFiles/ABuffer_static.dir/build
+.PHONY : ABuffer_static/fast
 
 #=============================================================================
 # Target rules for targets named bufferTest
@@ -210,8 +210,8 @@ DataBuffer.o: DataBuffer.cpp.o
 
 # target to build an object file
 DataBuffer.cpp.o:
-	$(MAKE) -f CMakeFiles/DataBuffer.dir/build.make CMakeFiles/DataBuffer.dir/DataBuffer.cpp.o
-	$(MAKE) -f CMakeFiles/DataBuffer_static.dir/build.make CMakeFiles/DataBuffer_static.dir/DataBuffer.cpp.o
+	$(MAKE) -f CMakeFiles/ABuffer.dir/build.make CMakeFiles/ABuffer.dir/DataBuffer.cpp.o
+	$(MAKE) -f CMakeFiles/ABuffer_static.dir/build.make CMakeFiles/ABuffer_static.dir/DataBuffer.cpp.o
 .PHONY : DataBuffer.cpp.o
 
 DataBuffer.i: DataBuffer.cpp.i
@@ -219,8 +219,8 @@ DataBuffer.i: DataBuffer.cpp.i
 
 # target to preprocess a source file
 DataBuffer.cpp.i:
-	$(MAKE) -f CMakeFiles/DataBuffer.dir/build.make CMakeFiles/DataBuffer.dir/DataBuffer.cpp.i
-	$(MAKE) -f CMakeFiles/DataBuffer_static.dir/build.make CMakeFiles/DataBuffer_static.dir/DataBuffer.cpp.i
+	$(MAKE) -f CMakeFiles/ABuffer.dir/build.make CMakeFiles/ABuffer.dir/DataBuffer.cpp.i
+	$(MAKE) -f CMakeFiles/ABuffer_static.dir/build.make CMakeFiles/ABuffer_static.dir/DataBuffer.cpp.i
 .PHONY : DataBuffer.cpp.i
 
 DataBuffer.s: DataBuffer.cpp.s
@@ -228,8 +228,8 @@ DataBuffer.s: DataBuffer.cpp.s
 
 # target to generate assembly for a file
 DataBuffer.cpp.s:
-	$(MAKE) -f CMakeFiles/DataBuffer.dir/build.make CMakeFiles/DataBuffer.dir/DataBuffer.cpp.s
-	$(MAKE) -f CMakeFiles/DataBuffer_static.dir/build.make CMakeFiles/DataBuffer_static.dir/DataBuffer.cpp.s
+	$(MAKE) -f CMakeFiles/ABuffer.dir/build.make CMakeFiles/ABuffer.dir/DataBuffer.cpp.s
+	$(MAKE) -f CMakeFiles/ABuffer_static.dir/build.make CMakeFiles/ABuffer_static.dir/DataBuffer.cpp.s
 .PHONY : DataBuffer.cpp.s
 
 ExtendedBuffer.o: ExtendedBuffer.cpp.o
@@ -237,8 +237,8 @@ ExtendedBuffer.o: ExtendedBuffer.cpp.o
 
 # target to build an object file
 ExtendedBuffer.cpp.o:
-	$(MAKE) -f CMakeFiles/DataBuffer.dir/build.make CMakeFiles/DataBuffer.dir/ExtendedBuffer.cpp.o
-	$(MAKE) -f CMakeFiles/DataBuffer_static.dir/build.make CMakeFiles/DataBuffer_static.dir/ExtendedBuffer.cpp.o
+	$(MAKE) -f CMakeFiles/ABuffer.dir/build.make CMakeFiles/ABuffer.dir/ExtendedBuffer.cpp.o
+	$(MAKE) -f CMakeFiles/ABuffer_static.dir/build.make CMakeFiles/ABuffer_static.dir/ExtendedBuffer.cpp.o
 .PHONY : ExtendedBuffer.cpp.o
 
 ExtendedBuffer.i: ExtendedBuffer.cpp.i
@@ -246,8 +246,8 @@ ExtendedBuffer.i: ExtendedBuffer.cpp.i
 
 # target to preprocess a source file
 ExtendedBuffer.cpp.i:
-	$(MAKE) -f CMakeFiles/DataBuffer.dir/build.make CMakeFiles/DataBuffer.dir/ExtendedBuffer.cpp.i
-	$(MAKE) -f CMakeFiles/DataBuffer_static.dir/build.make CMakeFiles/DataBuffer_static.dir/ExtendedBuffer.cpp.i
+	$(MAKE) -f CMakeFiles/ABuffer.dir/build.make CMakeFiles/ABuffer.dir/ExtendedBuffer.cpp.i
+	$(MAKE) -f CMakeFiles/ABuffer_static.dir/build.make CMakeFiles/ABuffer_static.dir/ExtendedBuffer.cpp.i
 .PHONY : ExtendedBuffer.cpp.i
 
 ExtendedBuffer.s: ExtendedBuffer.cpp.s
@@ -255,8 +255,8 @@ ExtendedBuffer.s: ExtendedBuffer.cpp.s
 
 # target to generate assembly for a file
 ExtendedBuffer.cpp.s:
-	$(MAKE) -f CMakeFiles/DataBuffer.dir/build.make CMakeFiles/DataBuffer.dir/ExtendedBuffer.cpp.s
-	$(MAKE) -f CMakeFiles/DataBuffer_static.dir/build.make CMakeFiles/DataBuffer_static.dir/ExtendedBuffer.cpp.s
+	$(MAKE) -f CMakeFiles/ABuffer.dir/build.make CMakeFiles/ABuffer.dir/ExtendedBuffer.cpp.s
+	$(MAKE) -f CMakeFiles/ABuffer_static.dir/build.make CMakeFiles/ABuffer_static.dir/ExtendedBuffer.cpp.s
 .PHONY : ExtendedBuffer.cpp.s
 
 TypeBuffer.o: TypeBuffer.cpp.o
@@ -289,8 +289,8 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... DataBuffer"
-	@echo "... DataBuffer_static"
+	@echo "... ABuffer"
+	@echo "... ABuffer_static"
 	@echo "... bufferTest"
 	@echo "... edit_cache"
 	@echo "... install"

@@ -39,6 +39,6 @@ SET(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 SET(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/C11Thread.dir/DependInfo.cmake"
-  "CMakeFiles/C11Thread_static.dir/DependInfo.cmake"
+  "CMakeFiles/AThread.dir/DependInfo.cmake"
+  "CMakeFiles/AThread_static.dir/DependInfo.cmake"
   )

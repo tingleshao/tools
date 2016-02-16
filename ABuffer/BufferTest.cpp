@@ -8,6 +8,8 @@
 #include "TypeBuffer.tcc"
 
 using namespace std;
+using namespace atl;
+
 int main( void ) 
 {
    cout << "Buffer Test"<<endl;

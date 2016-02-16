@@ -46,11 +46,11 @@ link_directories(${CMAKE_BINARY_DIR}/lib)
 add_library( ATools wrapper.cpp)
 
 target_link_libraries( ATools
-   ATimer
-   ABuffer
-   AThread
+   ATimer_static
+   ABuffer_static
+   AThread_static
    ThreadSafeQueue
-   ASocket
+   ASocket_static
 )
 
 add_subdirectory(test)

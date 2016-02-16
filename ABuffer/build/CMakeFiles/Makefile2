@@ -50,89 +50,89 @@ EQUALS = =
 CMAKE_EDIT_COMMAND = /usr/bin/ccmake
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/sfeller/develop/Aqueti/tools/DataBuffer
+CMAKE_SOURCE_DIR = /home/sfeller/develop/Aqueti/tools/ABuffer
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/sfeller/develop/Aqueti/tools/DataBuffer/build
+CMAKE_BINARY_DIR = /home/sfeller/develop/Aqueti/tools/ABuffer/build
 
 #=============================================================================
-# Target rules for target CMakeFiles/DataBuffer.dir
+# Target rules for target CMakeFiles/ABuffer.dir
 
 # All Build rule for target.
-CMakeFiles/DataBuffer.dir/all:
-	$(MAKE) -f CMakeFiles/DataBuffer.dir/build.make CMakeFiles/DataBuffer.dir/depend
-	$(MAKE) -f CMakeFiles/DataBuffer.dir/build.make CMakeFiles/DataBuffer.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/sfeller/develop/Aqueti/tools/DataBuffer/build/CMakeFiles  1 2
-	@echo "Built target DataBuffer"
-.PHONY : CMakeFiles/DataBuffer.dir/all
+CMakeFiles/ABuffer.dir/all:
+	$(MAKE) -f CMakeFiles/ABuffer.dir/build.make CMakeFiles/ABuffer.dir/depend
+	$(MAKE) -f CMakeFiles/ABuffer.dir/build.make CMakeFiles/ABuffer.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/sfeller/develop/Aqueti/tools/ABuffer/build/CMakeFiles  1 2
+	@echo "Built target ABuffer"
+.PHONY : CMakeFiles/ABuffer.dir/all
 
 # Include target in all.
-all: CMakeFiles/DataBuffer.dir/all
+all: CMakeFiles/ABuffer.dir/all
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/DataBuffer.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sfeller/develop/Aqueti/tools/DataBuffer/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/DataBuffer.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sfeller/develop/Aqueti/tools/DataBuffer/build/CMakeFiles 0
-.PHONY : CMakeFiles/DataBuffer.dir/rule
+CMakeFiles/ABuffer.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sfeller/develop/Aqueti/tools/ABuffer/build/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/ABuffer.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sfeller/develop/Aqueti/tools/ABuffer/build/CMakeFiles 0
+.PHONY : CMakeFiles/ABuffer.dir/rule
 
 # Convenience name for target.
-DataBuffer: CMakeFiles/DataBuffer.dir/rule
-.PHONY : DataBuffer
+ABuffer: CMakeFiles/ABuffer.dir/rule
+.PHONY : ABuffer
 
 # clean rule for target.
-CMakeFiles/DataBuffer.dir/clean:
-	$(MAKE) -f CMakeFiles/DataBuffer.dir/build.make CMakeFiles/DataBuffer.dir/clean
-.PHONY : CMakeFiles/DataBuffer.dir/clean
+CMakeFiles/ABuffer.dir/clean:
+	$(MAKE) -f CMakeFiles/ABuffer.dir/build.make CMakeFiles/ABuffer.dir/clean
+.PHONY : CMakeFiles/ABuffer.dir/clean
 
 # clean rule for target.
-clean: CMakeFiles/DataBuffer.dir/clean
+clean: CMakeFiles/ABuffer.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/DataBuffer_static.dir
+# Target rules for target CMakeFiles/ABuffer_static.dir
 
 # All Build rule for target.
-CMakeFiles/DataBuffer_static.dir/all:
-	$(MAKE) -f CMakeFiles/DataBuffer_static.dir/build.make CMakeFiles/DataBuffer_static.dir/depend
-	$(MAKE) -f CMakeFiles/DataBuffer_static.dir/build.make CMakeFiles/DataBuffer_static.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/sfeller/develop/Aqueti/tools/DataBuffer/build/CMakeFiles  3 4
-	@echo "Built target DataBuffer_static"
-.PHONY : CMakeFiles/DataBuffer_static.dir/all
+CMakeFiles/ABuffer_static.dir/all:
+	$(MAKE) -f CMakeFiles/ABuffer_static.dir/build.make CMakeFiles/ABuffer_static.dir/depend
+	$(MAKE) -f CMakeFiles/ABuffer_static.dir/build.make CMakeFiles/ABuffer_static.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/sfeller/develop/Aqueti/tools/ABuffer/build/CMakeFiles  3 4
+	@echo "Built target ABuffer_static"
+.PHONY : CMakeFiles/ABuffer_static.dir/all
 
 # Include target in all.
-all: CMakeFiles/DataBuffer_static.dir/all
+all: CMakeFiles/ABuffer_static.dir/all
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/DataBuffer_static.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sfeller/develop/Aqueti/tools/DataBuffer/build/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/DataBuffer_static.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sfeller/develop/Aqueti/tools/DataBuffer/build/CMakeFiles 0
-.PHONY : CMakeFiles/DataBuffer_static.dir/rule
+CMakeFiles/ABuffer_static.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sfeller/develop/Aqueti/tools/ABuffer/build/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/ABuffer_static.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sfeller/develop/Aqueti/tools/ABuffer/build/CMakeFiles 0
+.PHONY : CMakeFiles/ABuffer_static.dir/rule
 
 # Convenience name for target.
-DataBuffer_static: CMakeFiles/DataBuffer_static.dir/rule
-.PHONY : DataBuffer_static
+ABuffer_static: CMakeFiles/ABuffer_static.dir/rule
+.PHONY : ABuffer_static
 
 # clean rule for target.
-CMakeFiles/DataBuffer_static.dir/clean:
-	$(MAKE) -f CMakeFiles/DataBuffer_static.dir/build.make CMakeFiles/DataBuffer_static.dir/clean
-.PHONY : CMakeFiles/DataBuffer_static.dir/clean
+CMakeFiles/ABuffer_static.dir/clean:
+	$(MAKE) -f CMakeFiles/ABuffer_static.dir/build.make CMakeFiles/ABuffer_static.dir/clean
+.PHONY : CMakeFiles/ABuffer_static.dir/clean
 
 # clean rule for target.
-clean: CMakeFiles/DataBuffer_static.dir/clean
+clean: CMakeFiles/ABuffer_static.dir/clean
 .PHONY : clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/bufferTest.dir
 
 # All Build rule for target.
-CMakeFiles/bufferTest.dir/all: CMakeFiles/DataBuffer_static.dir/all
+CMakeFiles/bufferTest.dir/all: CMakeFiles/ABuffer_static.dir/all
 	$(MAKE) -f CMakeFiles/bufferTest.dir/build.make CMakeFiles/bufferTest.dir/depend
 	$(MAKE) -f CMakeFiles/bufferTest.dir/build.make CMakeFiles/bufferTest.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/sfeller/develop/Aqueti/tools/DataBuffer/build/CMakeFiles  5 6
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/sfeller/develop/Aqueti/tools/ABuffer/build/CMakeFiles  5 6
 	@echo "Built target bufferTest"
 .PHONY : CMakeFiles/bufferTest.dir/all
 
@@ -142,9 +142,9 @@ all: CMakeFiles/bufferTest.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/bufferTest.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sfeller/develop/Aqueti/tools/DataBuffer/build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sfeller/develop/Aqueti/tools/ABuffer/build/CMakeFiles 4
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/bufferTest.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/sfeller/develop/Aqueti/tools/DataBuffer/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sfeller/develop/Aqueti/tools/ABuffer/build/CMakeFiles 0
 .PHONY : CMakeFiles/bufferTest.dir/rule
 
 # Convenience name for target.

@@ -34,10 +34,10 @@ add_executable( SampleServer
 )
 #assign a library to link to this file. This shows a static library
 target_link_libraries( SampleServer
-#   ATimer_static
-#   AThread_static
-#   ABuffer_static
-#   ASocket_static
+   ATimer
+   AThread
+   ABuffer
+   ASocket
    ATools
    ${CMAKE_THREAD_LIBS_INIT}               #For threaded operation
 )
@@ -48,6 +48,10 @@ add_executable( SocketTerminal
 )
 
 target_link_libraries( SocketTerminal
+   ATimer
+   AThread
+   ABuffer
+   ASocket
    ATools
    ${CMAKE_THREAD_LIBS_INIT}               #For threaded operation
 )

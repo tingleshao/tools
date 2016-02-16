@@ -1,1 +1,0 @@
-/usr/bin/c++  -fPIC  -std=c++11 -fexpensive-optimizations -g   -shared -Wl,-soname,libDataBuffer.so -o libDataBuffer.so CMakeFiles/DataBuffer.dir/DataBuffer.cpp.o CMakeFiles/DataBuffer.dir/ExtendedBuffer.cpp.o 

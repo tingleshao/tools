@@ -3,10 +3,10 @@
 
 CMakeFiles/bufferTest.dir/BufferTest.cpp.o: ../BufferTest.cpp
 CMakeFiles/bufferTest.dir/BufferTest.cpp.o: ../DataBuffer.h
-CMakeFiles/bufferTest.dir/BufferTest.cpp.o: ../ExtendedBuffer.h
-CMakeFiles/bufferTest.dir/BufferTest.cpp.o: ../TypeBuffer.h
+CMakeFiles/bufferTest.dir/BufferTest.cpp.o: ../ExtendedBuffer.tcc
+CMakeFiles/bufferTest.dir/BufferTest.cpp.o: ../TypeBuffer.tcc
 
 CMakeFiles/bufferTest.dir/TypeBuffer.cpp.o: ../DataBuffer.h
 CMakeFiles/bufferTest.dir/TypeBuffer.cpp.o: ../TypeBuffer.cpp
-CMakeFiles/bufferTest.dir/TypeBuffer.cpp.o: ../TypeBuffer.h
+CMakeFiles/bufferTest.dir/TypeBuffer.cpp.o: ../TypeBuffer.tcc
 

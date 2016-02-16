@@ -6,19 +6,37 @@
 
 #IncludeRegexTransform: 
 
-/home/sfeller/develop/Aqueti/tools/DataBuffer/DataBuffer.h
+/home/sfeller/develop/Aqueti/tools/ABuffer/BufferTest.cpp
+iostream
+-
+DataBuffer.h
+/home/sfeller/develop/Aqueti/tools/ABuffer/DataBuffer.h
+ExtendedBuffer.tcc
+/home/sfeller/develop/Aqueti/tools/ABuffer/ExtendedBuffer.tcc
+TypeBuffer.tcc
+/home/sfeller/develop/Aqueti/tools/ABuffer/TypeBuffer.tcc
+
+/home/sfeller/develop/Aqueti/tools/ABuffer/DataBuffer.h
 climits
 -
 stddef.h
 -
 
-/home/sfeller/develop/Aqueti/tools/DataBuffer/TypeBuffer.cpp
+/home/sfeller/develop/Aqueti/tools/ABuffer/ExtendedBuffer.tcc
+cstdlib
+-
 iostream
 -
-TypeBuffer.h
-/home/sfeller/develop/Aqueti/tools/DataBuffer/TypeBuffer.h
+climits
+-
+cstring
+-
+TypeBuffer.tcc
+/home/sfeller/develop/Aqueti/tools/ABuffer/TypeBuffer.tcc
+DataBuffer.h
+/home/sfeller/develop/Aqueti/tools/ABuffer/DataBuffer.h
 
-/home/sfeller/develop/Aqueti/tools/DataBuffer/TypeBuffer.h
+/home/sfeller/develop/Aqueti/tools/ABuffer/TypeBuffer.tcc
 cstdlib
 -
 iostream
@@ -28,5 +46,5 @@ climits
 cstring
 -
 DataBuffer.h
-/home/sfeller/develop/Aqueti/tools/DataBuffer/DataBuffer.h
+/home/sfeller/develop/Aqueti/tools/ABuffer/DataBuffer.h
 

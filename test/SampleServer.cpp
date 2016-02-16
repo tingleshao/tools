@@ -1,8 +1,8 @@
 #include <iostream>
+#include <SocketServer.h>
 
 using namespace std;
 
-#include <SocketServer.h>
 
 const int defaultPort = 9000;
 
@@ -23,7 +23,7 @@ bool printHelp( void )
 /**
  * \brief Message callback
  **/
-void handleMessage( TypeBuffer<uint8_t>data) {
+void handleMessage( atl::TypeBuffer<uint8_t>data) {
    cout << "Server:"<< (char *)&data.m_buffer[0] << endl;
 }
 
@@ -54,7 +54,7 @@ int main(int argc, char ** argv)
    }
 
    //Create a socket Server
-   SocketServer server;
+   atl::SocketServer server;
    server.setWaitTime(1);
    server.Initialize( port );
    server.setHandleMessageCallback(handleMessage);
@@ -63,7 +63,7 @@ int main(int argc, char ** argv)
    cout << "Starting SampleServer on port "<<port<<"\n"<<endl;
    server.Start();
 
-   Timer timer;
+   atl::Timer timer;
    while(timer.elapsed() < 180 ) 
    {
       server.receiveData(1);

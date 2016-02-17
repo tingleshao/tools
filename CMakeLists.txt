@@ -1,7 +1,7 @@
 #Top-level cmake file for the XRayData Repository.
 cmake_minimum_required(VERSION 2.8)
 
-PROJECT(ATools)
+PROJECT(ATL)
 
 #Specify default installation directory (CMAKE_BINARY_DIR) that will be applied for make install
 IF(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT) 
@@ -42,7 +42,7 @@ add_subdirectory(AThread)
 add_subdirectory(ATSQueue)
 add_subdirectory(ASocket)
 
-add_library( ATools SHARED
+add_library( ATL SHARED
    ABuffer/DataBuffer.cpp
    ABuffer/ExtendedBuffer.cpp
    ABuffer/TypeBuffer.cpp
@@ -53,7 +53,7 @@ add_library( ATools SHARED
    ATSQueue/ThreadSafeQueue/ThreadSafeQueue.cpp
 )
 
-add_library( ATools_static STATIC 
+add_library( ATL_static STATIC 
    ABuffer/DataBuffer.cpp
    ABuffer/.ExtendedBuffer.cpp.swp
    ABuffer/ExtendedBuffer.cpp
@@ -70,8 +70,8 @@ add_subdirectory(test)
 
 #install library files
 install(TARGETS 
-   ATools
-   ATools_static
+   ATL
+   ATL
    LIBRARY DESTINATION lib
    ARCHIVE DESTINATION lib
    INCLUDES DESTINATION include

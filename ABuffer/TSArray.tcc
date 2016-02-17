@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
 #include <climits>
+#include <vector>
+#include <mutex>
 
 using namespace std;
 
@@ -20,13 +22,13 @@ namespace atl
          
       public:
          //function
-         size_t setSize( size_t size );
+         bool   setSize( size_t size );
          size_t getSize();
          bool   setItem( T item, size_t index, double waitTime = 0 );
-         T      getItem( size_t index, double waitTime = 0);
+         bool   getItem( T* itemPtr, size_t index, double waitTime = 0);
    };
 
-   
+
    /**
     * \brief Returns the number of allocated elements in the array
     * \return size of the array
@@ -49,9 +51,9 @@ namespace atl
     * This function allows external processes to get the size of the array
     **/
    template <typename T>
-   bool TSArray<T>::getSize()
+   size_t TSArray<T>::getSize()
    {
-      return array.size();
+      return m_array.size();
    }
    
    /**
@@ -63,13 +65,13 @@ namespace atl
     * \return true on success, false on failure
     **/
    template <typename T>
-   bool TSArray<T>::setItem( T item, size_t index, double waitTime );
+   bool TSArray<T>::setItem( T item, size_t index, double waitTime )
    {
       if( m_array.size() > index ) 
       {
          m_mutex.lock();
-         m_array[index] = T;
-         m_mutex.lock();
+         m_array[index] = item;
+         m_mutex.unlock();
          return true;
       }
 
@@ -79,12 +81,12 @@ namespace atl
    /**
     * \brief gets the item at the specified index
     *
-    * \param [in] value pointer to an element to set
+    * \param [in] itemPtr pointer to an element to set
     * \param [in] index array index to get data element from
     * \param [in] waiTime amount of time to wait (default=0);
     **/ 
    template <typename T>
-   bool TSArray<T>::getItem( T * value, size_t index, double waitTime = 0)
+   bool TSArray<T>::getItem( T * itemPtr, size_t index, double waitTime)
    {
       //Check array size to see if we have the specified value
       if( index > m_array.size()) {
@@ -93,13 +95,14 @@ namespace atl
       }
 
       //All is good. Extract value
-      m_mutex.lock( m_mutex);
-      *value = m_array[index];
-      m_mutex.unlock( m_mutex);
+      m_mutex.lock();
+      *itemPtr = m_array[index];
+      m_mutex.unlock();
 
       return true;
    }
    
    //Test functionality
-   bool testTSArray();
 }
+
+bool testTSArray();

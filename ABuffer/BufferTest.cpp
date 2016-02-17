@@ -6,6 +6,7 @@
 #include "DataBuffer.h"
 #include "ExtendedBuffer.tcc"
 #include "TypeBuffer.tcc"
+#include "TSArray.tcc"
 
 using namespace std;
 using namespace atl;
@@ -27,6 +28,11 @@ int main( void )
    cout  <<"test ExtendedBuffer"<<endl;
    if( !testExtendedBuffer()) {
       cerr << "Failed ExtendedBuffer test"<<endl;
+      return 0;
+   }
+   cout <<"test TSArray"<<endl;
+   if( !testTSArray()) {
+      cout << "Failed TSArrayTest" <<endl;
       return 0;
    }
 

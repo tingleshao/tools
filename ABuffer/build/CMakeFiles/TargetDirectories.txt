@@ -1,3 +1,0 @@
-/home/sfeller/develop/Aqueti/tools/ABuffer/build/CMakeFiles/ABuffer.dir
-/home/sfeller/develop/Aqueti/tools/ABuffer/build/CMakeFiles/ABuffer_static.dir
-/home/sfeller/develop/Aqueti/tools/ABuffer/build/CMakeFiles/bufferTest.dir

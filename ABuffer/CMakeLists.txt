@@ -3,7 +3,11 @@ cmake_minimum_required(VERSION 2.8)
 PROJECT(AquetiTools)
 
 #Set compiler/linker options
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fexpensive-optimizations")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fexpensive-optimizations -pthread")
+
+#Find OS Threads Library
+find_package(Threads REQUIRED)
+
 
 
 #This tells cmake to install header files when make install is executed
@@ -12,7 +16,8 @@ include(GenerateExportHeader)
 #specifies a list of source files to be compiled
 set( LIB_SOURCES 
    DataBuffer.cpp
-   ExtendedBuffer.cpp
+#   ExtendedBuffer.cpp
+#   TSArray.cpp
 )
 
 #specifies the library to create. The name will be libbase_static.a and libbase.so in this case.
@@ -23,10 +28,13 @@ add_library( ABuffer_static ${LIB_SOURCES})
 add_executable( bufferTest
    BufferTest.cpp
    TypeBuffer.cpp
+   ExtendedBuffer.cpp
+   TSArray.cpp
 )
 
 target_link_libraries( bufferTest
    ABuffer_static
+   pthread
 )
 
 
@@ -49,5 +57,6 @@ install(FILES
    DataBuffer.h
    ExtendedBuffer.tcc
    TypeBuffer.tcc
+   TSArray.tcc
    DESTINATION include
 )

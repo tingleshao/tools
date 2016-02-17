@@ -1,1 +1,0 @@
-/usr/bin/c++    -std=c++11 -fexpensive-optimizations    CMakeFiles/bufferTest.dir/BufferTest.cpp.o CMakeFiles/bufferTest.dir/TypeBuffer.cpp.o  -o bufferTest -rdynamic libABuffer_static.a 

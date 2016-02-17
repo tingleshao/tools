@@ -21,7 +21,7 @@ namespace atl
 
    
    /**
-    * \brief sets the
+    * \brief Specifies the dimensions of the array and allocates the buffers as needed
     * \return size of the array
     *
     * This function allows external processes to get the size of the array

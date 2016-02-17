@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-PROJECT(ATools)
+PROJECT(ATL)
 
 #specify location of include directories within this project
 include_directories( ${CMAKE_SOURCE_DIR}/ATimer)
@@ -14,16 +14,12 @@ SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++11 -pthread")
 find_package(Threads REQUIRED)
 
 #Specify the output executable of this file
-add_executable( AToolsTest
+add_executable( ATLTest
    AToolsTest.cpp
 )
 #assign a library to link to this file. This shows a static library
-target_link_libraries( AToolsTest
-   ATimer_static
-   AThread_static
-   ABuffer_static
-   ASocket_static
-   ATools
+target_link_libraries( ATLTest
+   ATL_static
    ${CMAKE_THREAD_LIBS_INIT}               #For threaded operation
 )
 
@@ -37,7 +33,7 @@ target_link_libraries( SampleServer
 #   AThread
 #   ABuffer
 #   ASocket
-   ATools
+   ATL
    ${CMAKE_THREAD_LIBS_INIT}               #For threaded operation
 )
 
@@ -51,7 +47,7 @@ target_link_libraries( SocketTerminal
 #   AThread
 #   ABuffer
 #   ASocket
-   ATools
+   ATL
    ${CMAKE_THREAD_LIBS_INIT}               #For threaded operation
 )
 

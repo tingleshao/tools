@@ -28,7 +28,7 @@ if(WIN32)
       $ENV{SystemDrive}/ATL/*/lib
       )
 else(WIN32)
-  find_library(ATL_LIBRARIES NAMES ATools_static
+  find_library(ATL_LIBRARIES NAMES ATL_static
       PATHS
       ${LIB_PATH}
       /usr/lib

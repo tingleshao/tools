@@ -6,7 +6,7 @@ using namespace std;
 using namespace atl;
  
 size_t testSize = 100;
-size_t threadCount  = 100;
+const size_t threadCount  = 100;
 
 TSArray<double> tsa;
 void consumerThread( double id) 

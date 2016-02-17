@@ -6,7 +6,7 @@ using namespace std;
 using namespace atl;
  
 size_t TSMTestSize = 100;
-size_t TSMThreadCount  = 100;
+const size_t TSMThreadCount  = 100;
 
 TSMatrix<double> tsm;
 

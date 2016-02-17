@@ -59,7 +59,7 @@ target_link_libraries( SocketTerminal
 
 #Specify where the targets are installed when a "make install" is executed
 install(TARGETS
-   AToolsTest
+#   AToolsTest
    SampleServer
    SocketTerminal
    RUNTIME DESTINATION bin

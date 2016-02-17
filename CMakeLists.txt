@@ -42,22 +42,36 @@ add_subdirectory(AThread)
 add_subdirectory(ATSQueue)
 add_subdirectory(ASocket)
 
-link_directories(${CMAKE_BINARY_DIR}/lib)
-add_library( ATools SHARED wrapper.cpp)
+add_library( ATools SHARED
+   ABuffer/DataBuffer.cpp
+   ABuffer/ExtendedBuffer.cpp
+   ABuffer/TypeBuffer.cpp
+   ASocket/BaseSocket.cpp
+   ASocket/SocketServer.cpp
+   AThread/AThread.cpp
+   ATimer/ATimer.cpp
+   ATSQueue/ThreadSafeQueue/ThreadSafeQueue.cpp
+)
 
-target_link_libraries( ATools
-   ASocket_static
-   ATimer_static
-   ABuffer_static
-   AThread_static
-#   ThreadSafeQueue
+add_library( ATools_static STATIC 
+   ABuffer/DataBuffer.cpp
+   ABuffer/.ExtendedBuffer.cpp.swp
+   ABuffer/ExtendedBuffer.cpp
+   ABuffer/TypeBuffer.cpp
+   ASocket/BaseSocket.cpp
+   ASocket/SocketServer.cpp
+   AThread/AThread.cpp
+   ATimer/ATimer.cpp
+   ATSQueue/ThreadSafeQueue/ThreadSafeQueue.cpp
 )
 
 add_subdirectory(test)
 
+
 #install library files
 install(TARGETS 
    ATools
+   ATools_static
    LIBRARY DESTINATION lib
    ARCHIVE DESTINATION lib
    INCLUDES DESTINATION include

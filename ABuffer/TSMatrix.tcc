@@ -1,5 +1,5 @@
 #pragma once
-#include "TSArray.cc"
+#include "TSArray.tcc"
 
 namespace atl
 {
@@ -12,11 +12,16 @@ namespace atl
    class TSMatrix : public TSArray<T>
    {
       private:
-         std::vector<size_t> m_dimensions;
+         std::vector<size_t> m_dimensions;       //!< Array of the dimensions of the data
+         std::vector<size_t> m_dimScalar;        //!< Array of the scalars for each dimension
+
+         size_t calculateOffset( std::vector<size_t> coords);
          
       public:
          bool setDimensions( std::vector<size_t> dims);
+         std::vector<size_t> getDimensions();
          bool getItem( T * item, std::vector<size_t> coords);
+         bool setItem( T item, std::vector<size_t> coords );
    };
 
    
@@ -27,28 +32,69 @@ namespace atl
     * This function allows external processes to get the size of the array
     **/
    template <typename T>
+   std::vector<size_t> TSMatrix<T>::getDimensions()
+   { 
+      return m_dimensions;
+   }
+
+   /**
+    * \brief Specifies the dimensions of the array and allocates the buffers as needed
+    *
+    * \param [in] dims vector of the dimensions of the object
+    * \return true on success, false on failure
+    *
+    * This function allows external processes to get the size of the array
+    **/
+   template <typename T>
    bool TSMatrix<T>::setDimensions( std::vector<size_t>dims)
    { 
       bool rc = true;
-      m_mutex.lock();
 
       //Make sure we are not reallocating
-      if( dims.size() != 0 ) {
+      if(( m_dimensions.size() != 0 )||(dims.size() == 0 )) {
          std::cerr << "TSMatrix::setDimensions array already defined."<<std::endl;
          rc = false;
       } 
       else {
-         m_dimensions.assign(dims);
-         size_t totalSize = 0;
-         for( size_t i = 0; i < m_dimensions.size() {
-            totalSize += m_dimensions[i];
+         m_dimensions = dims;
+         m_dimScalar = dims;
+         m_dimScalar[dims.size()-1] = 0;
+
+         //Loop to calculate the total size
+         size_t totalSize = 1;
+         for( int i = m_dimensions.size()-1; i >= 0; i-- ) {
+            if( i == m_dimensions.size()-1) {
+               m_dimScalar[i] = totalSize;
+            }
+            else {
+               m_dimScalar[i] = totalSize;
+            }
+
+            //Calculate total size
+            totalSize *= m_dimensions[i];
          }
-         m_array.resize(totalSize);
+
+         TSArray<T>::setSize(totalSize);
          rc = true;
       }
-
-      m_mutex.unlock();
       return rc;
+   }
+
+   /**
+    * \brief Calculates the offset into based on the provided vector
+    *
+    * \param [in] coords vector of coordinate values
+    **/
+   template <typename T>
+   size_t TSMatrix<T>::calculateOffset( std::vector<size_t> coords)
+   {
+      //Find a total offset into the array
+      size_t offset = 0;
+      for( int i = 0; i < m_dimScalar.size(); i++ ) {
+         offset += coords[i]*m_dimScalar[i];
+      }
+
+      return offset;
    }
    
    /**
@@ -59,25 +105,16 @@ namespace atl
     * \return true on success, false on failure
     **/
    template <typename T>
-   bool TSArray<T>::getItem( T * item, std::vector<size_t> coords)
+   bool TSMatrix<T>::getItem( T * item, std::vector<size_t> coords)
    {
       if( coords.size() != m_dimensions.size()) {
          std::cerr << "TSArray getItem: requested coordinates do not match"<<std::endl;
          return false;
       }
 
-      size_t offset = 0;
-      size_t sum = 0;
-      for( size_t i = 0; i < coords.size(); i++ ) {
-         sum += m_dimensions[i];
-         offset += 
+      size_t offset = calculateOffset( coords);
 
-
-      m_mutex.lock();
-
-      *T = m_a
-
-      m_mutex.unlock();
+      return TSArray<T>::getItem( item, offset );
    }
    
    /**
@@ -89,43 +126,11 @@ namespace atl
     * \return true on success, false on failure
     **/
    template <typename T>
-   bool TSArray<T>::setItem( T item, size_t index, double waitTime );
+   bool TSMatrix<T>::setItem( T item, std::vector<size_t> coords)
    {
-      if( m_array.size() > index ) 
-      {
-         m_mutex.lock();
-         m_array[index] = T;
-         m_mutex.lock();
-         return true;
-      }
-
-      return false;
+      return TSArray<T>::setItem( item, calculateOffset(coords));
    }
-
-   /**
-    * \brief gets the item at the specified index
-    *
-    * \param [in] value pointer to an element to set
-    * \param [in] index array index to get data element from
-    * \param [in] waiTime amount of time to wait (default=0);
-    **/ 
-   template <typename T>
-   bool TSArray<T>::getItem( T * value, size_t index, double waitTime = 0)
-   {
-      //Check array size to see if we have the specified value
-      if( index > m_array.size()) {
-         std::cerr << "TSArray index size exceeds array size"<<std::endl;
-         return false;
-      }
-
-      //All is good. Extract value
-      m_mutex.lock( m_mutex);
-      *value = m_array[index];
-      m_mutex.unlock( m_mutex);
-
-      return true;
-   }
-   
-   //Test functionality
-   bool testTSArray();
 }
+
+//Test functionality
+bool testTSMatrix();

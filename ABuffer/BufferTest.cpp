@@ -7,6 +7,7 @@
 #include "ExtendedBuffer.tcc"
 #include "TypeBuffer.tcc"
 #include "TSArray.tcc"
+#include "TSMatrix.tcc"
 
 using namespace std;
 using namespace atl;
@@ -33,6 +34,11 @@ int main( void )
    cout <<"test TSArray"<<endl;
    if( !testTSArray()) {
       cout << "Failed TSArrayTest" <<endl;
+      return 0;
+   }
+   cout <<"test TSMatrix"<<endl;
+   if( !testTSMatrix()) {
+      cout << "Failed TSMatrixTest" <<endl;
       return 0;
    }
 

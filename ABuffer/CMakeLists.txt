@@ -30,6 +30,7 @@ add_executable( bufferTest
    TypeBuffer.cpp
    ExtendedBuffer.cpp
    TSArray.cpp
+   TSMatrix.cpp
 )
 
 target_link_libraries( bufferTest
@@ -58,5 +59,6 @@ install(FILES
    ExtendedBuffer.tcc
    TypeBuffer.tcc
    TSArray.tcc
+   TSMatrix.tcc
    DESTINATION include
 )

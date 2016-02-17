@@ -1,8 +1,5 @@
 #pragma once
-#include <iostream>
-#include <climits>
-
-using namespace std;
+#include "TSArray.cc"
 
 namespace atl
 {
@@ -12,46 +9,75 @@ namespace atl
     * This class handle continuous arrays of arbitrary data types
     **/
    template <typename T>
-   class TSArray 
+   class TSMatrix : public TSArray<T>
    {
       private:
-         std::mutex     m_mutex;                 //!< mutex to ensure thread-safe operation
-         std::vector<T> m_array;                 //!< Array of objects
+         std::vector<size_t> m_dimensions;
          
       public:
-         //function
-         size_t setSize( size_t size );
-         size_t getSize();
-         bool   setItem( T item, size_t index, double waitTime = 0 );
-         T      getItem( size_t index, double waitTime = 0);
+         bool setDimensions( std::vector<size_t> dims);
+         bool getItem( T * item, std::vector<size_t> coords);
    };
 
    
    /**
-    * \brief Returns the number of allocated elements in the array
+    * \brief sets the
     * \return size of the array
     *
     * This function allows external processes to get the size of the array
     **/
    template <typename T>
-   bool TSArray<T>::setSize( size_t size )
-   {
+   bool TSMatrix<T>::setDimensions( std::vector<size_t>dims)
+   { 
+      bool rc = true;
       m_mutex.lock();
-      m_array.resize(size);
+
+      //Make sure we are not reallocating
+      if( dims.size() != 0 ) {
+         std::cerr << "TSMatrix::setDimensions array already defined."<<std::endl;
+         rc = false;
+      } 
+      else {
+         m_dimensions.assign(dims);
+         size_t totalSize = 0;
+         for( size_t i = 0; i < m_dimensions.size() {
+            totalSize += m_dimensions[i];
+         }
+         m_array.resize(totalSize);
+         rc = true;
+      }
+
       m_mutex.unlock();
-      return true;
+      return rc;
    }
    
    /**
-    * \brief Returns the number of allocated elements in the array
-    * \return size of the array
+    * \brief Gets the item at the specified coordinates
     *
-    * This function allows external processes to get the size of the array
+    * \param [in] item pointer to the item at the specified index
+    * \param [in] coords vector of coordinates of the item.
+    * \return true on success, false on failure
     **/
    template <typename T>
-   bool TSArray<T>::getSize()
+   bool TSArray<T>::getItem( T * item, std::vector<size_t> coords)
    {
-      return array.size();
+      if( coords.size() != m_dimensions.size()) {
+         std::cerr << "TSArray getItem: requested coordinates do not match"<<std::endl;
+         return false;
+      }
+
+      size_t offset = 0;
+      size_t sum = 0;
+      for( size_t i = 0; i < coords.size(); i++ ) {
+         sum += m_dimensions[i];
+         offset += 
+
+
+      m_mutex.lock();
+
+      *T = m_a
+
+      m_mutex.unlock();
    }
    
    /**
@@ -88,7 +114,7 @@ namespace atl
    {
       //Check array size to see if we have the specified value
       if( index > m_array.size()) {
-         cerr << "TSArray index size exceeds array size"<<endl;
+         std::cerr << "TSArray index size exceeds array size"<<std::endl;
          return false;
       }
 

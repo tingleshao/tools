@@ -78,7 +78,7 @@ install(TARGETS
    PUBLIC_HEADER DESTINATION include
 )
 
+#Install the FindAtl.cmake fiile of a find directory is specified
 if(CMAKE_FIND_DIRECTORY)
-   message("ATL: ${CMAKE_FIND_DIRECTORY}")
    install(FILES cmake/FindAtl.cmake DESTINATION ${CMAKE_FIND_DIRECTORY})
 endif(CMAKE_FIND_DIRECTORY)

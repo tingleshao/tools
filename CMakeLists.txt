@@ -71,7 +71,7 @@ add_subdirectory(test)
 #install library files
 install(TARGETS 
    ATL
-   ATL
+   ATL_static
    LIBRARY DESTINATION lib
    ARCHIVE DESTINATION lib
    INCLUDES DESTINATION include

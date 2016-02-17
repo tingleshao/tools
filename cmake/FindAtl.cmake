@@ -10,7 +10,7 @@ if(ATL_INCLUDE_DIR AND ATL_LIBRARIES)
 
 else(ATL_INCLUDE_DIR AND ATL_LIBRARIES)
   find_path(ATL_INCLUDE_DIR ATimer.h
-      ${INCLUDE_PATH}
+      ${CMAKE_INCLUDE_PATH}
       include
       /usr/include/
       /usr/local/include/
@@ -28,14 +28,15 @@ if(WIN32)
       $ENV{SystemDrive}/ATL/*/lib
       )
 else(WIN32)
+   message("MSG: Looking at ${CMAKE_LIB_PATH}")
   find_library(ATL_LIBRARIES NAMES ATL_static
       PATHS
-      ${LIB_PATH}
+      ${CMAKE_LIB_PATH}
       /usr/lib
       /usr/lib/ATL
       /usr/local/lib
       /usr/local/lib/ATL
-	  /opt/ATL/lib
+	   /opt/ATL/lib
       )
 endif(WIN32)
 

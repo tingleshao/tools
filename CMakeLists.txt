@@ -24,7 +24,6 @@ set(INCLUDE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/include")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set(CMAKE_FIND_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 #Add additional directories
 include_directories(include ATimer)
@@ -79,16 +78,7 @@ install(TARGETS
    PUBLIC_HEADER DESTINATION include
 )
 
-install(FILES cmake/* DESTINATION ${CMAKE_FIND_DIRECTORY})
-
-
-
-
-
-#add_library( AquetToolLib_static STATIC
-#   ATimer
-#   ABuffers
-#   AThreads
-#   ThreadSafeQueue
-#   ASockets
-#)
+if(CMAKE_FIND_DIRECTORY)
+   message("ATL: ${CMAKE_FIND_DIRECTORY}")
+   install(FILES cmake/FindAtl.cmake DESTINATION ${CMAKE_FIND_DIRECTORY})
+endif(CMAKE_FIND_DIRECTORY)

@@ -79,6 +79,6 @@ install(TARGETS
 )
 
 #Install the FindAtl.cmake fiile of a find directory is specified
-if(CMAKE_FIND_DIRECTORY)
-   install(FILES cmake/FindAtl.cmake DESTINATION ${CMAKE_FIND_DIRECTORY})
-endif(CMAKE_FIND_DIRECTORY)
+if(CMAKE_MODULE_PATH)
+   install(FILES cmake/FindAtl.cmake DESTINATION ${CMAKE_MODULE_PATH})
+endif(CMAKE_MODULE_PATH)

@@ -9,8 +9,7 @@ if(ATL_INCLUDE_DIR AND ATL_LIBRARIES)
    set(ATL_FOUND TRUE)
 
 else(ATL_INCLUDE_DIR AND ATL_LIBRARIES)
-
-  find_path(ATL_INCLUDE_DIR camerainterface_export.h
+  find_path(ATL_INCLUDE_DIR ATimer.h
       ${INCLUDE_PATH}
       include
       /usr/include/
@@ -29,8 +28,9 @@ if(WIN32)
       $ENV{SystemDrive}/ATL/*/lib
       )
 else(WIN32)
-  find_library(ATL_LIBRARIES NAMES ATL
+  find_library(ATL_LIBRARIES NAMES ATools
       PATHS
+      ${LIB_PATH}
       /usr/lib
       /usr/lib/ATL
       /usr/local/lib

@@ -130,7 +130,7 @@ namespace atl
    bool BaseSocket::processSocketData() 
    {
       try {
-         handleMessage( socketData.data.getTypeBufferAndRelease());
+         handleMessage( socketData.data.getTypeBuffer());
       } catch(std::bad_function_call& e) 
       {
          cerr << "handleMessage callback not set!" << endl;

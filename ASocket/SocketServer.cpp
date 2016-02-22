@@ -189,7 +189,7 @@ namespace atl
          return false;
       }
       else {
-         handleMessage( sockData->data.getTypeBufferAndRelease());
+         handleMessage( sockData->data.getTypeBuffer());
          received++;
       }
    

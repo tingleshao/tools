@@ -37,7 +37,7 @@ namespace atl
          size_t getElements( T * dest, size_t count, size_t startIndex = 0);
          size_t assignElements( T element, size_t count, size_t startIndex = UINT_MAX, bool resizeFlag = false );
    
-         TypeBuffer<T> getTypeBufferAndRelease();
+         TypeBuffer<T> getTypeBuffer( bool release = true );
    
    
          /** \brief returns the value at the index **/
@@ -240,20 +240,23 @@ namespace atl
     * \return TypeBuffer with the data pointer and number fo elements
     **/
    template <typename T>
-   TypeBuffer<T> ExtendedBuffer<T>::getTypeBufferAndRelease()
+   TypeBuffer<T> ExtendedBuffer<T>::getTypeBuffer( bool release)
    {
       //Create the typebuffer with the output info
       TypeBuffer<T> tbuffer;
       tbuffer.m_buffer = (T *)(DataBuffer::m_buffer);
       tbuffer.m_elements = m_maxIndex;
    
-      //Clear Extended Buffer variables
-      m_maxIndex = 0;
-      m_elementCount = 0;
+      if( release ) 
+      {
+         //Clear Extended Buffer variables
+         m_maxIndex = 0;
+         m_elementCount = 0;
    
-      //Clear DataBuffer variables
-      DataBuffer::m_buffer = NULL;
-      DataBuffer::m_bufferSize = 0;
+         //Clear DataBuffer variables
+         DataBuffer::m_buffer = NULL;
+         DataBuffer::m_bufferSize = 0;
+      }
     
       return tbuffer;  
    }

@@ -116,7 +116,7 @@ namespace atl
          uint16Buffer[i] = i;
       }
    
-      TypeBuffer<uint16_t> tb = uint16Buffer.getTypeBufferAndFree();
+      TypeBuffer<uint16_t> tb = uint16Buffer.getTypeBufferAndRelease();
       if(( tb.m_buffer == NULL )||(tb.m_elements == 0 )) {
          std::cerr << "Failed to get elements in typebuffer" << std::endl;
          return false;

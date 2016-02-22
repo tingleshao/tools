@@ -37,7 +37,7 @@ namespace atl
          size_t getElements( T * dest, size_t count, size_t startIndex = 0);
          size_t assignElements( T element, size_t count, size_t startIndex = UINT_MAX, bool resizeFlag = false );
    
-         TypeBuffer<T> getTypeBufferAndFree();
+         TypeBuffer<T> getTypeBufferAndRelease();
    
    
          /** \brief returns the value at the index **/
@@ -236,11 +236,11 @@ namespace atl
    }
    
    /**
-    * \brief Gets a pointer to the buffer and clears class values (no deallocatoin)
+    * \brief Gets a pointer to the buffer and clears class values (no deallocation)
     * \return TypeBuffer with the data pointer and number fo elements
     **/
    template <typename T>
-   TypeBuffer<T> ExtendedBuffer<T>::getTypeBufferAndFree()
+   TypeBuffer<T> ExtendedBuffer<T>::getTypeBufferAndRelease()
    {
       //Create the typebuffer with the output info
       TypeBuffer<T> tbuffer;

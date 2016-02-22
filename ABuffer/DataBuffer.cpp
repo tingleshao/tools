@@ -16,30 +16,35 @@ namespace atl {
     **/
    bool RawDataBuffer::allocate( size_t bytes, bool resizeFlag)
    {
-      //Check to make sure we are not already allocated
-      if( m_buffer != NULL ) {
-         if( !resizeFlag ) {
-            return false;
-         }
+      //Make sure buffer is not already allocated
+      size_t bufferSize = 0;
+
+      //If we are not resizing and data exists, delete data
+      if((resizeFlag == false )&&(m_bufferSize > 0 )) {
+         return false;
       }
-   
-      //Check if reallocating to zero. If so, deallocate
+
       if( bytes == 0 ) {
          deallocate();
          return true;
       }
-   
-      if( bytes > m_bufferSize ) {
-         void * mem = std::realloc(m_buffer, bytes);
-         if( mem == NULL ) {
-            throw std::bad_alloc();
-         } 
-         else {
-            m_buffer = static_cast<uint8_t *>(mem);
-            m_bufferSize = bytes;
-         }
+
+      //Make a copy of the 
+      std::shared_ptr<uint8_t> buffer; 
+      if( m_bufferSize > 0 ) {
+         buffer.swap( m_buffer ); 
+         bufferSize = m_bufferSize;
       }
-   
+
+      m_buffer.reset( static_cast<uint8_t *>(std::malloc(bytes)), std::free );
+      m_bufferSize = bytes;
+
+      size_t copySize = bytes;
+      if( bufferSize < bytes ) { 
+         copySize = bufferSize;
+      }
+      memcpy( m_buffer.get(), buffer.get(), copySize );
+
       return true;
    }
    
@@ -48,12 +53,10 @@ namespace atl {
     **/
    void RawDataBuffer::deallocate( void )
    {
-      if( m_buffer == NULL ) {
-         return;
-      }
-   
-      std::free(m_buffer);
-      m_buffer = NULL;
+      //Create a shared ptr to replace with current
+      std::shared_ptr<uint8_t> tmpBuffer;                 //!< Actual data buffer
+
+      swap( m_buffer, tmpBuffer );
       m_bufferSize = 0;
    }
    
@@ -91,7 +94,9 @@ namespace atl {
       size_t origOffset = m_bufferSize;
       bool rc = RawDataBuffer::allocate( bytes, resizeFlag );
       if(( rc )&&(m_useDefaultValueFlag)) {
-         std::memset( m_buffer+origOffset, m_defaultValue, bytes-origOffset );
+         for( size_t i = origOffset; i < m_bufferSize; i++ )  {
+            m_buffer.get()[i] = m_defaultValue;
+         }
       }
    
       return rc;
@@ -121,7 +126,7 @@ namespace atl {
     * This function instantiates a RawDataBuffer and populates it with data from the
     * class. It is assumed the calling process will delete the data when it is complete.
     **/
-   RawDataBuffer DataBuffer::getData( size_t offset)
+   RawDataBuffer DataBuffer::getData()
    {
       RawDataBuffer rawData;
    
@@ -129,10 +134,13 @@ namespace atl {
       if( m_bufferSize == 0 ) {
          return rawData;
       }
+
+      rawData.m_buffer = m_buffer;
+      rawData.m_bufferSize = m_bufferSize;
    
       //Allocate the datastruct
-      rawData.allocate(m_bufferSize);
-      getData( rawData.m_buffer, rawData.m_bufferSize);
+//      rawData.allocate(m_bufferSize);
+//      getData( &rawData.m_buffer, &rawData.m_bufferSize);
    
       return rawData;
    }
@@ -166,16 +174,18 @@ namespace atl {
    
       //Check to make sure we are bounded correctly. If not, resize if flag is set
       if( count + offset > m_bufferSize ) {
-         if( resizeFlag) {
-            allocate(count+offset, true);
-         }
-         else {
-            count = m_bufferSize - offset;
-         }
+         allocate(count+offset, true);
+      }
+      else {
+         count = m_bufferSize - offset;
       }
    
       //Perform copy
-      std::memcpy(&m_buffer[offset], array, count);
+      if( offset+count <= m_bufferSize ) {
+         for( int i = 0; i < count; i++) {
+            m_buffer.get()[offset+i] = static_cast<uint8_t *>(array)[i];
+         }
+      }
    
       return count;
    }
@@ -183,8 +193,8 @@ namespace atl {
    /**
     * \brief Returns a copy of the elements at the given destination
     *
-    * \param [in] dest destination address to write data to
-    * \param [in] bytes number of elements to copy 
+    * \param [in] buffer shared pointer to the buffer
+    * \param [in] bytes number of bytes copied
     * \param [in] startIndex index into array to start with (default=0)
     * \return number of elements successfully copied
     *
@@ -196,15 +206,11 @@ namespace atl {
     * No error checking is performed to ensure that the destination pointer has
     * been properly allocated.
     **/
-   size_t DataBuffer::getData( void * dest, size_t bytes, size_t startIndex ) 
+   bool DataBuffer::getData( std::shared_ptr<uint8_t> &buffer, size_t &bytes) 
    {
-      if( bytes > m_bufferSize - startIndex ) {
-         bytes = m_bufferSize - startIndex;
-      }
-   
-      memcpy( dest, m_buffer, bytes );
-      
-      return bytes; 
+      buffer = m_buffer;
+      bytes  = m_bufferSize;
+      return true; 
    }
    
    /**
@@ -224,7 +230,7 @@ namespace atl {
    {
       m_useDefaultValueFlag = flag;
    }
-   
+ }
    
    
    
@@ -237,17 +243,18 @@ namespace atl {
       bool rc = true;
    
       int defaultValue = 10;
-      int elements = 100;
+      size_t elements = 100;
    
       //Create some buffers
-      DataBuffer dataBuffer;
+      atl::DataBuffer dataBuffer;
       
+      //Specify what the defautl value is
       dataBuffer.setDefaultValue(defaultValue );
    
       //Allocate buffers
       dataBuffer.allocate(elements, true);
    
-      if( dataBuffer[0] != defaultValue ) {
+      if( dataBuffer.m_buffer.get()[0] != defaultValue ) {
          std::cerr << "Default value not working: "<<(int)dataBuffer[0]<<"!="<< defaultValue <<endl;
          return false;
       }
@@ -272,40 +279,33 @@ namespace atl {
       }
    
       //Create a new one to add an array
-      DataBuffer dataBuffer2;
+      atl::DataBuffer dataBuffer2;
+      std::shared_ptr<uint8_t> buffer2;
       uint8_t buffer[elements];
-      uint8_t buffer2[elements];
       for( int i = 0; i <elements; i++ ) 
       {
          buffer[i] = i;
       }
    
       //Try to add elements with default values
-      size_t result = dataBuffer2.setData(buffer, elements);
-      if( result != 0 ) {
-         std::cerr<<"Wrote "<<result<<" elements when expecting 0"<<std::endl;
-         return false;
-      }
-   
-      //Try to add elements with default values
-      result = dataBuffer2.setData(buffer, elements, 0, true);
+      size_t result = dataBuffer2.setData(buffer, elements, 0, true);
       if( result != elements ) {
          std::cerr<<"Wrote "<<result<<" elements when expecting "<<elements<<std::endl;
          return false;
       }
    
       //Read elements from buffer
-      result = dataBuffer2.getData( buffer2, elements);
+      dataBuffer2.getData( buffer2, result);
    
       if( result != elements ) {
-         std::cerr<<"getData did not return corrent number of elements. "
+         std::cerr<<"getData did not return correct number of elements. "
                   << result << "!=" << elements << std::endl;
       }
    
       rc = true;
       for( int i = 0; i < elements; i++ ) {
-         if( buffer[i] != buffer2[i] ) {
-            std::cerr<<"Buffer "<<i<<" does not match output:("<<buffer[i]<<"!="<<buffer2[i]<<")"<<std::endl;
+         if( buffer[i] != buffer2.get()[i] ) {
+            std::cerr<<"Buffer "<<i<<" does not match output:("<<buffer[i]<<"!="<<buffer2.get()[i]<<")"<<std::endl;
             rc = false;
          }
       }
@@ -314,7 +314,7 @@ namespace atl {
          std::cerr<<"Failed to set/get elements"<<std::endl;
       }
    
-      RawDataBuffer rdb = dataBuffer2.getData();
+      atl::RawDataBuffer rdb = dataBuffer2.getData();
    
       rdb.deallocate();
    
@@ -323,4 +323,3 @@ namespace atl {
    
       return rc;
    }
-}

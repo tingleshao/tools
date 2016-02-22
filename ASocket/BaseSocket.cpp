@@ -1036,7 +1036,7 @@ namespace atl
    int BaseSocket::recvSocketData() 
    {
       //Read in the data
-      int rc = recvData(socketData.data.m_buffer, socketData.data.m_bufferSize - socketData.data.getMaxIndex());
+      int rc = recvData(socketData.data.m_buffer.get(), socketData.data.m_bufferSize - socketData.data.getMaxIndex());
    
       //If we read valid bytes, increment the offset
       if( rc > 0 ) {

@@ -41,9 +41,9 @@ namespace atl
    
    
          /** \brief returns the value at the index **/
-         uint8_t    operator [](size_t index) const   {return m_buffer[index*m_elementSize];}; 
+         uint8_t    operator [](size_t index) const   {return m_buffer.get()[index*m_elementSize];}; 
          /** \brief assigned the index to the value **/
-         uint8_t    & operator [](size_t index) {return m_buffer[index*m_elementSize];}; 
+         uint8_t    & operator [](size_t index) {return m_buffer.get()[index*m_elementSize];}; 
    
    };
    
@@ -68,7 +68,7 @@ namespace atl
       //We cannot force an element count to be greater than
       //the number of allocated elements
       if( value > m_elementCount) {
-         cerr << "EB: Unable to set MaxIndex higher than elementCount"<<endl;
+         cerr << "EB: Unable to set MaxIndex higher than elementCount ("<<value<<">"<<m_elementCount<<")"<<endl;
          return false;
       }
    
@@ -221,7 +221,7 @@ namespace atl
       }
        
    
-      T * mem = (T *)m_buffer;
+      T * mem = (T *)m_buffer.get();
    
       //Loop to copy the given number of elements
       for( int i = 0; i < count; i++ ) {
@@ -244,7 +244,7 @@ namespace atl
    {
       //Create the typebuffer with the output info
       TypeBuffer<T> tbuffer;
-      tbuffer.m_buffer = (T *)(DataBuffer::m_buffer);
+      tbuffer.m_buffer.get() = std::dynamic_pointer_cast<T>(m_buffer);
       tbuffer.m_elements = m_maxIndex;
    
       if( release ) 
@@ -261,7 +261,8 @@ namespace atl
       return tbuffer;  
    }
    
-   //Test function
-   bool testExtendedBuffer();
 }
+
+//Test function
+bool testExtendedBuffer();
 #endif

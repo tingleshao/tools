@@ -76,10 +76,13 @@ namespace atl
       }
    
       //Try a valid elementCount
+      std::cout << "-----------------------------" <<std::endl;
+      std::cout << "Expect: EB: Unable to set MaxIndex higher than elementCount (1000>200)"<<std::endl;
       if( uint16Buffer.setMaxIndex ( elements*10)) {
          std::cerr << "False success setting elementCount" << std::endl;
          return false;
       }
+      std::cout << "-----------------------------" <<std::endl;
    
       //Try a valid elementCount
       if( ! uint16Buffer.setMaxIndex( elements/2)) {
@@ -96,9 +99,10 @@ namespace atl
          buffer[i] = i;
       }
    
-      //Try to add elements with default values
+      //Add elements with default values. This should work since the buffer is not
+      //already allocated
       size_t result = uint8Buffer2.setElements(buffer, elements);
-      if( result != 0 ) {
+      if( result != elements ) {
          std::cerr<<"Wrote "<<result<<" elements when expecting 0"<<std::endl;
          return false;
       }
@@ -116,22 +120,22 @@ namespace atl
          uint16Buffer[i] = i;
       }
    
-      TypeBuffer<uint16_t> tb = uint16Buffer.getTypeBuffer();
-      if(( tb.m_buffer == NULL )||(tb.m_elements == 0 )) {
+      atl::TypeBuffer<uint16_t> tb = uint16Buffer.getTypeBuffer();
+      if(( tb.m_buffer.use_count() == 0 )||(tb.m_elements == 0 )) {
          std::cerr << "Failed to get elements in typebuffer" << std::endl;
          return false;
       }
    
       bool rc = true;
       for( uint8_t i = 0; i < tb.m_elements ; i++ ) {
-         if( tb.m_buffer[i] != i ) {
-            std::cout << "Element mismatch!: "<<(int)i<<"~="<<(int)tb.m_buffer[i]<<endl;
+         if( tb.m_buffer.get()[i] != i ) {
+            std::cout << "Element mismatch!: "<<(int)i<<"~="<<(int)tb.m_buffer.get()[i]<<endl;
             rc = false;
          }
    
       }
    
-      tb.deallocate();
+//      tb.deallocate();
    
       return rc;
    }

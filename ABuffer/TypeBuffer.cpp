@@ -3,8 +3,6 @@
 
 using namespace std;
 
-namespace atl
-{
    /**
     * \brief Unit test fuction for the ExtendedBuffer class
     **/
@@ -14,10 +12,10 @@ namespace atl
       size_t elements = 100;
    
       //Create some buffers
-      TypeBuffer<uint8_t>  u8Buffer;
-      TypeBuffer<int16_t>  i16Buffer;
-      TypeBuffer<double>   DBuffer;
-   
+      atl::TypeBuffer<uint8_t>  u8Buffer;
+      atl::TypeBuffer<int16_t>  i16Buffer;
+      atl::TypeBuffer<double>   DBuffer;
+  /*
       //Allocate 100 items
       if( !u8Buffer.allocate(elements) ||
           !i16Buffer.allocate(elements) ||
@@ -55,8 +53,7 @@ namespace atl
       u8Buffer.deallocate();
       i16Buffer.deallocate();
       DBuffer.deallocate();
-   
+*/   
       return rc;
    }
-}
 

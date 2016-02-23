@@ -5,13 +5,14 @@
 #include <iostream>
 #include <climits>
 #include <cstring>
+#include <vector>
 #include "TypeBuffer.tcc"
-#include "DataBuffer.h"
 
 using namespace std;
 
 namespace atl
 {
+
    /**
     * \brief Extends the DataBuffer class to manage arrays of data.
     *
@@ -19,12 +20,9 @@ namespace atl
     * as opposed to being restricted to a single type
     **/
    template <typename T>
-   class ExtendedBuffer : public DataBuffer
+   class ExtendedBuffer : public TypeBuffer<T>
    {
       protected:
-         uint8_t m_elementSize = sizeof(T);        //!< Base size of the template elment
-         size_t  m_maxIndex = 0;                   //!< Number of elements set in the array
-         size_t  m_elementCount = 0;               //!< Tracks the number of elements in the buffer
       public:
          ExtendedBuffer(size_t elements=0);
    
@@ -41,9 +39,9 @@ namespace atl
    
    
          /** \brief returns the value at the index **/
-         uint8_t    operator [](size_t index) const   {return m_buffer.get()[index*m_elementSize];}; 
+         uint8_t    operator [](size_t index) const   {return TypeBuffer<T>::m_buffer.get()[index];}; 
          /** \brief assigned the index to the value **/
-         uint8_t    & operator [](size_t index) {return m_buffer.get()[index*m_elementSize];}; 
+         uint8_t    & operator [](size_t index) {return TypeBuffer<T>::m_buffer.get()[index];}; 
    
    };
    
@@ -55,7 +53,7 @@ namespace atl
    template<typename T>
    ExtendedBuffer<T>::ExtendedBuffer( size_t elements) 
    {
-      DataBuffer::allocate(elements * m_elementSize);
+      allocate(elements);
    }
    
    /**
@@ -67,13 +65,13 @@ namespace atl
    {
       //We cannot force an element count to be greater than
       //the number of allocated elements
-      if( value > m_elementCount) {
-         cerr << "EB: Unable to set MaxIndex higher than elementCount ("<<value<<">"<<m_elementCount<<")"<<endl;
+      if( value > TypeBuffer<T>::m_allocatedElements ) {
+         cerr << "EB: Unable to set MaxIndex higher than allocated elements("<<value<<">"<<TypeBuffer<T>::m_allocatedElements<<")"<<endl;
          return false;
       }
    
       //We're in range. Set teh value
-      m_maxIndex = value;
+      TypeBuffer<T>::m_maxIndex = value;
       return true;
    }
    
@@ -84,7 +82,7 @@ namespace atl
    template<typename T>
    size_t ExtendedBuffer<T>::getElementCount()
    {
-      return m_elementCount;
+      return TypeBuffer<T>::m_allocateElements;
    }
    
    /**
@@ -94,7 +92,7 @@ namespace atl
    template<typename T>
    size_t ExtendedBuffer<T>::getMaxIndex()
    {
-      return m_maxIndex;
+      return TypeBuffer<T>::m_maxIndex;
    }
    
    /**
@@ -111,12 +109,17 @@ namespace atl
    template<typename T>
    bool ExtendedBuffer<T>::allocate( size_t elements, bool resizeFlag )
    {
-      bool rc = DataBuffer::allocate( elements * m_elementSize, resizeFlag );
-      if(( rc )&&( elements > m_elementCount )) {
-         m_elementCount = elements;
+      if( TypeBuffer<T>::m_bufferVect.use_count == 0 ) {
+         TypeBuffer<T>::m_bufferVect(new std::vector<T>);
+      }
+
+      if( resizeFlag ) 
+      {
+         TypeBuffer<T>::m_bufferVect.resize(elements);
+         return true;
       }
    
-      return rc;
+      return false;
    }
    
    /**
@@ -131,7 +134,7 @@ namespace atl
    void ExtendedBuffer<T>::deallocate()
    {
       DataBuffer::deallocate();
-      m_maxIndex = 0;
+      TypeBuffer<T>::m_maxIndex = 0;
    
       return;
    }
@@ -151,9 +154,10 @@ namespace atl
     * the current m_maxIndex index. 
     **/
    template<typename T>
-   size_t ExtendedBuffer<T>::setElements( T * array, size_t count, size_t startIndex, bool resizeFlag ) 
+   size_t ExtendedBuffer<T>::setElements( std::vector<T> array, size_t startIndex, bool resizeFlag ) 
    {
-      size_t bytes = count * m_elementSize;
+      m_bufferVect.insert( m_bufferVect.end(), array.begin(), array.end());
+
       bytes = DataBuffer::setData( array, bytes, startIndex * m_elementSize, resizeFlag );
    
       return bytes/m_elementSize;
@@ -178,8 +182,8 @@ namespace atl
    template<typename T>
    size_t ExtendedBuffer<T>::getElements( T * dest, size_t count, size_t startIndex ) 
    {
-      if( count > m_maxIndex - startIndex ) {
-         count = m_maxIndex - startIndex;
+      if( count > TypeBuffer<T>::m_maxIndex - startIndex ) {
+         count = TypeBuffer<T>::m_maxIndex - startIndex;
       }
    
       DataBuffer::getData( dest, count * m_elementSize, startIndex*m_elementSize );
@@ -211,12 +215,12 @@ namespace atl
       }
    
       //Check to make sure we are bounded correctly. If not, resize if flag is set
-      if( count +startIndex > m_elementCount ) {
+      if( count +startIndex > m_allocatedElements ) {
          if(( resizeFlag )||(m_buffer == NULL )) {
             allocate(count+startIndex, resizeFlag );
          }
          else {
-            count = m_elementCount - startIndex;
+            count = m_allocatedElements - startIndex;
          }
       }
        
@@ -244,14 +248,14 @@ namespace atl
    {
       //Create the typebuffer with the output info
       TypeBuffer<T> tbuffer;
-      tbuffer.m_buffer.get() = std::dynamic_pointer_cast<T>(m_buffer);
+      tbuffer.m_buffer = static_pointer_cast( m_buffer );
       tbuffer.m_elements = m_maxIndex;
    
       if( release ) 
       {
          //Clear Extended Buffer variables
          m_maxIndex = 0;
-         m_elementCount = 0;
+         m_allocatedElements = 0;
    
          //Clear DataBuffer variables
          DataBuffer::m_buffer = NULL;

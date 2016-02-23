@@ -19,14 +19,16 @@ namespace atl
    template <typename T>
    class TypeBuffer 
    {
-      public:
-         size_t m_elements = 0;               //!< Number of elements in the buffer
-         std::shared_ptr<T> m_buffer;       //!< Pointer to the  buffer in the Base class
+      protected:
+         size_t m_allocatedElements = 0;              //!< Number of elements in the buffer
+         size_t m_maxIndex          = 0;              //!< Highest set index
+         std::shared_ptr<std::vector<T>> m_bufferVect; //!< Vector to the buffer
+//         const std::shared_ptr<T> m_buffer;         //!< Pointer to the  buffer in the Base class
    
          /** \brief returns the value at the index **/
-         T operator [](size_t index) const   {return m_buffer.get()[index];}; 
+         T operator [](size_t index) const   {return m_bufferVect[index];}; 
          /** \brief assigned the index to the value **/
-         T & operator [](size_t index) {return m_buffer.get()[index];}; 
+         T & operator [](size_t index) {return m_bufferVect[index];}; 
    };
 }
    

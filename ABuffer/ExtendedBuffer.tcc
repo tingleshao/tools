@@ -6,6 +6,7 @@
 #include <climits>
 #include <cstring>
 #include <vector>
+#include <algorithm>
 #include "TypeBuffer.tcc"
 
 using namespace std;
@@ -28,19 +29,21 @@ namespace atl
    
          bool   allocate( size_t elements, bool resizeFlag = false);
          void   deallocate();
-         size_t getElementCount();
+         size_t getSize();
          size_t getMaxIndex();
          bool   setMaxIndex( size_t value );
-         size_t setElements( std::vector<T> array, size_t startIndex, bool resizeFlag );
+         size_t setElements( std::vector<T> &array, size_t startIndex, bool resizeFlag=true );
          std::vector<T> getElements( size_t count, size_t startIndex );
    
          TypeBuffer<T> getTypeBuffer( bool release = true );
    
    
          /** \brief returns the value at the index **/
-         uint8_t    operator [](size_t index) const   {return TypeBuffer<T>::m_buffer.get()[index];}; 
+         T operator [](size_t index) const   {return TypeBuffer<T>::m_bufferVect->at(index);}; 
          /** \brief assigned the index to the value **/
-         uint8_t    & operator [](size_t index) {return TypeBuffer<T>::m_buffer.get()[index];}; 
+         T & operator [](size_t index) { 
+                                          return TypeBuffer<T>::m_bufferVect->at(index);
+                                       }; 
    
    };
    
@@ -60,19 +63,13 @@ namespace atl
     * \return number of elements allocated in the array
     **/
    template<typename T>
-   size_t ExtendedBuffer<T>::getElementCount()
+   size_t ExtendedBuffer<T>::getSize()
    {
-      return TypeBuffer<T>::m_allocateElements;
-   }
-   
-   /**
-    * \brief Returns the number of elements assigned to the array
-    * \return number of elements assigned to the array
-    **/
-   template<typename T>
-   size_t ExtendedBuffer<T>::getMaxIndex()
-   {
-      return TypeBuffer<T>::m_maxIndex;
+      if( TypeBuffer<T>::m_bufferVect.use_count() == 0 ) {
+         return 0;
+      }
+
+      return TypeBuffer<T>::m_bufferVect->size();
    }
    
    /**
@@ -91,11 +88,11 @@ namespace atl
    {
       if( TypeBuffer<T>::m_bufferVect.use_count() == 0 ) {
          TypeBuffer<T>::m_bufferVect.reset(new std::vector<T>);
-//         TypeBuffer<T>::m_bufferVect->reserve(elements);
+         TypeBuffer<T>::m_bufferVect->reserve(elements);
       }
       else if( resizeFlag ) 
       {
-//         TypeBuffer<T>::m_bufferVect.reserve(elements);
+         TypeBuffer<T>::m_bufferVect->resize(elements);
       }
    
       return true;
@@ -130,11 +127,24 @@ namespace atl
     * the current m_maxIndex index. 
     **/
    template<typename T>
-   size_t ExtendedBuffer<T>::setElements( std::vector<T> array, size_t startIndex, bool resizeFlag ) 
+   size_t ExtendedBuffer<T>::setElements( std::vector<T> &array, size_t startIndex, bool resizeFlag ) 
    {
-      TypeBuffer<T>::m_bufferVect.insert( TypeBuffer<T>::m_bufferVect.begin()+startIndex, array.begin(), array.end());
+      //If we are not used, allocate
+      if( TypeBuffer<T>::m_bufferVect.use_count() == 0 ) {
+         allocate(array.size());
+      }
+
+      if( TypeBuffer<T>::m_bufferVect->size() < startIndex + array.size())
+      {
+         TypeBuffer<T>::m_bufferVect->resize(  startIndex + array.size());
+      }
+
+      std::copy( array.begin()
+               , array.end()
+               , TypeBuffer<T>::m_bufferVect->begin()+startIndex
+               );
    
-      return TypeBuffer<T>::m_bufferVect.size();
+      return TypeBuffer<T>::m_bufferVect->size();
    }
    
    /**

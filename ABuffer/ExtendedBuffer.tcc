@@ -31,9 +31,8 @@ namespace atl
          size_t getElementCount();
          size_t getMaxIndex();
          bool   setMaxIndex( size_t value );
-         size_t setElements( T * array, size_t count, size_t startIndex = 0, bool resizeFlag = false);
-         size_t getElements( T * dest, size_t count, size_t startIndex = 0);
-         size_t assignElements( T element, size_t count, size_t startIndex = UINT_MAX, bool resizeFlag = false );
+         size_t setElements( std::vector<T> array, size_t startIndex, bool resizeFlag );
+         std::vector<T> getElements( size_t count, size_t startIndex );
    
          TypeBuffer<T> getTypeBuffer( bool release = true );
    
@@ -54,25 +53,6 @@ namespace atl
    ExtendedBuffer<T>::ExtendedBuffer( size_t elements) 
    {
       allocate(elements);
-   }
-   
-   /**
-    * \brief Sets the number of elements to the specified value
-    * \return number of elements assigned to the array
-    **/
-   template<typename T>
-   bool ExtendedBuffer<T>::setMaxIndex( size_t value) 
-   {
-      //We cannot force an element count to be greater than
-      //the number of allocated elements
-      if( value > TypeBuffer<T>::m_allocatedElements ) {
-         cerr << "EB: Unable to set MaxIndex higher than allocated elements("<<value<<">"<<TypeBuffer<T>::m_allocatedElements<<")"<<endl;
-         return false;
-      }
-   
-      //We're in range. Set teh value
-      TypeBuffer<T>::m_maxIndex = value;
-      return true;
    }
    
    /**
@@ -109,17 +89,16 @@ namespace atl
    template<typename T>
    bool ExtendedBuffer<T>::allocate( size_t elements, bool resizeFlag )
    {
-      if( TypeBuffer<T>::m_bufferVect.use_count == 0 ) {
-         TypeBuffer<T>::m_bufferVect(new std::vector<T>);
+      if( TypeBuffer<T>::m_bufferVect.use_count() == 0 ) {
+         TypeBuffer<T>::m_bufferVect.reset(new std::vector<T>);
+//         TypeBuffer<T>::m_bufferVect->reserve(elements);
       }
-
-      if( resizeFlag ) 
+      else if( resizeFlag ) 
       {
-         TypeBuffer<T>::m_bufferVect.resize(elements);
-         return true;
+//         TypeBuffer<T>::m_bufferVect.reserve(elements);
       }
    
-      return false;
+      return true;
    }
    
    /**
@@ -133,9 +112,6 @@ namespace atl
    template<typename T>
    void ExtendedBuffer<T>::deallocate()
    {
-      DataBuffer::deallocate();
-      TypeBuffer<T>::m_maxIndex = 0;
-   
       return;
    }
    
@@ -156,11 +132,9 @@ namespace atl
    template<typename T>
    size_t ExtendedBuffer<T>::setElements( std::vector<T> array, size_t startIndex, bool resizeFlag ) 
    {
-      m_bufferVect.insert( m_bufferVect.end(), array.begin(), array.end());
-
-      bytes = DataBuffer::setData( array, bytes, startIndex * m_elementSize, resizeFlag );
+      TypeBuffer<T>::m_bufferVect.insert( TypeBuffer<T>::m_bufferVect.begin()+startIndex, array.begin(), array.end());
    
-      return bytes/m_elementSize;
+      return TypeBuffer<T>::m_bufferVect.size();
    }
    
    /**
@@ -180,63 +154,13 @@ namespace atl
     * been properly allocated.
     **/
    template<typename T>
-   size_t ExtendedBuffer<T>::getElements( T * dest, size_t count, size_t startIndex ) 
+   std::vector<T> ExtendedBuffer<T>::getElements( size_t count, size_t startIndex ) 
    {
-      if( count > TypeBuffer<T>::m_maxIndex - startIndex ) {
-         count = TypeBuffer<T>::m_maxIndex - startIndex;
-      }
-   
-      DataBuffer::getData( dest, count * m_elementSize, startIndex*m_elementSize );
-      
-      return count; 
-   }
-   
-   
-   
-   /**
-    * \brief This function sets the number of elements at the specified offset to the given value.
-    *
-    * \param [in] element Element to copy to the array
-    * \param [in] count number of elements to copy
-    * \param [in] startIndex index to start to copy to
-    * \param [in] resizeFlag flag to indicate if array should be resized if needed.
-    * \return number of elements copied.
-    *
-    * If the resize flag is set, this function well expand the array to handle all
-    * of the input data. Otherwise, if the internal buffer is undersized, all 
-    * available space will be filled.
-    **/
-   template<typename T>
-   size_t ExtendedBuffer<T>::assignElements( T element, size_t count, size_t startIndex, bool resizeFlag )
-   {
-      //If we're set to UINT_MAX, the start with the highest element
-      if( startIndex == UINT_MAX ) {
-         startIndex = m_maxIndex;
-      }
-   
-      //Check to make sure we are bounded correctly. If not, resize if flag is set
-      if( count +startIndex > m_allocatedElements ) {
-         if(( resizeFlag )||(m_buffer == NULL )) {
-            allocate(count+startIndex, resizeFlag );
-         }
-         else {
-            count = m_allocatedElements - startIndex;
-         }
-      }
-       
-   
-      T * mem = (T *)m_buffer.get();
-   
-      //Loop to copy the given number of elements
-      for( int i = 0; i < count; i++ ) {
-         mem[startIndex+i] = element;
-      }
-   
-      if( startIndex+count > m_maxIndex ) {
-         m_maxIndex = startIndex+count;
-      }
-   
-      return count;
+      std::vector<T> localVect;
+      localVect.reserve(TypeBuffer<T>::m_bufferVect.size());
+      localVect.insert( localVect.begin(), TypeBuffer<T>::m_bufferVect.begin(), TypeBuffer<T>::m_bufferVect.end());
+
+      return localVect; 
    }
    
    /**
@@ -246,23 +170,16 @@ namespace atl
    template <typename T>
    TypeBuffer<T> ExtendedBuffer<T>::getTypeBuffer( bool release)
    {
-      //Create the typebuffer with the output info
-      TypeBuffer<T> tbuffer;
-      tbuffer.m_buffer = static_pointer_cast( m_buffer );
-      tbuffer.m_elements = m_maxIndex;
-   
+      TypeBuffer<T> tbuffer = this;
+
       if( release ) 
       {
          //Clear Extended Buffer variables
-         m_maxIndex = 0;
-         m_allocatedElements = 0;
-   
          //Clear DataBuffer variables
-         DataBuffer::m_buffer = NULL;
-         DataBuffer::m_bufferSize = 0;
+         TypeBuffer<T>::m_buffer.reset();
       }
-    
-      return tbuffer;  
+
+      return tbuffer;
    }
    
 }

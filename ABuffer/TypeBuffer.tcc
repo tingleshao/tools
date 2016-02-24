@@ -5,7 +5,8 @@
 #include <iostream>
 #include <climits>
 #include <cstring>
-#include "DataBuffer.h"
+#include <vector>
+#include <memory>
 
 using namespace std;
 
@@ -20,10 +21,7 @@ namespace atl
    class TypeBuffer 
    {
       protected:
-         size_t m_allocatedElements = 0;              //!< Number of elements in the buffer
-         size_t m_maxIndex          = 0;              //!< Highest set index
          std::shared_ptr<std::vector<T>> m_bufferVect; //!< Vector to the buffer
-//         const std::shared_ptr<T> m_buffer;         //!< Pointer to the  buffer in the Base class
    
          /** \brief returns the value at the index **/
          T operator [](size_t index) const   {return m_bufferVect[index];}; 

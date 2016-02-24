@@ -11,6 +11,7 @@ using namespace std;
    
     //Create some buffers
     atl::ExtendedBuffer<uint16_t> uint16Buffer;
+    uint16Buffer.allocate(75, false);
 
     //Create temp buffer
     std::vector<uint16_t> tempV;

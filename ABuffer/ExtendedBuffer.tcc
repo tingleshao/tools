@@ -86,12 +86,12 @@ namespace atl
    template<typename T>
    bool ExtendedBuffer<T>::allocate( size_t elements, bool resizeFlag )
    {
+      //Always allocate and reserve the provided number of elements on initialization
       if( TypeBuffer<T>::m_bufferVect.use_count() == 0 ) {
          TypeBuffer<T>::m_bufferVect.reset(new std::vector<T>);
          TypeBuffer<T>::m_bufferVect->reserve(elements);
       }
-      else if( resizeFlag ) 
-      {
+      else if( resizeFlag ) {
          TypeBuffer<T>::m_bufferVect->resize(elements);
       }
    
@@ -134,9 +134,10 @@ namespace atl
          allocate(array.size());
       }
 
-      if( TypeBuffer<T>::m_bufferVect->size() < startIndex + array.size())
+      else if( TypeBuffer<T>::m_bufferVect->size() < startIndex + array.size())
       {
-         TypeBuffer<T>::m_bufferVect->resize(  startIndex + array.size());
+         allocate( startIndex + array.size(), true);
+//         TypeBuffer<T>::m_bufferVect->resize(  
       }
 
       std::copy( array.begin()

@@ -8,6 +8,7 @@
 #include <thread>
 #include <iostream>
 #include <string>
+#include <cstring>
 
 #include <BaseSocket.h>
 

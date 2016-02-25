@@ -18,6 +18,7 @@
 #include <netdb.h>
 #include <string.h>
 
+#include <iostream>
 #include <ATimer.h>
 #include "BaseSocket.h"
 
@@ -32,7 +33,7 @@ namespace atl
     * then removes internal references. The calling function is responsible
     * for deleting the data (which is integrated in the DataBuffer class)
     **/
-   TypeBuffer<uint8_t> BaseSocketData::extractData() 
+   ExtendedBuffer<uint8_t> BaseSocketData::extractData() 
    {
       return data;
    }
@@ -106,7 +107,7 @@ namespace atl
     * 
     * \param [in] callback pointer to the callback function
     **/
-   bool BaseSocket::setHandleMessageCallback( std::function<void(TypeBuffer<uint8_t>)> callback )
+   bool BaseSocket::setHandleMessageCallback( std::function<void(ExtendedBuffer<uint8_t>)> callback )
    {
       handleMessage = std::bind(callback, _1 );
       return true;
@@ -122,10 +123,10 @@ namespace atl
    bool BaseSocket::processSocketData() 
    {
       try {
-         handleMessage( socketData.data.getTypeBuffer());
+         handleMessage( socketData.data.getCopy());
       } catch(std::bad_function_call& e) 
       {
-         cerr << "handleMessage callback not set!" << endl;
+         std::cerr << "handleMessage callback not set!" << std::endl;
          /*
          //See if we have received any elements
          if( socketData.data.m_bufferSize > 0 )
@@ -940,9 +941,9 @@ namespace atl
          return -1;
       }
       //SDF rc = read( socketData.fd, buffer, count );
-      cout << "receiving "<<count<<" bytes from fd "<<socketData.fd<<endl;
+      std::cout << "receiving "<<count<<" bytes from fd "<<socketData.fd<<std::endl;
       rc = recv( socketData.fd, buffer, count, 0 );
-      cout << "received "<<count<<" bytes from fd "<<socketData.fd<< " with code"<<rc<<endl;
+      std::cout << "received "<<count<<" bytes from fd "<<socketData.fd<< " with code"<<rc<<std::endl;
    
    
    /*
@@ -1019,15 +1020,9 @@ namespace atl
       //Read in the data
       uint8_t buffer[bufSize];
 
-      int rc = recvData( buffer
-                       , bufSize
+      int rc = recvData( socketData.data.m_buffer.get()
+                       , socketData.data.getSize()
                        );
-   
-      //If we read valid bytes, increment the offset
-      if( rc > 0 ) {
-         std::vector<uint8_t> localV( buffer, buffer+bufSize);
-         socketData.data.setElements( localV, socketData.data.getSize(), true );
-      }
    
       //Return number of bytes read
       return rc;
@@ -1067,8 +1062,8 @@ namespace atl
    /**
     * \brief Callback for received data
     **/
-   void printMessage( TypeBuffer<uint8_t> data ) {
-      cout << "Default:"<< (char *)data.getPointer() << endl;
+   void printMessage( ExtendedBuffer<uint8_t> data ) {
+      std::cout << "Default:"<< (char *)data.m_buffer.get() << std::endl;
    }
    
    /** 

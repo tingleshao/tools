@@ -21,7 +21,6 @@
 #include <string>
 
 #include <ATimer.h>
-#include <TypeBuffer.tcc>
 #include <ExtendedBuffer.tcc>
 
 //Socket status variables
@@ -51,7 +50,7 @@ namespace atl
          std::string hostname;             //!< IP Address of the socket
          ExtendedBuffer<uint8_t> data;     //!< Pointer to the data structure for recieving data
    
-         TypeBuffer<uint8_t> extractData(); 
+         ExtendedBuffer<uint8_t> extractData(); 
          int sendData( void * buffer,  size_t bytes );
          void closeSocket();
    }; 
@@ -89,8 +88,8 @@ namespace atl
          size_t bufferSize = 1024;                //!< Size of the data buffer for incoming info
    
          //Implement a callback
-         bool setHandleMessageCallback( std::function<void(TypeBuffer<uint8_t>)> callback );
-         std::function<void(TypeBuffer<uint8_t>)> handleMessage;
+         bool setHandleMessageCallback( std::function<void(ExtendedBuffer<uint8_t>)> callback );
+         std::function<void(ExtendedBuffer<uint8_t>)> handleMessage;
    
          //Initialization and exit functions
          bool createTcpClient( std::string hostname, int port);
@@ -172,7 +171,7 @@ namespace atl
    int create_udp_client( const char * addr, int port ); 
    int create_tcp_client( const char * addr, int port ); 
    
-   void printMessage(TypeBuffer<uint8_t> data );
+   void printMessage(ExtendedBuffer<uint8_t> data );
    bool testBaseSocket(void);
 }
 #endif

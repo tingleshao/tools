@@ -1,3 +1,4 @@
+#include <cstring>
 #include <iostream>
 #include <SocketServer.h>
 
@@ -23,8 +24,8 @@ bool printHelp( void )
 /**
  * \brief Message callback
  **/
-void handleMessage( atl::TypeBuffer<uint8_t>data) {
-   cout << "Server:"<< (char *)data.getPointer() << endl;
+void handleMessage( atl::ExtendedBuffer<uint8_t>data) {
+   cout << "Server:"<< (char *)data.m_buffer.get() << endl;
 }
 
 /**

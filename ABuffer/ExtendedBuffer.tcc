@@ -1,3 +1,4 @@
+#pragma once
 #include "DataBuffer.h"
 
 namespace atl
@@ -20,10 +21,10 @@ namespace atl
          void   deallocate();
          size_t getMaxIndex();
          size_t getCapacity();
-         size_t setElements( T * array, size_t elements, size_t startIndex = 0, bool resizeFlag = false);
-         bool   getElements( T * array, size_t count, size_t startIndex = 0);
+         size_t setElements( T * array, size_t elements, size_t startIndex, bool resizeFlag = false);
+         bool   getElements( T * array, size_t count, size_t startIndex );
 
-         ExtendedBuffer<T>  copyBuffer( bool releaseFlag = false );
+         ExtendedBuffer<T>  getCopy( bool releaseFlag = false );
 
          /** \brief returns the value at the index **/
          T operator [](size_t index) const   {return ((T*)DataBuffer::m_buffer.get())[index];};
@@ -152,7 +153,7 @@ namespace atl
      * to the pointer within the interal class
      **/ 
     template<typename T>
-    ExtendedBuffer<T> ExtendedBuffer<T>::copyBuffer( bool releaseFlag )
+    ExtendedBuffer<T> ExtendedBuffer<T>::getCopy( bool releaseFlag )
     {
        ExtendedBuffer<T> buffer = *this;
 

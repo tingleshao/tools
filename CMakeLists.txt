@@ -77,7 +77,5 @@ install(TARGETS
    PUBLIC_HEADER DESTINATION include
 )
 
-#Install the FindAtl.cmake fiile of a find directory is specified
-if(CMAKE_MODULE_PATH)
-   install(FILES cmake/FindAtl.cmake DESTINATION ${CMAKE_MODULE_PATH})
-endif(CMAKE_MODULE_PATH)
+#Install the FindAtl.cmake file of a find directory is specified
+install(FILES cmake/FindAtl.cmake DESTINATION ${CMAKE_INSTALL_PREFIX}/cmake)

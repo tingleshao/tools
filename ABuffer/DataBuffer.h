@@ -15,7 +15,7 @@ namespace atl
     * itself. There is no inherent method for data management allocated data is must be
     * freed with an external call to the deallocate function
     **/
-   class RawDataBuffer
+   class RawBuffer
    {
       public: 
          size_t m_bufferSize      = 0;                      //!< Number of elements in the buffer
@@ -34,7 +34,7 @@ namespace atl
    /**
     * \brief Base class to handle data management for abstract data types
     **/
-   class DataBuffer : public RawDataBuffer
+   class DataBuffer : public RawBuffer
    {
       protected:
          uint8_t   m_defaultValue = false;        //!< Default value

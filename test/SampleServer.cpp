@@ -24,7 +24,7 @@ bool printHelp( void )
  * \brief Message callback
  **/
 void handleMessage( atl::TypeBuffer<uint8_t>data) {
-   cout << "Server:"<< (char *)&data.m_buffer[0] << endl;
+   cout << "Server:"<< (char *)data.getPointer() << endl;
 }
 
 /**

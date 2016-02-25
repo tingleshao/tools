@@ -38,7 +38,7 @@ namespace atl
    
    
          int  addConnection();
-         RawDataBuffer readIndex( size_t index );
+         TypeBuffer<uint8_t> readIndex( size_t index );
          void mainLoop( void );
    
       public:

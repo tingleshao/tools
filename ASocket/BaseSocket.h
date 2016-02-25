@@ -51,7 +51,7 @@ namespace atl
          std::string hostname;             //!< IP Address of the socket
          ExtendedBuffer<uint8_t> data;     //!< Pointer to the data structure for recieving data
    
-         RawDataBuffer extractData(); 
+         TypeBuffer<uint8_t> extractData(); 
          int sendData( void * buffer,  size_t bytes );
          void closeSocket();
    }; 

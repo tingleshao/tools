@@ -27,6 +27,16 @@ namespace atl
          T operator [](size_t index) const   {return m_bufferVect[index];}; 
          /** \brief assigned the index to the value **/
          T & operator [](size_t index) {return m_bufferVect[index];}; 
+
+      public:
+         /** \brief returns the pointer to first element of the buffer **/
+         T* getPointer()      { return &m_bufferVect->at(0); };
+
+         /** \brief returns the size of the array **/
+         size_t getSize()     {return m_bufferVect->size();};
+         /** \brief returns the capacity of the array **/
+         size_t getCapacity() {return m_bufferVect->capacity();};
+
    };
 }
    

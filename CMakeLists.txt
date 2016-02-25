@@ -55,7 +55,6 @@ add_library( ATL SHARED
 
 add_library( ATL_static STATIC 
    ABuffer/DataBuffer.cpp
-   ABuffer/.ExtendedBuffer.cpp.swp
    ABuffer/ExtendedBuffer.cpp
    ABuffer/TypeBuffer.cpp
    ASocket/BaseSocket.cpp

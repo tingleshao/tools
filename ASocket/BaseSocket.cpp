@@ -32,17 +32,9 @@ namespace atl
     * then removes internal references. The calling function is responsible
     * for deleting the data (which is integrated in the DataBuffer class)
     **/
-   RawDataBuffer BaseSocketData::extractData() 
+   TypeBuffer<uint8_t> BaseSocketData::extractData() 
    {
-      RawDataBuffer rdb;
-      rdb.m_buffer = data.m_buffer;
-      rdb.m_bufferSize = data.m_bufferSize;
-   
-      //Clear data
-      data.m_buffer = NULL;
-      data.m_bufferSize = 0;
-   
-      return rdb;
+      return data;
    }
    
    
@@ -162,7 +154,7 @@ namespace atl
     **/
    bool BaseSocket::processSocketData( BaseSocketData sockData ) 
    {
-      if( sockData.data.getElementCount() > 0 ) {
+      if( sockData.data.getSize() > 0 ) {
          printf( "Client with fd %d received: \"%s\"\n"
             , sockData.fd
             , (char *)&sockData.data[0]
@@ -1005,28 +997,15 @@ namespace atl
    /**
     * \brief prepare the socketData structure to receive incoming data
     *
-    * \return 1 on success 
+    * \return true on success, false on failure
     *
     * This function checks if the socketData structure needs to be reset (first
     * instance or previous instance complete). If so, it reallocates it's data;
     **/
    bool BaseSocket::prepSocketData() 
    { 
-      int rc = 0;                          //!< return code
-   
-      cout <<"SDF prepSocketData for size "<<bufferSize<<endl;
-      //Check the BaseData is defined
-      if( socketData.data.m_buffer == NULL ) {
-         socketData.data.allocate(bufferSize);
-      }
-   
       //reallocate buffer if necessary. Otherwise
-      if(socketData.data.m_bufferSize < bufferSize ) {
-        socketData.data.allocate(bufferSize, true );
-      }
-   
-      //0 indicates no change
-      return true;
+      return socketData.data.allocate(bufferSize, true );
    }
    
    
@@ -1035,12 +1014,19 @@ namespace atl
     **/
    int BaseSocket::recvSocketData() 
    {
+      size_t bufSize = socketData.data.getCapacity() - socketData.data.getSize();
+
       //Read in the data
-      int rc = recvData(socketData.data.m_buffer.get(), socketData.data.m_bufferSize - socketData.data.getMaxIndex());
+      uint8_t buffer[bufSize];
+
+      int rc = recvData( buffer
+                       , bufSize
+                       );
    
       //If we read valid bytes, increment the offset
       if( rc > 0 ) {
-         socketData.data.setMaxIndex( socketData.data.getMaxIndex()+rc);
+         std::vector<uint8_t> localV( buffer, buffer+bufSize);
+         socketData.data.setElements( localV, socketData.data.getSize(), true );
       }
    
       //Return number of bytes read
@@ -1082,7 +1068,7 @@ namespace atl
     * \brief Callback for received data
     **/
    void printMessage( TypeBuffer<uint8_t> data ) {
-      cout << "Default:"<< (char *)&data.m_buffer[0] << endl;
+      cout << "Default:"<< (char *)data.getPointer() << endl;
    }
    
    /** 

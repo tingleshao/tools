@@ -35,7 +35,7 @@ namespace atl
          size_t setElements( std::vector<T> &array, size_t startIndex, bool resizeFlag=true );
          std::vector<T> getElements( size_t count, size_t startIndex );
    
-         TypeBuffer<T> getTypeBuffer( bool release = true );
+         TypeBuffer<T> getTypeBuffer( bool release = false );
    
    
          /** \brief returns the value at the index **/
@@ -181,13 +181,13 @@ namespace atl
    template <typename T>
    TypeBuffer<T> ExtendedBuffer<T>::getTypeBuffer( bool release)
    {
-      TypeBuffer<T> tbuffer = this;
+      TypeBuffer<T> tbuffer = *this;
 
       if( release ) 
       {
          //Clear Extended Buffer variables
          //Clear DataBuffer variables
-         TypeBuffer<T>::m_buffer.reset();
+         TypeBuffer<T>::m_bufferVect.reset();
       }
 
       return tbuffer;

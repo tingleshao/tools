@@ -183,18 +183,18 @@ namespace atl
     **/
    bool SocketServer::processSocketData( BaseSocketData * sockData)
    {
-      size_t maxIndex = sockData->data.getMaxIndex();
+      size_t maxIndex = sockData->data.getSize();
       if(maxIndex == 0 ) {
          cout << "Socket at index "<<sockData->index<<" receive error:"<<maxIndex<<endl;
          return false;
       }
       else {
-         handleMessage( sockData->data.getTypeBuffer());
+         handleMessage( sockData->data.getTypeBuffer(true));
          received++;
       }
    
       //Point back to the first element
-      sockData->data.setMaxIndex(0);
+      sockData->data.allocate(0);
       return true;
    }
    
@@ -213,17 +213,15 @@ namespace atl
       int ret = 0;
    
       //Prep reference data
-   //   if( refSocketData->data.getElementCount() < bufferSize ) {
-         refSocketData->data.allocate(bufferSize);
-   //   }
+      uint8_t buffer[bufferSize];
+
+      size_t offset = refSocketData->data.getSize();
    
-      size_t elementCount = refSocketData->data.getElementCount();
-      size_t maxIndex  = refSocketData->data.getMaxIndex();
-      size_t count = elementCount-maxIndex;
+      size_t count = bufferSize-offset;
    
       //Read map data at the file descriptor into the refSocketData buffer
       nbytes = read ( refSocketData->fd
-                    , (uint8_t *)&refSocketData->data[maxIndex]
+                    , buffer
                     , count
                     );
    
@@ -237,15 +235,15 @@ namespace atl
          return -1;
       }
       else if (nbytes == 0) {
-   //      cout<<"read "<<nbytes<<" bytes"<<" with maxIndex "<<maxIndex<<endl;
          return 0;
       }
-   
+
       // Data read. 
-      refSocketData->data.setMaxIndex(nbytes+maxIndex);
+      std::vector<uint8_t> localVect(buffer, buffer+nbytes);
+      refSocketData->data.setElements( localVect, offset, true );
    
       //This would be changed here to check if a given number of bytes were received.
-      return nbytes+maxIndex;
+      return refSocketData->data.getSize();
    }
    
    
@@ -387,15 +385,13 @@ namespace atl
     *
     * \param [in] index index of the socket in the array
     **/
-   RawDataBuffer SocketServer::readIndex( size_t index )
+   TypeBuffer<uint8_t> SocketServer::readIndex( size_t index )
    {
    
       int rc = readSocketData( &socketDataVector[index] );
     
       //Return a valid index 
-      RawDataBuffer result = socketDataVector[index].extractData();
-   
-      return result;
+      return socketDataVector[index].extractData();
    }
    
    /**

@@ -14,19 +14,24 @@ using namespace std;
     uint16Buffer.allocate(75, false);
 
     //Create temp buffer
-    std::vector<uint16_t> tempV;
+    uint16_t buffer[elements];
 
     //Test setting elements
     for( int i = 0; i < elements; i++) {
-       tempV.push_back(i);
+       buffer[i] = i;
     }
-    uint16Buffer.setElements(  tempV, 0 );
+    uint16Buffer.setElements( buffer, elements, 0, true );
 
+    bool rc = true;
     for( int i = 0; i < elements; i++ ) {
-       if( tempV[i] != uint16Buffer[i] ) {
-          std::cerr << "Extended Buffer failed to set elements from array" <<std::endl;
-          return false;
+       if( buffer[i] != uint16Buffer[i] ) {
+          std::cerr << "Extended Buffer failed to set elements from array "<<i<<": "
+                    << buffer[i] << "!="<< uint16Buffer[i] <<std::endl;
+          rc = false;
        }
+    }
+    if( !rc ) {
+       return rc;
     }
 
     //Test setting by index;
@@ -38,10 +43,10 @@ using namespace std;
     uint16Buffer[10] = 10;
 
     //Append tempBuffer from elements/2
-    uint16Buffer.setElements( tempV, elements/2);
+    uint16Buffer.setElements( buffer, elements, elements/2, true );
 
     //Verify size
-    if( uint16Buffer.getSize() != elements + elements/2) {
+    if( uint16Buffer.getMaxIndex() != elements + elements/2) {
        std::cerr << "ExtendedBuffer size incorrect: "
                  << uint16Buffer.getSize() << " != "
                  << elements + elements/2 << std::endl;
@@ -49,7 +54,7 @@ using namespace std;
     }
 
     //Verify data
-    for( int i =  0; i < uint16Buffer.getSize(); i++ ) {
+    for( int i =  0; i < uint16Buffer.getMaxIndex(); i++ ) {
        if( uint16Buffer[i] != i%(elements/2)) {
           if((( i < elements/2 )&&( uint16Buffer[i] != i ))||
              ( uint16Buffer[i] != i - elements/2)

@@ -51,7 +51,7 @@ namespace atl
          bool    getData( std::shared_ptr<uint8_t> &buffer, size_t &bytes );
          
          size_t  getSize();
-         RawDataBuffer getData();
+         RawBuffer getData();
    
          bool allocate( size_t bytes, bool resizeFlag = false );
    };

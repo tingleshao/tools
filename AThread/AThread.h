@@ -38,7 +38,7 @@ namespace atl
        protected:
    
        public:
-          ~AThread();
+          virtual ~AThread();
    
           void          Run(void); 
           bool          Start(bool * runFlag=NULL );

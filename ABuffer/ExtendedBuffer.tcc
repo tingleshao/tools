@@ -62,6 +62,8 @@ namespace atl
     {
        bool rc = DataBuffer::allocate( m_elementSize * elements, resizeFlag );
        m_capacity = DataBuffer::getSize() / m_elementSize;
+
+       return true;
     }
 
     /**

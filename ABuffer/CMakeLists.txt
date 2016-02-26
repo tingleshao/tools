@@ -27,7 +27,6 @@ add_library( ABuffer_static ${LIB_SOURCES})
 #specifies an executable for testing
 add_executable( bufferTest
    BufferTest.cpp
-   TypeBuffer.cpp
    ExtendedBuffer.cpp
    TSArray.cpp
    TSMatrix.cpp
@@ -57,7 +56,6 @@ install(TARGETS
 install(FILES
    DataBuffer.h
    ExtendedBuffer.tcc
-   TypeBuffer.tcc
    TSArray.tcc
    TSMatrix.tcc
    DESTINATION include

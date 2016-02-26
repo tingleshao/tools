@@ -5,7 +5,6 @@
 
 #include "DataBuffer.h"
 #include "ExtendedBuffer.tcc"
-#include "TypeBuffer.tcc"
 #include "TSArray.tcc"
 #include "TSMatrix.tcc"
 
@@ -19,11 +18,6 @@ int main( void )
    cout  <<"test DataBuffer"<<endl;
    if( !testDataBuffer()) {
       cerr << "Failed DataBuffer test"<<endl;
-      return 0;
-   }
-   cout  <<"test TypeBuffer"<<endl;
-   if( !testTypeBuffer()) {
-      cerr << "Failed TypeBuffer test"<<endl;
       return 0;
    }
    cout  <<"test ExtendedBuffer"<<endl;

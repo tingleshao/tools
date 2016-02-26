@@ -45,7 +45,6 @@ add_subdirectory(ASocket)
 add_library( ATL SHARED
    ABuffer/DataBuffer.cpp
    ABuffer/ExtendedBuffer.cpp
-   ABuffer/TypeBuffer.cpp
    ASocket/BaseSocket.cpp
    ASocket/SocketServer.cpp
    AThread/AThread.cpp
@@ -56,7 +55,6 @@ add_library( ATL SHARED
 add_library( ATL_static STATIC 
    ABuffer/DataBuffer.cpp
    ABuffer/ExtendedBuffer.cpp
-   ABuffer/TypeBuffer.cpp
    ASocket/BaseSocket.cpp
    ASocket/SocketServer.cpp
    AThread/AThread.cpp

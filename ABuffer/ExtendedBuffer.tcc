@@ -127,7 +127,7 @@ namespace atl
           m_capacity = DataBuffer::getSize() / m_elementSize;
        }
 
-       return bytes;
+       return bytes/m_elementSize;
     }
 
     /**

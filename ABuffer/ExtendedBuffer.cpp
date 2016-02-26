@@ -20,7 +20,13 @@ using namespace std;
     for( int i = 0; i < elements; i++) {
        buffer[i] = i;
     }
-    uint16Buffer.setElements( buffer, elements, 0, true );
+    size_t count = uint16Buffer.setElements( buffer, elements, 0, true );
+    if( count != elements ) {
+       std::cerr <<"ExtendedBuffer failed to set elements. "<<count<<"!="<<elements<<std::endl;
+       return false;
+    }
+
+
 
     bool rc = true;
     for( int i = 0; i < elements; i++ ) {

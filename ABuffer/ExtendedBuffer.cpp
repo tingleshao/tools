@@ -76,6 +76,34 @@ using namespace std;
        }
     }
 
+    size_t currSize = uint16Buffer.getMaxIndex();
+    size_t value = uint16Buffer.appendBuffer( uint16Buffer );
+    if( value != currSize ) {
+       std::cerr << "appendBuffer return did not match original maxIndex" 
+                 << value <<"!="<<currSize <<std::endl;
+       return false;
+    }
+
+    if( uint16Buffer.getMaxIndex() != 2*currSize ) {
+       std::cerr << "Extended Buffer failed to to append: " 
+                 << uint16Buffer.getMaxIndex()<<"!="<< 2*currSize  
+                 << std::endl;
+       return false;
+    }
+
+    for( int i = 0; i < currSize; i++ ) {
+       if(  uint16Buffer[i] != uint16Buffer[i+currSize] ) {
+          std::cerr << "AppendBuffer failed : "<<i<<" - " 
+                    << uint16Buffer[i]<<"!="<< uint16Buffer[i+currSize]
+                    << std::endl;
+          rc = false;
+       }
+    }
+
+    if( !rc ) {
+       return false;
+    }
+
 
    return true;
 }

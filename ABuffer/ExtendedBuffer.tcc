@@ -23,6 +23,7 @@ namespace atl
          size_t getCapacity();
          size_t setElements( T * array, size_t elements, size_t startIndex, bool resizeFlag = false);
          bool   getElements( T * array, size_t count, size_t startIndex );
+         size_t appendBuffer( ExtendedBuffer<T> buffer, bool resizeFlag = true );
 
          ExtendedBuffer<T>  getCopy( bool releaseFlag = false );
 
@@ -164,6 +165,23 @@ namespace atl
        }
 
        return buffer;
+    }
+
+    /**
+     * \brief Appends data from the provided buffer onto the end of the current buffer
+     *
+     * \param [in] buffer ExtendedBuffer (of type U) to append to the end
+     * \return offset of the data into the buffer on sucess, UINT_MAX on failure
+     **/
+    template<typename T>
+    size_t ExtendedBuffer<T>::appendBuffer( ExtendedBuffer<T> buffer, bool resizeFlag )
+    {
+       //Reserve the offset of the data
+       size_t offset = m_maxIndex;
+
+       size_t count = setElements( (T*)buffer.m_buffer.get(), buffer.getMaxIndex(), offset ); 
+
+       return offset;
     }
 }
 

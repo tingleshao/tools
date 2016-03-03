@@ -1,5 +1,5 @@
 #Top-level cmake file for the XRayData Repository.
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.12)
 
 PROJECT(ATL)
 

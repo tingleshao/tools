@@ -8,7 +8,6 @@ include_directories( ${CMAKE_SOURCE_DIR}/AThread)
 include_directories( ${CMAKE_SOURCE_DIR}/ABuffer)
 include_directories( ${CMAKE_SOURCE_DIR}/ASocket)
 include_directories( ${CMAKE_SOURCE_DIR}/ThreadSafeQueue)
-SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-std=c++11 -pthread")
 
 #Find OS Threads Library
 find_package(Threads REQUIRED)

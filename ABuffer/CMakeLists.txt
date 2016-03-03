@@ -2,13 +2,8 @@ cmake_minimum_required(VERSION 2.8)
 
 PROJECT(AquetiTools)
 
-#Set compiler/linker options
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fexpensive-optimizations -pthread")
-
 #Find OS Threads Library
 find_package(Threads REQUIRED)
-
-
 
 #This tells cmake to install header files when make install is executed
 include(GenerateExportHeader)
@@ -24,27 +19,30 @@ set( LIB_SOURCES
 add_library( ABuffer SHARED ${LIB_SOURCES})
 add_library( ABuffer_static ${LIB_SOURCES})
 
+set(ABuffer_INSTALL
+    ABuffer
+    ABuffer_static
+)
+
 #specifies an executable for testing
-add_executable( bufferTest
-   BufferTest.cpp
-   ExtendedBuffer.cpp
-   TSArray.cpp
-   TSMatrix.cpp
-)
+if(MAKE_TESTS)
+    add_executable( bufferTest
+       BufferTest.cpp
+       ExtendedBuffer.cpp
+       TSArray.cpp
+       TSMatrix.cpp
+    )
 
-target_link_libraries( bufferTest
-   ABuffer_static
-   pthread
-)
-
-
-
+    target_link_libraries( bufferTest
+       ABuffer_static
+       ${CMAKE_THREAD_LIBS_INIT}
+    )
+    list(APPEND ABuffer_INSTALL bufferTest)
+endif()
 
 #install library files
 install(TARGETS 
-   bufferTest
-   ABuffer
-   ABuffer_static
+   ${ABuffer_INSTALL}
    LIBRARY DESTINATION lib
    ARCHIVE DESTINATION lib
    INCLUDES DESTINATION include

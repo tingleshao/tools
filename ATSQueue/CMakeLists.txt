@@ -2,15 +2,24 @@ cmake_minimum_required(VERSION 2.8)
 
 PROJECT(AquetiTools)
 
-#Set compiler/linker options
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread -fexpensive-optimizations")
-
 #specifies a list of source files to be compiled
 set( BASE_SOURCES 
    ATSQueueTest.cpp
 )
 
-add_executable(ATSQueue_test ${BASE_SOURCES})
+if(MAKE_TESTS)
+    add_executable(ATSQueue_test ${BASE_SOURCES})
+    target_link_libraries(ATSQueue_test ${CMAKE_THREAD_LIBS_INIT})
+
+    install(TARGETS 
+        ATSQueue_test
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        INCLUDES DESTINATION include
+        PUBLIC_HEADER DESTINATION include
+        RUNTIME DESTINATION bin
+    )
+endif()
 
 install(FILES
    ATSQueue.tcc

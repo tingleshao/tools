@@ -19,6 +19,17 @@ if(DOXYGEN_FOUND)
    )
 endif(DOXYGEN_FOUND)
 
+option(MAKE_TESTS "Build test executables" ON)
+
+# Additional build flags
+if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -std=c++11 -O0") #Compile faster on debug, with warnings
+elseif( CMAKE_BUILD_TYPE STREQUAL "Release" )
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3") #Optimize compilation, no warnings
+else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -O2") #Else slightly optimize, with warnings
+endif()
+
 #Specify output locations for files.
 set(INCLUDE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/include")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -62,8 +73,9 @@ add_library( ATL_static STATIC
    ATSQueue/ThreadSafeQueue/ThreadSafeQueue.cpp
 )
 
-add_subdirectory(test)
-
+if(MAKE_TESTS)
+    add_subdirectory(test)
+endif()
 
 #install library files
 install(TARGETS 

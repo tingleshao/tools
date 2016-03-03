@@ -189,7 +189,7 @@ namespace atl
          return false;
       }
       else {
-         handleMessage( sockData->data.getTypeBuffer(true));
+         handleMessage( sockData->data );
          received++;
       }
    
@@ -211,20 +211,17 @@ namespace atl
    {
       int nbytes = 0;
       int ret = 0;
-   
-      //Prep reference data
-      uint8_t buffer[bufferSize];
 
-      size_t offset = refSocketData->data.getSize();
-   
-      size_t count = bufferSize-offset;
+      if( refSocketData->data.m_buffer.use_count() == 0 )
+      {
+         refSocketData->data.allocate(DEFAULT_SOCKET_BUFFER_SIZE);
+      }
    
       //Read map data at the file descriptor into the refSocketData buffer
       nbytes = read ( refSocketData->fd
-                    , buffer
-                    , count
+                    , refSocketData->data.m_buffer.get()
+                    , refSocketData->data.getSize()
                     );
-   
    
       //If no bytes were ready, we have an error
       if (nbytes < 0)
@@ -234,16 +231,9 @@ namespace atl
          fprintf(stderr, "Unable to read fd: %d\n", refSocketData->fd );
          return -1;
       }
-      else if (nbytes == 0) {
-         return 0;
-      }
 
-      // Data read. 
-      std::vector<uint8_t> localVect(buffer, buffer+nbytes);
-      refSocketData->data.setElements( localVect, offset, true );
-   
       //This would be changed here to check if a given number of bytes were received.
-      return refSocketData->data.getSize();
+      return nbytes;
    }
    
    
@@ -385,7 +375,7 @@ namespace atl
     *
     * \param [in] index index of the socket in the array
     **/
-   TypeBuffer<uint8_t> SocketServer::readIndex( size_t index )
+   ExtendedBuffer<uint8_t> SocketServer::readIndex( size_t index )
    {
    
       int rc = readSocketData( &socketDataVector[index] );

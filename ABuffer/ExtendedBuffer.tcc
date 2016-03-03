@@ -1,200 +1,188 @@
-#ifndef EXTENDEDBUFFER_H
-#define EXTENDEDBUFFER_H
-//#include <iostream>
-#include <cstdlib>
-#include <iostream>
-#include <climits>
-#include <cstring>
-#include <vector>
-#include <algorithm>
-#include "TypeBuffer.tcc"
-
-using namespace std;
+#pragma once
+#include "DataBuffer.h"
 
 namespace atl
 {
-
    /**
-    * \brief Extends the DataBuffer class to manage arrays of data.
-    *
-    * This class is templated so data can be accessed in terms of elements
-    * as opposed to being restricted to a single type
+    * \brief class that 
     **/
    template <typename T>
-   class ExtendedBuffer : public TypeBuffer<T>
+   class ExtendedBuffer : public DataBuffer
    {
+      private: 
+         size_t m_elementSize  = 0;         //!< Size of an element
+         size_t m_capacity     = 0;         //!< Number of elements in the allocated buffer
+         size_t m_maxIndex     = 0;         //!< Highest index specified         
       protected:
       public:
          ExtendedBuffer(size_t elements=0);
-   
+
          bool   allocate( size_t elements, bool resizeFlag = false);
          void   deallocate();
-         size_t getSize();
          size_t getMaxIndex();
-         bool   setMaxIndex( size_t value );
-         size_t setElements( std::vector<T> &array, size_t startIndex, bool resizeFlag=true );
-         std::vector<T> getElements( size_t count, size_t startIndex );
-   
-         TypeBuffer<T> getTypeBuffer( bool release = false );
-   
-   
+         size_t getCapacity();
+         size_t setElements( T * array, size_t elements, size_t startIndex, bool resizeFlag = false);
+         bool   getElements( T * array, size_t count, size_t startIndex );
+         size_t appendBuffer( ExtendedBuffer<T> buffer, bool resizeFlag = true );
+
+         ExtendedBuffer<T>  getCopy( bool releaseFlag = false );
+
          /** \brief returns the value at the index **/
-         T operator [](size_t index) const   {return TypeBuffer<T>::m_bufferVect->at(index);}; 
+         T operator [](size_t index) const   {return ((T*)DataBuffer::m_buffer.get())[index];};
          /** \brief assigned the index to the value **/
-         T & operator [](size_t index) { 
-                                          return TypeBuffer<T>::m_bufferVect->at(index);
-                                       }; 
-   
+         T & operator [](size_t index) { return ((T *)DataBuffer::m_buffer.get())[index];};
    };
-   
-   /**
-    * \brief Sets the number of elements to the specified value
-    *
-    * \param [in] elements number of elements to allocate on creation (default = 0 );
-    **/
-   template<typename T>
-   ExtendedBuffer<T>::ExtendedBuffer( size_t elements) 
-   {
-      allocate(elements);
-   }
-   
-   /**
-    * \brief Returns the number of elements allocated to the array
-    * \return number of elements allocated in the array
-    **/
-   template<typename T>
-   size_t ExtendedBuffer<T>::getSize()
-   {
-      if( TypeBuffer<T>::m_bufferVect.use_count() == 0 ) {
-         return 0;
-      }
 
-      return TypeBuffer<T>::m_bufferVect->size();
-   }
-   
-   /**
-    * \brief allocates the buffer and sets the elementCount
-    *
-    * \param [in] elements number of elements to allocate
-    * \param [in] resizeFlag boolean to indicate if we resize as needed
-    * \return true on success, false on failure
-    *
-    * This functions  wraps the DataBuffer::allocate call to provide a method
-    * to set the element count. This data will automatically be allocated if
-    * the underlying buffer is set to NULL
-    **/
-   template<typename T>
-   bool ExtendedBuffer<T>::allocate( size_t elements, bool resizeFlag )
-   {
-      //Always allocate and reserve the provided number of elements on initialization
-      if( TypeBuffer<T>::m_bufferVect.use_count() == 0 ) {
-         TypeBuffer<T>::m_bufferVect.reset(new std::vector<T>);
-         TypeBuffer<T>::m_bufferVect->reserve(elements);
-      }
-      else if( resizeFlag ) {
-         TypeBuffer<T>::m_bufferVect->resize(elements);
-      }
-   
-      return true;
-   }
-   
-   /**
-    * \brief deallocates the buffer and clears the elementCount
-    *
-    * \return true on success, false on failure
-    *
-    * This functions  wraps the DataBuffer::deallocate call to provide a method
-    * to clear the element count.
-    **/
-   template<typename T>
-   void ExtendedBuffer<T>::deallocate()
-   {
-      return;
-   }
-   
-   /**
-    * \brief This function copies an array of elements to the specified offset
-    *
-    * \param [in] array pointer to the array of elements to copy
-    * \param [in] count number of elements to copy
-    * \param [in] startIndex index to start to copy to
-    * \param [in] resizeFlag flag to indicate if array should be resized if needed.
-    * \return number of elements copied.
-    *
-    * If the resize flag is set, this function well expand the array to handle all
-    * of the input data. Otherwise, if the internal buffer is undersized, all 
-    * available space will be filled. If startIndex == UINT_MAX, the array is appended to 
-    * the current m_maxIndex index. 
-    **/
-   template<typename T>
-   size_t ExtendedBuffer<T>::setElements( std::vector<T> &array, size_t startIndex, bool resizeFlag ) 
-   {
-      //If we are not used, allocate
-      if( TypeBuffer<T>::m_bufferVect.use_count() == 0 ) {
-         allocate(array.size());
-      }
 
-      else if( TypeBuffer<T>::m_bufferVect->size() < startIndex + array.size())
-      {
-         allocate( startIndex + array.size(), true);
-//         TypeBuffer<T>::m_bufferVect->resize(  
-      }
-
-      std::copy( array.begin()
-               , array.end()
-               , TypeBuffer<T>::m_bufferVect->begin()+startIndex
-               );
-   
-      return TypeBuffer<T>::m_bufferVect->size();
-   }
-   
-   /**
-    * \brief Returns a copy of the elements at the given destination
+   /** 
+    * \brief Constructor
     *
-    * \param [in] dest destination address to write data to
-    * \param [in] count number of elements to copy 
-    * \param [in] startIndex index into array to start with (default=0)
-    * \return number of elements successfully copied
+    * \param [in] elements number of elements to allocate in the array
     *
-    * This function copies the number of specified elements to the destination
-    * address starting at the index specified by the startIndex. If startIndex 
-    * is greater that the number of specified elements (elementCount) this only
-    * the elements that are defined are copied. 
-    *
-    * No error checking is performed to ensure that the destination pointer has
-    * been properly allocated.
+    * This function allocated the specified number of elements;
     **/
-   template<typename T>
-   std::vector<T> ExtendedBuffer<T>::getElements( size_t count, size_t startIndex ) 
-   {
-      std::vector<T> localVect;
-      localVect.reserve(TypeBuffer<T>::m_bufferVect.size());
-      localVect.insert( localVect.begin(), TypeBuffer<T>::m_bufferVect.begin(), TypeBuffer<T>::m_bufferVect.end());
+    template<typename T>
+    ExtendedBuffer<T>::ExtendedBuffer( size_t elements )
+    {
+       m_elementSize = sizeof(T);
 
-      return localVect; 
-   }
-   
-   /**
-    * \brief Gets a pointer to the buffer and clears class values (no deallocation)
-    * \return TypeBuffer with the data pointer and number fo elements
-    **/
-   template <typename T>
-   TypeBuffer<T> ExtendedBuffer<T>::getTypeBuffer( bool release)
-   {
-      TypeBuffer<T> tbuffer = *this;
+       if( elements ) {
+          allocate(elements);
+       }
 
-      if( release ) 
-      {
-         //Clear Extended Buffer variables
-         //Clear DataBuffer variables
-         TypeBuffer<T>::m_bufferVect.reset();
-      }
+    }
 
-      return tbuffer;
-   }
-   
+    /**
+     * \brief allocates data for the array
+     *
+     * \param [in] elements number of elements to allocate
+     * \param [in] resizeFlag indicates if we are allowed to resize our memory
+     **/
+    template<typename T>
+    bool ExtendedBuffer<T>::allocate( size_t elements, bool resizeFlag )
+    {
+       bool rc = DataBuffer::allocate( m_elementSize * elements, resizeFlag );
+       m_capacity = DataBuffer::getSize() / m_elementSize;
+
+       return true;
+    }
+
+    /**
+     * \brief deallocates the buffers
+     **/
+    template<typename T>
+    void ExtendedBuffer<T>::deallocate()
+    {
+       m_capacity     = 0;
+       m_maxIndex     = 0;
+       DataBuffer::deallocate();
+    }
+
+    /**
+     * \brief Returns the maximum specified index
+     **/
+    template<typename T>
+    size_t ExtendedBuffer<T>::getMaxIndex()
+    {
+       return m_maxIndex;
+    }
+
+    /**
+     * \brief Returns the allocated capacity of the array
+     **/
+    template<typename T>
+    size_t ExtendedBuffer<T>::getCapacity()
+    {
+       return m_capacity;
+    }
+
+    /**
+     * \brief Sets the array at the given index as specified
+     *
+     * \param [in] array array of elements to insert into the buffer
+     * \param [in] elements number of elements in the array
+     * \param [in] offset index to start insertion from
+     * \param [in] resizeFlag flag to indicate if we need to resize the buffer 
+     *
+     * return  number of elements added to the array
+     **/
+    template<typename T>
+    size_t ExtendedBuffer<T>::setElements( T * array, size_t elements, size_t startIndex, bool resizeFlag)
+    {
+       //If we are UINT_MAX, set startIndex to m_maxIndex
+       if( startIndex == UINT_MAX ) {
+          startIndex = m_maxIndex;
+       }
+
+       //Set data as needed
+       size_t bytes = DataBuffer::setData((uint8_t *)array
+                                         , elements * m_elementSize
+                                         , startIndex * m_elementSize
+                                         , resizeFlag 
+                                         );
+
+       //Check if we need to allocate more data
+       if( bytes > 0 ) 
+       {
+          m_maxIndex = startIndex+elements; 
+          m_capacity = DataBuffer::getSize() / m_elementSize;
+       }
+
+       return bytes/m_elementSize;
+    }
+
+    /**
+     * \brief Populates the given array with the specified data
+     *
+     * \param [in] array pointer to the array to fill with info
+     * \param [in] count number of elements to get
+     * \param [in] startIndex first index to start copy from
+     * \return true on success, false on failure
+     **/ 
+    template<typename T>
+    bool ExtendedBuffer<T>::getElements( T * array, size_t count, size_t startIndex )
+    {
+
+       memcpy( array, DataBuffer::m_buffer.get(), count * m_elementSize );
+       return true;
+
+    }
+
+    /**
+     * \brief Gets a copy elements 
+     * \param [in] releaseFlag flag to indicate that the orginal class is done with the data
+     *
+     * This Function returns a copy of the class. The releaseFlag is used to eliminate references
+     * to the pointer within the interal class
+     **/ 
+    template<typename T>
+    ExtendedBuffer<T> ExtendedBuffer<T>::getCopy( bool releaseFlag )
+    {
+       ExtendedBuffer<T> buffer = *this;
+
+       if( releaseFlag ) {
+          DataBuffer::deallocate();
+       }
+
+       return buffer;
+    }
+
+    /**
+     * \brief Appends data from the provided buffer onto the end of the current buffer
+     *
+     * \param [in] buffer ExtendedBuffer (of type U) to append to the end
+     * \return offset of the data into the buffer on sucess, UINT_MAX on failure
+     **/
+    template<typename T>
+    size_t ExtendedBuffer<T>::appendBuffer( ExtendedBuffer<T> buffer, bool resizeFlag )
+    {
+       //Reserve the offset of the data
+       size_t offset = m_maxIndex;
+
+       size_t count = setElements( (T*)buffer.m_buffer.get(), buffer.getMaxIndex(), offset ); 
+
+       return offset;
+    }
 }
 
-//Test function
 bool testExtendedBuffer();
-#endif

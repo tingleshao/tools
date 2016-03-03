@@ -14,7 +14,7 @@ namespace atl {
     * \param [in] resizeFlag flag to indicate if data should be deleted and reallocated
     * \return true on success, false on failure
     **/
-   bool RawDataBuffer::allocate( size_t bytes, bool resizeFlag)
+   bool RawBuffer::allocate( size_t bytes, bool resizeFlag)
    {
       //Make sure buffer is not already allocated
       size_t bufferSize = 0;
@@ -51,7 +51,7 @@ namespace atl {
    /**
     * \brief Deallocates and allocated data
     **/
-   void RawDataBuffer::deallocate( void )
+   void RawBuffer::deallocate( void )
    {
       //Create a shared ptr to replace with current
       std::shared_ptr<uint8_t> tmpBuffer;                 //!< Actual data buffer
@@ -92,7 +92,7 @@ namespace atl {
    bool DataBuffer::allocate( size_t bytes, bool resizeFlag ) 
    {
       size_t origOffset = m_bufferSize;
-      bool rc = RawDataBuffer::allocate( bytes, resizeFlag );
+      bool rc = RawBuffer::allocate( bytes, resizeFlag );
       if(( rc )&&(m_useDefaultValueFlag)) {
          for( size_t i = origOffset; i < m_bufferSize; i++ )  {
             m_buffer.get()[i] = m_defaultValue;
@@ -121,14 +121,14 @@ namespace atl {
     * \brief Returns a copy of data from the buffer
     *
     * \param [in] offset offset from the start to begin copy
-    * \return RawDataBuffer with a pointer to the memory buffer and the size of the data
+    * \return RawBuffer with a pointer to the memory buffer and the size of the data
     *
-    * This function instantiates a RawDataBuffer and populates it with data from the
+    * This function instantiates a RawBuffer and populates it with data from the
     * class. It is assumed the calling process will delete the data when it is complete.
     **/
-   RawDataBuffer DataBuffer::getData()
+   RawBuffer DataBuffer::getData()
    {
-      RawDataBuffer rawData;
+      RawBuffer rawData;
    
       //Make sure we have data
       if( m_bufferSize == 0 ) {
@@ -182,9 +182,7 @@ namespace atl {
    
       //Perform copy
       if( offset+count <= m_bufferSize ) {
-         for( int i = 0; i < count; i++) {
-            m_buffer.get()[offset+i] = static_cast<uint8_t *>(array)[i];
-         }
+         memcpy( &m_buffer.get()[offset], array, count );
       }
    
       return count;
@@ -314,7 +312,7 @@ namespace atl {
          std::cerr<<"Failed to set/get elements"<<std::endl;
       }
    
-      atl::RawDataBuffer rdb = dataBuffer2.getData();
+      atl::RawBuffer rdb = dataBuffer2.getData();
    
       rdb.deallocate();
    

@@ -21,6 +21,7 @@
 #include <thread>
 
 #include <AThread.h>
+#include <ExtendedBuffer.tcc>
 #include "BaseSocket.h"
 
 #define SKT_BACKLOG 1000
@@ -38,7 +39,7 @@ namespace atl
    
    
          int  addConnection();
-         TypeBuffer<uint8_t> readIndex( size_t index );
+         ExtendedBuffer<uint8_t> readIndex( size_t index );
          void mainLoop( void );
    
       public:
@@ -52,7 +53,6 @@ namespace atl
          int sendData( int index, uint8_t * buffer, size_t bytes );
    
          size_t readSocketData(BaseSocketData * socketData );
-   //      virtual int processSocketIndex( int index );
          virtual bool processSocketData( BaseSocketData * data);
    
          

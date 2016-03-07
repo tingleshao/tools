@@ -178,7 +178,6 @@ namespace atl
     {
        //Reserve the offset of the data
        size_t offset = m_maxIndex;
-
        size_t count = setElements( (T*)buffer.m_buffer.get(), buffer.getMaxIndex(), offset ); 
 
        return offset;

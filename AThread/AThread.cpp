@@ -172,7 +172,7 @@ namespace atl
    
       cout << "Testing vector "<<endl << endl;
       //Spawn threadCount threads
-      for( int i = 0; i < threadCount; i++ ) {
+      for( uint16_t i = 0; i < threadCount; i++ ) {
          threadVect[i].Start(&running);
       }
    
@@ -181,17 +181,17 @@ namespace atl
       running = false;
    
       //Join all
-      for( int i = 0; i < threadCount; i++ ) {
+      for( uint16_t i = 0; i < threadCount; i++ ) {
          threadVect[i].Join();
       }
    
       //ReSpawn threadCount threads
-      for( int i = 0; i < threadCount; i++ ) {
+      for( uint16_t i = 0; i < threadCount; i++ ) {
          threadVect[i].Start(&running);
       }
    
       //Stop threadCount threads
-      for( int i = 0; i < threadCount; i++ ) {
+      for( unsigned int i = 0; i < threadCount; i++ ) {
          threadVect[i].Stop();
       }
       

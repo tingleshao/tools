@@ -49,16 +49,16 @@ namespace atl
     * This function assumes that the buffer passed is allocated
     * memory with the provided number of bytes. 
     **/
-   int BaseSocketData::sendData( void * buffer,  size_t bytes )
+   size_t BaseSocketData::sendData( void * buffer,  size_t bytes )
    {
       //Make sure we're writing to a valid file descriptor
       if( fd < 0 ) {
          fprintf( stderr, "BaseSocketData asked to send to undefined socket\n");
          return -1;
       }
-      int rc = noint_block_write( fd, (uint8_t *)buffer, bytes );
+      size_t rc = noint_block_write( fd, (uint8_t *)buffer, bytes );
       if( rc < bytes ) {
-         printf("Error sending data: %d, %ld\n", rc, bytes);
+         printf("Error sending data: %ld, %ld\n", rc, bytes);
          return -2;
       }
    
@@ -630,7 +630,6 @@ namespace atl
    {
       int udp_socket;
       struct sockaddr_in servaddr;
-      socklen_t len;
    
       udp_socket = socket(AF_INET, SOCK_DGRAM, 0 );
       if (udp_socket == -1) {
@@ -1015,11 +1014,7 @@ namespace atl
     **/
    int BaseSocket::recvSocketData() 
    {
-      size_t bufSize = socketData.data.getCapacity() - socketData.data.getSize();
-
       //Read in the data
-      uint8_t buffer[bufSize];
-
       int rc = recvData( socketData.data.m_buffer.get()
                        , socketData.data.getSize()
                        );

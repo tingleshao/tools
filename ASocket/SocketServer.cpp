@@ -45,7 +45,7 @@ namespace atl
    SocketServer::~SocketServer()
    {
       //Close all socket vectors
-      for(int i = 0; i < socketDataVector.size(); i++ ) 
+      for(uint16_t i = 0; i < socketDataVector.size(); i++ ) 
       {
          socketDataVector[i].data.deallocate();
    
@@ -210,7 +210,6 @@ namespace atl
    size_t SocketServer::readSocketData( BaseSocketData * refSocketData )
    {
       int nbytes = 0;
-      int ret = 0;
 
       if( refSocketData->data.m_buffer.use_count() == 0 )
       {
@@ -277,7 +276,7 @@ namespace atl
          else 
          {
             //Loop through file descriptors and process pending data
-            for( int i = 0; i < socketDataVector.size(); i++ ) 
+            for( uint16_t i = 0; i < socketDataVector.size(); i++ ) 
             {
                if(  socketDataVector[i].fd == -1 ) {
                   continue;
@@ -327,7 +326,7 @@ namespace atl
       int fail = 0;
       int success=0;
       //On broadcast (index = -1 ), recursively call function for each value
-      for( int i = 1; i < socketDataVector.size(); i++ ) {
+      for( uint16_t i = 1; i < socketDataVector.size(); i++ ) {
          //Begin regular processing
          printf("Writing %ld bytes to %d\n", bytes, socketDataVector[i].fd );
          int rc= sendData( socketDataVector[i], buffer, bytes );
@@ -360,7 +359,7 @@ namespace atl
     **/
    int SocketServer::sendData( BaseSocketData data, uint8_t * buffer, size_t bytes )
    {
-      int rc = noint_block_write( data.fd, (uint8_t *)buffer, bytes );
+      uint rc = noint_block_write( data.fd, (uint8_t *)buffer, bytes );
       if( rc < bytes ) {
          printf("Error sending data: %d, %ld\n", rc, bytes);
          return -2;
@@ -378,7 +377,7 @@ namespace atl
    ExtendedBuffer<uint8_t> SocketServer::readIndex( size_t index )
    {
    
-      int rc = readSocketData( &socketDataVector[index] );
+      readSocketData( &socketDataVector[index] );
     
       //Return a valid index 
       return socketDataVector[index].extractData();
@@ -396,7 +395,6 @@ namespace atl
    int create_tcp_server(const char *addr, int port, int backlog)
    {
       struct sockaddr_in sock_in; // The name of the sock_in
-      struct hostent *host;       // The host to connect to 
       int sock;
    
       // set up the socket.  We don't care about the port number
@@ -470,9 +468,6 @@ namespace atl
       std::vector<BaseSocket> baseSocketVector;
       baseSocketVector.resize(recvCount);
    
-      int clientIndex = -1;
-      int serverIndex = -1;
-   
       //If we're Ok, Create a server object
       int irc = socketServer.Initialize( port, recvCount );
       if( irc < 0 ) {
@@ -502,12 +497,11 @@ namespace atl
       }
    
       Timer sendTime;
-      int messageCount = 0;
    
       printf("Burst sending messages\n");
       char data[256];
    
-      for( int i = 0; i < 10; i++ ) {
+      for( uint16_t i = 0; i < 10; i++ ) {
          //Send message
          sprintf( data,"kilroy was here: %d", i);
          printf("Sending: %s\n", data );
@@ -518,12 +512,10 @@ namespace atl
          memset( data2, 0, 256 );
    
          //Receive message
-         for( int i = 0; i < recvCount; i++ ) {
+         for( uint16_t i = 0; i < recvCount; i++ ) {
             baseSocketVector[i].recvData(&data2, strlen( data ));
          }
       }
-   
-      double elapsed = sendTime.elapsed();
    
       running = false;
    

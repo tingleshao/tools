@@ -17,7 +17,7 @@ using namespace std;
     uint16_t buffer[elements];
 
     //Test setting elements
-    for( int i = 0; i < elements; i++) {
+    for( size_t i = 0; i < elements; i++) {
        buffer[i] = i;
     }
     size_t count = uint16Buffer.setElements( buffer, elements, 0, true );
@@ -29,7 +29,7 @@ using namespace std;
 
 
     bool rc = true;
-    for( int i = 0; i < elements; i++ ) {
+    for( size_t i = 0; i < elements; i++ ) {
        if( buffer[i] != uint16Buffer[i] ) {
           std::cerr << "Extended Buffer failed to set elements from array "<<i<<": "
                     << buffer[i] << "!="<< uint16Buffer[i] <<std::endl;
@@ -60,7 +60,7 @@ using namespace std;
     }
 
     //Verify data
-    for( int i =  0; i < uint16Buffer.getMaxIndex(); i++ ) {
+    for( size_t i =  0; i < uint16Buffer.getMaxIndex(); i++ ) {
        if( uint16Buffer[i] != i%(elements/2)) {
           if((( i < elements/2 )&&( uint16Buffer[i] != i ))||
              ( uint16Buffer[i] != i - elements/2)
@@ -91,7 +91,7 @@ using namespace std;
        return false;
     }
 
-    for( int i = 0; i < currSize; i++ ) {
+    for( size_t i = 0; i < currSize; i++ ) {
        if(  uint16Buffer[i] != uint16Buffer[i+currSize] ) {
           std::cerr << "AppendBuffer failed : "<<i<<" - " 
                     << uint16Buffer[i]<<"!="<< uint16Buffer[i+currSize]

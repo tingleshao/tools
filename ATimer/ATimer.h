@@ -80,7 +80,7 @@ namespace atl
    timeval TimevalScale(const timeval &tv, double scale);
    timeval TimevalDiff(const timeval &tv1, const timeval &tv2);
    timeval TimevalNormalize(const timeval &in_tv);
-   static inline void timevalNormalizeInPlace(timeval &in_tv);
+//   static inline void timevalNormalizeInPlace(timeval &in_tv);
    
    void ASleep(double time );
    

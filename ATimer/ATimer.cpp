@@ -260,8 +260,6 @@ namespace atl
    //***********************************************************
    int64_t convertDoubleToTimeCode( double dTime,  int fps )
    {
-      timeval tv = convertDoubleToTimeVal( dTime );
-   
       return convertTimeValToTimeCode( convertDoubleToTimeVal( dTime ), fps) ;
    }
    

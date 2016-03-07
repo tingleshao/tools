@@ -11,8 +11,7 @@ const size_t threadCount  = 100;
 TSArray<double> tsa;
 void consumerThread( double id) 
 {
-   size_t count;
-   for( int i = 0; i < testSize; i++ ) {
+   for( size_t i = 0; i < testSize; i++ ) {
       tsa.setItem( id, i);
       double value;
       tsa.getItem( &value, i);
@@ -54,11 +53,11 @@ bool testTSArray()
    std::thread t[threadCount];
 
    //Spawn a bunch of threads
-   for( int i = 0; i < threadCount; i++ ) {
+   for( size_t i = 0; i < threadCount; i++ ) {
       t[i] = std::thread(consumerThread, (double)i);
    }
 
-   for( int i = 0; i < threadCount; i++ ) {
+   for( size_t i = 0; i < threadCount; i++ ) {
       t[i].join();
    }
    

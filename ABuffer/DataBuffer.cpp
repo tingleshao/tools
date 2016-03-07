@@ -280,7 +280,7 @@ namespace atl {
       atl::DataBuffer dataBuffer2;
       std::shared_ptr<uint8_t> buffer2;
       uint8_t buffer[elements];
-      for( int i = 0; i <elements; i++ ) 
+      for( uint16_t i = 0; i <elements; i++ ) 
       {
          buffer[i] = i;
       }
@@ -301,7 +301,7 @@ namespace atl {
       }
    
       rc = true;
-      for( int i = 0; i < elements; i++ ) {
+      for( uint16_t i = 0; i < elements; i++ ) {
          if( buffer[i] != buffer2.get()[i] ) {
             std::cerr<<"Buffer "<<i<<" does not match output:("<<buffer[i]<<"!="<<buffer2.get()[i]<<")"<<std::endl;
             rc = false;

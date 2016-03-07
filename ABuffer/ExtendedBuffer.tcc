@@ -62,9 +62,12 @@ namespace atl
     bool ExtendedBuffer<T>::allocate( size_t elements, bool resizeFlag )
     {
        bool rc = DataBuffer::allocate( m_elementSize * elements, resizeFlag );
-       m_capacity = DataBuffer::getSize() / m_elementSize;
 
-       return true;
+       if( rc )  {
+          m_capacity = DataBuffer::getSize() / m_elementSize;
+       }
+
+       return rc;
     }
 
     /**
@@ -178,7 +181,7 @@ namespace atl
     {
        //Reserve the offset of the data
        size_t offset = m_maxIndex;
-       size_t count = setElements( (T*)buffer.m_buffer.get(), buffer.getMaxIndex(), offset ); 
+       setElements( (T*)buffer.m_buffer.get(), buffer.getMaxIndex(), offset ); 
 
        return offset;
     }

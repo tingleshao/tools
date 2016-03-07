@@ -38,7 +38,6 @@ int main(int argc, char ** argv)
    ////////////////////////////////////////////////////////////
    //Parse command line options
    ////////////////////////////////////////////////////////////
-   int argCount = 0;
    for( int i = 1; i < argc; i++ ) {
       if( !strcmp(argv[i], "-h" )) {
          printHelp();

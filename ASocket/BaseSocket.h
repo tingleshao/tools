@@ -51,7 +51,7 @@ namespace atl
          ExtendedBuffer<uint8_t> data;     //!< Pointer to the data structure for recieving data
    
          ExtendedBuffer<uint8_t> extractData(); 
-         int sendData( void * buffer,  size_t bytes );
+         size_t sendData( void * buffer,  size_t bytes );
          void closeSocket();
    }; 
    
@@ -126,7 +126,7 @@ namespace atl
    
    /// Establish a TCP connection to the specified host name and port number.
    // Returns -1 on failure and a file descriptor on success.
-   static int connect_tcp_to(const char *addr, int port);
+   //static int connect_tcp_to(const char *addr, int port);
    
    
    /**
@@ -140,8 +140,8 @@ namespace atl
     * of EOF being reached before all the data arrives), or return the number
     * of characters read before timeout (in the case of a timeout).
     **/
-   static int noint_block_read_timeout(int infile, unsigned char buffer[], size_t length,
-                                       struct timeval *timeout);
+ //  static int noint_block_read_timeout(int infile, unsigned char buffer[], size_t length,
+//                                       struct timeval *timeout);
    
    /**
     *      This routine will write a block to a file descriptor.  It acts just
@@ -164,8 +164,8 @@ namespace atl
     * in its function, and allows this code to perform properly on pxpl5, which
     * sends USER1 interrupts while rendering an image.
     **/
-   static int noint_select(int width, fd_set *readfds, fd_set *writefds,
-                           fd_set *exceptfds, struct timeval *timeout);
+//   static int noint_select(int width, fd_set *readfds, fd_set *writefds,
+//                           fd_set *exceptfds, struct timeval *timeout);
    
    
    int create_udp_client( const char * addr, int port ); 

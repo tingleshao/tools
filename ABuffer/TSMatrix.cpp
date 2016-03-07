@@ -12,7 +12,6 @@ TSMatrix<double> tsm;
 
 void TSMconsumerThread( double id) 
 {
-   size_t count;
    for( size_t i = 0; i < TSMTestSize; i++ ) {
       tsm.setItem( id, {i%10, i%10, i%10});
       double value;
@@ -66,11 +65,11 @@ bool testTSMatrix()
    std::thread t[TSMThreadCount];
 
    //Spawn a bunch of threads
-   for( int i = 0; i < TSMThreadCount; i++ ) {
+   for( uint16_t i = 0; i < TSMThreadCount; i++ ) {
       t[i] = std::thread(TSMconsumerThread, (double)i);
    }
 
-   for( int i = 0; i < TSMThreadCount; i++ ) {
+   for( uint16_t i = 0; i < TSMThreadCount; i++ ) {
       t[i].join();
    }
    return true;

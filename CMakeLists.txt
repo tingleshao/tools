@@ -60,7 +60,6 @@ add_library( ATL SHARED
    ASocket/SocketServer.cpp
    AThread/AThread.cpp
    ATimer/ATimer.cpp
-   ATSQueue/ThreadSafeQueue/ThreadSafeQueue.cpp
 )
 
 add_library( ATL_static STATIC 
@@ -70,7 +69,6 @@ add_library( ATL_static STATIC
    ASocket/SocketServer.cpp
    AThread/AThread.cpp
    ATimer/ATimer.cpp
-   ATSQueue/ThreadSafeQueue/ThreadSafeQueue.cpp
 )
 
 if(MAKE_TESTS)

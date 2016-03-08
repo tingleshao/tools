@@ -14,7 +14,7 @@ void print_size(ATSQueue<int> &q, bool print)
     if(print) {
         std::cout << "Queue length: " << q.size() << std::endl;
     } else {
-        int i = q.size();
+        q.size();
     }
 }
 
@@ -137,7 +137,7 @@ bool test_ATSQueue(unsigned int numThreads, bool print)
 
     start = std::clock();
 
-    for(int i = 0; i < numThreads; i++) {
+    for(unsigned i = 0; i < numThreads; i++) {
         switch(dis(gen))
         {
             case 1:
@@ -163,7 +163,7 @@ bool test_ATSQueue(unsigned int numThreads, bool print)
         }
     }
 
-    for(int i=0; i < numThreads; i++) {
+    for(unsigned i=0; i < numThreads; i++) {
         t[i].join();
     }
 

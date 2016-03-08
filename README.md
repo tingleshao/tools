@@ -8,6 +8,8 @@ This repository contains the source code for a variety of useful tools that are 
 
 **DataBuffer** - Templated class for managing arrays of memory
 
+**ATSQueue** - Templated class for creating a queue/stack of data, used mainly for interprocess communication
+
 ##Applications
 **UnitTest** - Executable for performing a Unit Test on the code base
 

@@ -23,7 +23,7 @@ option(MAKE_TESTS "Build test executables" ON)
 
 # Additional build flags
 if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11 -O0") #Compile faster on debug, with warnings
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -std=c++11 -O0") #Compile faster on debug, with warnings
 elseif( CMAKE_BUILD_TYPE STREQUAL "Release" )
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3") #Optimize compilation, no warnings
 else()

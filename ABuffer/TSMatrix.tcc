@@ -62,7 +62,7 @@ namespace atl
 
          //Loop to calculate the total size
          size_t totalSize = 1;
-         for( int i = m_dimensions.size()-1; i >= 0; i-- ) {
+         for( size_t i = m_dimensions.size()-1; i >= 0; i-- ) {
             if( i == m_dimensions.size()-1) {
                m_dimScalar[i] = totalSize;
             }
@@ -90,7 +90,7 @@ namespace atl
    {
       //Find a total offset into the array
       size_t offset = 0;
-      for( int i = 0; i < m_dimScalar.size(); i++ ) {
+      for( size_t i = 0; i < m_dimScalar.size(); i++ ) {
          offset += coords[i]*m_dimScalar[i];
       }
 

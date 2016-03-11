@@ -47,13 +47,14 @@ include_directories(include ASocket)
 add_definitions(-std=c++11 -fPIC)     #Use C++11 
 
 #setup into subdirectories to combile code
-add_subdirectory(ATimer)
-add_subdirectory(ABuffer)
-add_subdirectory(AThread)
-add_subdirectory(ATSQueue)
-add_subdirectory(ASocket)
+#add_subdirectory(ATimer)
+#add_subdirectory(ABuffer)
+#add_subdirectory(AThread)
+#add_subdirectory(ATSQueue)
+#add_subdirectory(ASocket)
 
 add_library( ATL SHARED
+   ABuffer/BaseBuffer.cpp
    ABuffer/DataBuffer.cpp
    ABuffer/ExtendedBuffer.cpp
    ASocket/BaseSocket.cpp
@@ -63,6 +64,7 @@ add_library( ATL SHARED
 )
 
 add_library( ATL_static STATIC 
+   ABuffer/BaseBuffer.cpp
    ABuffer/DataBuffer.cpp
    ABuffer/ExtendedBuffer.cpp
    ASocket/BaseSocket.cpp

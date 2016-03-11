@@ -166,7 +166,7 @@ namespace atl
       std::cout << "Joined"<<std::endl;
    
       //Vector tests (timed)
-      size_t threadCount = 100;
+      size_t threadCount = 50;
       running = true;
       std::vector<AThread> threadVect(threadCount);
    

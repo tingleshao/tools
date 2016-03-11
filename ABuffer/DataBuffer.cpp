@@ -8,61 +8,6 @@ using namespace std;
 
 namespace atl {
    /**
-    * \brief Allocates the buffer to the given number of elements. 
-    *
-    * \param [in] bytes number of elements of the base type to allocate
-    * \param [in] resizeFlag flag to indicate if data should be deleted and reallocated
-    * \return true on success, false on failure
-    **/
-   bool RawBuffer::allocate( size_t bytes, bool resizeFlag)
-   {
-      //Make sure buffer is not already allocated
-      size_t bufferSize = 0;
-
-      //If we are not resizing and data exists, delete data
-      if((resizeFlag == false )&&(m_bufferSize > 0 )) {
-         return false;
-      }
-
-      if( bytes == 0 ) {
-         deallocate();
-         return true;
-      }
-
-      //Make a copy of the 
-      std::shared_ptr<uint8_t> buffer; 
-      if( m_bufferSize > 0 ) {
-         buffer.swap( m_buffer ); 
-         bufferSize = m_bufferSize;
-      }
-
-      m_buffer.reset( static_cast<uint8_t *>(std::malloc(bytes)), std::free );
-      m_bufferSize = bytes;
-
-      size_t copySize = bytes;
-      if( bufferSize < bytes ) { 
-         copySize = bufferSize;
-      }
-      memcpy( m_buffer.get(), buffer.get(), copySize );
-
-      return true;
-   }
-   
-   /**
-    * \brief Deallocates and allocated data
-    **/
-   void RawBuffer::deallocate( void )
-   {
-      //Create a shared ptr to replace with current
-      std::shared_ptr<uint8_t> tmpBuffer;                 //!< Actual data buffer
-
-      swap( m_buffer, tmpBuffer );
-      m_bufferSize = 0;
-   }
-   
-   
-   
-   /**
     * \brief Constructor
     * 
     * \param[in] bytes number of bytes to allocate on start
@@ -84,6 +29,7 @@ namespace atl {
       if( m_buffer != NULL ) {
          deallocate();
       }
+      m_bufferSize = 0;
    }
    
    /**
@@ -92,7 +38,7 @@ namespace atl {
    bool DataBuffer::allocate( size_t bytes, bool resizeFlag ) 
    {
       size_t origOffset = m_bufferSize;
-      bool rc = RawBuffer::allocate( bytes, resizeFlag );
+      bool rc = BaseBuffer::allocate( bytes, resizeFlag );
       if(( rc )&&(m_useDefaultValueFlag)) {
          for( size_t i = origOffset; i < m_bufferSize; i++ )  {
             m_buffer.get()[i] = m_defaultValue;
@@ -121,14 +67,14 @@ namespace atl {
     * \brief Returns a copy of data from the buffer
     *
     * \param [in] offset offset from the start to begin copy
-    * \return RawBuffer with a pointer to the memory buffer and the size of the data
+    * \return BaseBuffer with a pointer to the memory buffer and the size of the data
     *
-    * This function instantiates a RawBuffer and populates it with data from the
+    * This function instantiates a BaseBuffer and populates it with data from the
     * class. It is assumed the calling process will delete the data when it is complete.
     **/
-   RawBuffer DataBuffer::getData()
+   BaseBuffer DataBuffer::getData()
    {
-      RawBuffer rawData;
+      BaseBuffer rawData;
    
       //Make sure we have data
       if( m_bufferSize == 0 ) {
@@ -211,15 +157,6 @@ namespace atl {
       return true; 
    }
    
-   /**
-    * \brief Returns the number of elements allocated in the array.
-    * \return number of allocated elements
-    **/
-   size_t DataBuffer::getSize(void)
-   {
-      return m_bufferSize;
-   }
-   
    /** 
     * \brief This function is used to enable or disable setting allocated data to the default value
     *
@@ -228,10 +165,6 @@ namespace atl {
    {
       m_useDefaultValueFlag = flag;
    }
- }
-   
-   
-   
    
    /**
     * \brief Unit test for DataBuffer functionality
@@ -244,7 +177,7 @@ namespace atl {
       size_t elements = 100;
    
       //Create some buffers
-      atl::DataBuffer dataBuffer;
+      DataBuffer dataBuffer;
       
       //Specify what the defautl value is
       dataBuffer.setDefaultValue(defaultValue );
@@ -258,7 +191,7 @@ namespace atl {
       }
    
    
-      size_t count = dataBuffer.getSize();
+      size_t count = dataBuffer.m_bufferSize;
       if( count != elements ) {
          std::cerr << "Number of allocated elements does not match:\n\t" 
                    <<count<<"!="<<elements << endl;
@@ -277,7 +210,7 @@ namespace atl {
       }
    
       //Create a new one to add an array
-      atl::DataBuffer dataBuffer2;
+      DataBuffer dataBuffer2;
       std::shared_ptr<uint8_t> buffer2;
       uint8_t buffer[elements];
       for( uint16_t i = 0; i <elements; i++ ) 
@@ -312,7 +245,7 @@ namespace atl {
          std::cerr<<"Failed to set/get elements"<<std::endl;
       }
    
-      atl::RawBuffer rdb = dataBuffer2.getData();
+      BaseBuffer rdb = dataBuffer2.getData();
    
       rdb.deallocate();
    
@@ -321,3 +254,5 @@ namespace atl {
    
       return rc;
    }
+
+ }

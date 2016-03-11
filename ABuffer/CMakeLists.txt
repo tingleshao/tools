@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 2.8)
 
 PROJECT(AquetiTools)
 
+add_definitions(-std=c++11 -fPIC)     #Use C++11 
+
 #Find OS Threads Library
 find_package(Threads REQUIRED)
 

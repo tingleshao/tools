@@ -54,7 +54,7 @@ using namespace std;
     //Verify size
     if( uint16Buffer.getMaxIndex() != elements + elements/2) {
        std::cerr << "ExtendedBuffer size incorrect: "
-                 << uint16Buffer.getSize() << " != "
+                 << uint16Buffer.m_bufferSize << " != "
                  << elements + elements/2 << std::endl;
        return false;
     }

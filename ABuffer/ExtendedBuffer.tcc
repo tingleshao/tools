@@ -64,7 +64,7 @@ namespace atl
        bool rc = DataBuffer::allocate( m_elementSize * elements, resizeFlag );
 
        if( rc )  {
-          m_capacity = DataBuffer::getSize() / m_elementSize;
+          m_capacity = m_bufferSize / m_elementSize;
        }
 
        return rc;
@@ -128,7 +128,7 @@ namespace atl
        if( bytes > 0 ) 
        {
           m_maxIndex = startIndex+elements; 
-          m_capacity = DataBuffer::getSize() / m_elementSize;
+          m_capacity = m_bufferSize / m_elementSize;
        }
 
        return bytes/m_elementSize;

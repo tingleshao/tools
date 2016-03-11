@@ -2,6 +2,7 @@
 
 #include <ATimer.h>
 #include <AThread.h>
+#include <BaseBuffer.h>
 #include <DataBuffer.h>
 #include <ExtendedBuffer.tcc>
 #include <BaseSocket.h>
@@ -23,6 +24,12 @@ int main(void)
    if( !testAThread() )
    {
       cout << "C11Thread Unit Test Failed!" << endl;
+      return 1;
+   }
+   cout << "Testing BaseBuffer"<<endl;
+   if( !atl::testBaseBuffer() )
+   {
+      cout << "BaseBuffer Test Failed!" << endl;
       return 1;
    }
    cout << "Testing DataBuffer"<<endl;

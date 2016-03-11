@@ -3,6 +3,8 @@
  ************************************************************/
 #include <iostream>
 
+
+#include "BaseBuffer.h"
 #include "DataBuffer.h"
 #include "ExtendedBuffer.tcc"
 #include "TSArray.tcc"

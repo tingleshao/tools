@@ -57,6 +57,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 #Add additional directories
 include_directories(include ATimer)
 include_directories(include ABuffer)
+include_directories(include Image)
 include_directories(include AThread)
 include_directories(include ATSQueue)
 include_directories(include ASocket)
@@ -67,6 +68,7 @@ add_definitions(-std=c++11 -fPIC)     #Use C++11
 #create a list of files
 set( SOURCE_FILES 
    ABuffer/BaseMetadata.cpp
+   Image/ImageMetadata.cpp
    ABuffer/BaseBuffer.cpp
    ABuffer/DataBuffer.cpp
    ABuffer/ExtendedBuffer.cpp

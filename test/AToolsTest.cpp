@@ -3,6 +3,7 @@
 #include <ATimer.h>
 #include <AThread.h>
 #include <BaseMetadata.h>
+#include <ImageMetadata.h>
 #include <BaseBuffer.h>
 #include <DataBuffer.h>
 #include <ExtendedBuffer.tcc>
@@ -31,6 +32,12 @@ int main(void)
    if( !atl::testBaseMetadata() )
    {
       cout << "BaseMetadata Test Failed!" << endl;
+      return 1;
+   }
+   cout << "Testing ImageMetadata"<<endl;
+   if( !atl::testImageMetadata() )
+   {
+      cout << "ImageMetadata Test Failed!" << endl;
       return 1;
    }
    cout << "Testing BaseBuffer"<<endl;

@@ -2,7 +2,7 @@
 #include <memory>
 #include <climits>
 #include <stddef.h>
-#include <string>
+#include <BaseMetadata.h>
 
 namespace atl
 {
@@ -14,14 +14,16 @@ namespace atl
     * itself. There is no inherent method for data management allocated data is must be
     * freed with an external call to the deallocate function
     **/
-   class BaseMetadata
+   class ImageMetadata : public BaseMetadata
    {
       private:
          
       public: 
-         uint64_t    m_id = 0;              //!< ID of the object
-         uint64_t    m_offset = 0;          //!< Offset into binary data
-         std::string m_type = "base";       //!< Indicates metadata type
+         uint16_t m_mode   = 0;               //!< Image mode (Bayer, RGB, etc)
+         uint16_t m_width  = 0;               //!< Width of image
+         uint16_t m_height = 0;               //!< Height of image
+         uint16_t m_bpp    = 0;               //!< Bits per pixel
+
 
          std::string getJsonString();
    
@@ -29,5 +31,5 @@ namespace atl
 
 
    //Test functions
-   bool testBaseMetadata();
+   bool testImageMetadata();
 };

@@ -15,7 +15,8 @@ namespace atl
    {
       std::stringstream ss;
       ss << "{"
-         << "\"id\":" << m_id << ","
+         << "\"id\":"     << m_id << ","
+         << "\"type\":\""   << m_type.c_str() << "\","
          << "\"offset\":" << m_offset 
          << "}";
 
@@ -34,11 +35,10 @@ namespace atl
       metadata.m_id = 1234;
       metadata.m_offset = 1235;
 
-      std::string expected("{\"id\":1234,\"offset\":1235}");
+      std::string expected("{\"id\":1234,\"type\":\"base\",\"offset\":1235}");
       std::string result = metadata.getJsonString();
 
       if( !expected.compare(result)) {
-      std::cout << "testBaseMetadata passed. "<<result<<"!="<<expected<<std::endl;
          return true;
       }
 

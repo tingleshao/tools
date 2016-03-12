@@ -107,11 +107,11 @@ namespace atl
          void setWaitTime( double wtime );
          void setBufferSize( size_t size );
    
-         virtual int  Initialize( std::string hostname, int port);
-         virtual bool prepSocketData();
-         virtual int  recvSocketData();
-         virtual bool processSocketData(BaseSocketData sockData);
-         virtual bool processSocketData();
+         int  Initialize( std::string hostname, int port);
+         bool prepSocketData();
+         int  recvSocketData();
+         bool processSocketData(BaseSocketData sockData);
+         bool processSocketData();
    
    
       private:

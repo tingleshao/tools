@@ -19,6 +19,24 @@ if(DOXYGEN_FOUND)
    )
 endif(DOXYGEN_FOUND)
 
+
+#If we use clang, set up parameters
+set(USE_CLANG ON)
+option(USE_CLANG "Use clang for compiler instead of gcc" ON)
+if( USE_CLANG)
+   set(CMAKE_C_COMPILER "/usr/bin/clang")
+   set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
+   option(WITH_ASAN "Enable Address sanitizer" OFF)
+
+   if( WITH_ASAN )
+      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fsanitize=address -fno-optimize-sibling-calls -DVOGL_USE_STB_MALLOC=0")
+      set(CMAKE_CXX_FLAGS_LIST "${CMAKE_CXX_FLAGS_LIST}  -fno-omit-frame-pointer -fsanitize=address -fno-optimize-sibling-calls -DVOGL_USE_STB_MALLOC=0")
+      set(CMAKE_EXE_LINK_FLAGS_LIST "${CMAKE_EXE_LINK_FLAGS_LIST} -fsanitize=address -fno-omit-frame-pointer")
+      set(CMAKE_SHARED_LINK_FLAGS_LIST "${CMAKE_SHARED_LINK_FLAGS_LIST} -fsanitize=address -fno-omit-frame-pointer")
+   endif()
+endif()
+
+
 option(MAKE_TESTS "Build test executables" ON)
 
 # Additional build flags
@@ -46,14 +64,9 @@ include_directories(include ASocket)
 #Set up compiler options
 add_definitions(-std=c++11 -fPIC)     #Use C++11 
 
-#setup into subdirectories to combile code
-#add_subdirectory(ATimer)
-#add_subdirectory(ABuffer)
-#add_subdirectory(AThread)
-#add_subdirectory(ATSQueue)
-#add_subdirectory(ASocket)
-
-add_library( ATL SHARED
+#create a list of files
+set( SOURCE_FILES 
+   ABuffer/BaseMetadata.cpp
    ABuffer/BaseBuffer.cpp
    ABuffer/DataBuffer.cpp
    ABuffer/ExtendedBuffer.cpp
@@ -63,14 +76,12 @@ add_library( ATL SHARED
    ATimer/ATimer.cpp
 )
 
+add_library( ATL SHARED
+   ${SOURCE_FILES}
+)
+
 add_library( ATL_static STATIC 
-   ABuffer/BaseBuffer.cpp
-   ABuffer/DataBuffer.cpp
-   ABuffer/ExtendedBuffer.cpp
-   ASocket/BaseSocket.cpp
-   ASocket/SocketServer.cpp
-   AThread/AThread.cpp
-   ATimer/ATimer.cpp
+   ${SOURCE_FILES}
 )
 
 if(MAKE_TESTS)

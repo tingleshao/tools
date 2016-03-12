@@ -34,7 +34,7 @@ namespace atl
    {
       private:
    //      double waitTime = 0.1;                      //!< How long to wait while reading
-         bool * running = NULL;                        //!< Flag to signal thread termination
+//         bool * running = NULL;                        //!< Flag to signal thread termination
          std::vector<BaseSocketData> socketDataVector; //!<Array of open sockets with data
    
    
@@ -53,7 +53,7 @@ namespace atl
          int sendData( int index, uint8_t * buffer, size_t bytes );
    
          size_t readSocketData(BaseSocketData * socketData );
-         virtual bool processSocketData( BaseSocketData * data);
+         bool processSocketData( BaseSocketData * data);
    
          
    };

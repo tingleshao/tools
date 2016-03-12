@@ -2,6 +2,7 @@
 
 #include <ATimer.h>
 #include <AThread.h>
+#include <BaseMetadata.h>
 #include <BaseBuffer.h>
 #include <DataBuffer.h>
 #include <ExtendedBuffer.tcc>
@@ -24,6 +25,12 @@ int main(void)
    if( !testAThread() )
    {
       cout << "C11Thread Unit Test Failed!" << endl;
+      return 1;
+   }
+   cout << "Testing BaseMetadata"<<endl;
+   if( !atl::testBaseMetadata() )
+   {
+      cout << "BaseMetadata Test Failed!" << endl;
       return 1;
    }
    cout << "Testing BaseBuffer"<<endl;

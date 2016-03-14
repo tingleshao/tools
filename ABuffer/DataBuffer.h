@@ -29,6 +29,7 @@ namespace atl
          bool    getData( std::shared_ptr<uint8_t> &buffer, size_t &bytes );
          
          BaseBuffer getData();
+
    
          bool allocate( size_t bytes, bool resizeFlag = false );
    };

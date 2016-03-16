@@ -24,7 +24,7 @@ namespace atl
          uint64_t    m_elementSize = 0;     //!< Size of a databuffer element
          std::string m_name;                //!< Indicates metadata type
 
-         std::string getJsonString();
+         std::string getJsonString( bool brackets = true );
    };
 
 

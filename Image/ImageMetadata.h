@@ -25,8 +25,7 @@ namespace atl
          uint16_t m_bpp    = 0;               //!< Bits per pixel
 
 
-         std::string getJsonString();
-   
+         std::string getJsonString( bool brackets = true );
    };
 
 

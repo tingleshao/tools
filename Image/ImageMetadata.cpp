@@ -11,7 +11,7 @@ namespace atl
     *
     * \return std::string with Json representation
     **/
-   std::string ImageMetadata::getJsonString()
+   std::string ImageMetadata::getJsonString(bool brackets )
    {
       std::string baseString = BaseMetadata::getJsonString();
       baseString.pop_back();

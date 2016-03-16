@@ -71,6 +71,7 @@ set( SOURCE_FILES
    Image/ImageMetadata.cpp
    ABuffer/BaseBuffer.cpp
    ABuffer/DataBuffer.cpp
+   ABuffer/BaseContainer.cpp
    ABuffer/ExtendedBuffer.cpp
    ASocket/BaseSocket.cpp
    ASocket/SocketServer.cpp

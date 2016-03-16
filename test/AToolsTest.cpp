@@ -3,6 +3,7 @@
 #include <ATimer.h>
 #include <AThread.h>
 #include <BaseMetadata.h>
+#include <BaseContainer.h>
 #include <ImageMetadata.h>
 #include <BaseBuffer.h>
 #include <DataBuffer.h>
@@ -34,6 +35,13 @@ int main(void)
       cout << "BaseMetadata Test Failed!" << endl;
       return 1;
    }
+   cout << "Testing BaseContainer"<<endl;
+   if( !atl::testBaseContainer() )
+   {
+      cout << "Test BaseContainer Failed!" << endl;
+      return 1;
+   }
+
    cout << "Testing ImageMetadata"<<endl;
    if( !atl::testImageMetadata() )
    {

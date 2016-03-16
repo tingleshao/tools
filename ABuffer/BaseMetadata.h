@@ -21,10 +21,10 @@ namespace atl
       public: 
          uint64_t    m_id = 0;              //!< ID of the object
          uint64_t    m_offset = 0;          //!< Offset into binary data
-         std::string m_type = "base";       //!< Indicates metadata type
+         uint64_t    m_elementSize = 0;     //!< Size of a databuffer element
+         std::string m_name;                //!< Indicates metadata type
 
          std::string getJsonString();
-   
    };
 
 

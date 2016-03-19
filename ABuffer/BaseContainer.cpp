@@ -16,14 +16,27 @@ namespace atl
     * and BaseBuffer class or derivatives. This function allocates the proper version based
     * on the class they are contained in.
     **/
-   bool BaseContainer::create( size_t bytes) 
+   bool BaseContainer::allocate( size_t bytes) 
    {
+      if(( m_buffer != NULL)||(m_metadata != NULL )) {
+         std::cerr << "BaseContainer: Cannot reinitialze a container. " <<std::endl;
+         return false;
+      }
+
       m_buffer   = new BaseBuffer;
       m_metadata = new BaseMetadata;
+
+      if( !m_buffer->allocate( bytes )) {
+         std::cerr << "BaseContainer: Failed to allocated "<<bytes<<" bytes."<<std::endl;
+         return false;
+      }
 
       return true;
    }
 
+   /**
+    * \brief Destructore
+    **/
    BaseContainer::~BaseContainer()
    {
       //Delete the metadata
@@ -45,7 +58,7 @@ namespace atl
    bool testBaseContainer() 
    {
       BaseContainer container;
-      container.create();
+      container.allocate(100);
 
       container.m_metadata->m_id = 1;
       container.m_metadata->m_offset = 2;

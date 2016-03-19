@@ -19,6 +19,7 @@ using namespace atl;
  **/
 int main(void)
 {
+   /*
    if( !testTimer() )
    {
       cout << "Timer Unit Test Failed!" << endl;
@@ -29,6 +30,7 @@ int main(void)
       cout << "C11Thread Unit Test Failed!" << endl;
       return 1;
    }
+   */
    cout << "Testing BaseMetadata"<<endl;
    if( !atl::testBaseMetadata() )
    {
@@ -66,6 +68,7 @@ int main(void)
       cout << "ExtendedBuffer Test Failed!" << endl;
       return 1;
    }
+   /*
    if( !testBaseSocket())
    {
       cout << "BaseSocket Test Failed!" << endl;
@@ -77,6 +80,7 @@ int main(void)
       cout << "SocketServer Test Failed!" << endl;
       return 1;
    }
+   */
    cout << "All tests completed successfully!" << endl;
    return 0;
 }

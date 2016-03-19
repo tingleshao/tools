@@ -19,7 +19,7 @@ namespace atl
          BaseBuffer   * m_buffer   = NULL;  //!< DataBuffer
 
          virtual ~BaseContainer();
-         virtual bool create(size_t bytes = 0 );
+         virtual bool allocate(size_t bytes = 0 );
    };
 
    //Test functions

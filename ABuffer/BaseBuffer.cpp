@@ -1,8 +1,18 @@
+/**a
+ * \file BaseBuffer.cpp
+ *
+ * \copyright 2016 Aqueti, Incorporated
+ * \license The MIT License (MIT)
+ **/
+
+
 #include <iostream>
 #include <cstdlib>
 #include <cstring>
 
 #include "BaseBuffer.h"
+
+
 
 using namespace std;
 

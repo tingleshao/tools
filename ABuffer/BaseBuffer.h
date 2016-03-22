@@ -2,6 +2,11 @@
 #include <memory>
 #include <climits>
 #include <stddef.h>
+/** 
+ * \file 
+ * \copyright 2016 Aqueti, Incorporated
+ * \license The MIT License (MIT)
+ **/
 
 namespace atl
 {

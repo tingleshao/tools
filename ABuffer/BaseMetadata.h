@@ -22,7 +22,8 @@ namespace atl
          uint64_t    m_id = 0;              //!< ID of the object
          uint64_t    m_offset = 0;          //!< Offset into binary data
          uint64_t    m_elementSize = 1;     //!< Size of a databuffer element
-         std::string m_name;                //!< Indicates metadata type
+         uint64_t    m_elementCount = 0;    //!< Number of elements in the associated buffer
+         std::string m_type;                //!< Indicates metadata type
 
          std::string getJsonString( bool brackets = true );
    };

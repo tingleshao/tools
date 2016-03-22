@@ -1,0 +1,38 @@
+/**
+\page Container Container Overview
+
+\subsection Container Overview
+
+# Overview
+A container object is a data structure that contains conventional data and associated metadata. This is commonly used in many file formats as well as for tracking disparate chunks of data within a common memory structure. The [BaseContainer](classatl_1_1BaseContainer.html) is a simple example of a container class with both metadata and a data buffer. In this case, the raw data is stored in the [DataBuffer](classatl_1_1DataBuffer.html) object and the metadata is stored in a [BaseMetadata](classatl_1_1BaseMetadata.html) object.
+
+# Metadata 
+The BaseMetadata class uniquely identifies the type of data stored in the databuffer as well as information needed to access individual indices. The specific binary representation of data in child classes is up to the developer, although it is recommended to provide a method to make direct copies of the metadata.
+
+## Json Output 
+To ensure that the Container class is scalable to support arbitrary implementations, each metadata instance must be able to generate a JSON string object that fully encapsulates all of the embedded metadata. The BaseMetadata information is stored at the top-level as is it fundamental to all inherited classes. Metadata for child classes is maintained as a separate object for each level in the heirarchy in reverse order. For example, the JSON output for an AplFrameMetadta class with in inheritance structure of BaseMetadata->ImageMetadata->AplFrameMetadata would look as follows:
+
+\verbatim
+{
+   "id":1234,
+   "type":"image",
+   "offset":0,
+   "elementCount":2073600,
+   "elementSize": 1,
+   "aplFrame":
+   {
+      "timestamp":1458686008.1,
+      "iFov":63,
+      "roi":[-3.45563, 3.45566, 0.000, 3.898343],
+      "image": {
+         "type":"APL_GRGB",
+         "width":1920,
+         "height":1080,
+      }
+   }
+}
+\endverbatim
+
+
+**/
+

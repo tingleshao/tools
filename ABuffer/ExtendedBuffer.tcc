@@ -4,7 +4,7 @@
 namespace atl
 {
    /**
-    * \brief class that 
+    * \brief Templated Extension of the DataBuffer class that supports elements arbitrary size
     **/
    template <typename T>
    class ExtendedBuffer : public DataBuffer

@@ -69,11 +69,11 @@ include_directories(include ASocket)
 #Set up compiler options
 add_definitions(-std=c++11 -fPIC)     #Use C++11 
 
-set( INCLUDE_FILES
-   ABuffer/TSMatrix.tcc
-   ATSQueue/ATSQueue.tcc 
-   AThread/AThread.h
-)
+#set( INC_FILES
+#   ABuffer/TSMatrix.tcc
+#   ATSQueue/ATSQueue.tcc 
+#   AThread/AThread.h
+#)
 
 #create a list of files
 set( SOURCE_FILES 
@@ -87,7 +87,7 @@ set( SOURCE_FILES
    ASocket/SocketServer.cpp
    AThread/AThread.cpp
    ATimer/ATimer.cpp
-   ATSQueue/ATSQueue.cpp
+#   ATSQueue/ATSQueue.cpp
 )
 
 add_library( ATL SHARED
@@ -113,6 +113,6 @@ install(TARGETS
 )
 
 #Install the FindAtl.cmake file of a find directory is specified
-install(FILES ${INCLUDE_FILES} DESTINATION ${CMAKE_INCLUDE_PATH} )
+#install(FILES ${INC_FILES} DESTINATION ${CMAKE_INCLUDE_PATH} )
 
 install(FILES cmake/FindAtl.cmake DESTINATION ${CMAKE_INSTALL_PREFIX}/cmake)

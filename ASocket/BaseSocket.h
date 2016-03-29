@@ -89,7 +89,7 @@ namespace atl
    
          //Implement a callback
          bool setHandleMessageCallback( std::function<void(ExtendedBuffer<uint8_t>)> callback );
-         std::function<void(ExtendedBuffer<uint8_t>)> handleMessage;
+         std::function<void(ExtendedBuffer<uint8_t>)> handleMessage;   //!< callback for received message
    
          //Initialization and exit functions
          bool createTcpClient( std::string hostname, int port);

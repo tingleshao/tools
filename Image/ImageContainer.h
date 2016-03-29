@@ -34,8 +34,8 @@ namespace atl
       protected:
 
       public: 
-         ExtendedBuffer<T> m_data;
          ImageMetadata m_metadata;            //!<Image metadata structure
+         ExtendedBuffer<T> m_data;            //!<Image Data Buffer
    };
 
    bool testImageContainer();

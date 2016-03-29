@@ -66,7 +66,6 @@ namespace atl {
    /**
     * \brief Returns a copy of data from the buffer
     *
-    * \param [in] offset offset from the start to begin copy
     * \return BaseBuffer with a pointer to the memory buffer and the size of the data
     *
     * This function instantiates a BaseBuffer and populates it with data from the
@@ -83,10 +82,6 @@ namespace atl {
 
       rawData.m_buffer = m_buffer;
       rawData.m_bufferSize = m_bufferSize;
-   
-      //Allocate the datastruct
-//      rawData.allocate(m_bufferSize);
-//      getData( &rawData.m_buffer, &rawData.m_bufferSize);
    
       return rawData;
    }
@@ -139,7 +134,6 @@ namespace atl {
     *
     * \param [in] buffer shared pointer to the buffer
     * \param [in] bytes number of bytes copied
-    * \param [in] startIndex index into array to start with (default=0)
     * \return number of elements successfully copied
     *
     * This function copies the number of specified elements to the destination

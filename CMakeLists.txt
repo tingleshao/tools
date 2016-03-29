@@ -80,6 +80,7 @@ set( SOURCE_FILES
    ASocket/SocketServer.cpp
    AThread/AThread.cpp
    ATimer/ATimer.cpp
+   ATSQueue/ATSQueue.cpp
 )
 
 add_library( ATL SHARED

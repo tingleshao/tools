@@ -21,21 +21,23 @@ endif(DOXYGEN_FOUND)
 
 
 #If we use clang, set up parameters
-set(USE_CLANG ON)
-option(USE_CLANG "Use clang for compiler instead of gcc" ON)
-if( USE_CLANG)
-   set(CMAKE_C_COMPILER "/usr/bin/clang")
-   set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
-   option(WITH_ASAN "Enable Address sanitizer" OFF)
-
-   if( WITH_ASAN )
-      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fsanitize=address -fno-optimize-sibling-calls -DVOGL_USE_STB_MALLOC=0")
-      set(CMAKE_CXX_FLAGS_LIST "${CMAKE_CXX_FLAGS_LIST}  -fno-omit-frame-pointer -fsanitize=address -fno-optimize-sibling-calls -DVOGL_USE_STB_MALLOC=0")
-      set(CMAKE_EXE_LINK_FLAGS_LIST "${CMAKE_EXE_LINK_FLAGS_LIST} -fsanitize=address -fno-omit-frame-pointer")
-      set(CMAKE_SHARED_LINK_FLAGS_LIST "${CMAKE_SHARED_LINK_FLAGS_LIST} -fsanitize=address -fno-omit-frame-pointer")
+if( NOT CMAKE_COMPILER_SET )
+   set(USE_CLANG ON)
+   option(USE_CLANG "Use clang for compiler instead of gcc" ON)
+   if( USE_CLANG)
+      set(CMAKE_C_COMPILER "/usr/bin/clang")
+      set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
+      option(WITH_ASAN "Enable Address sanitizer" OFF)
+   
+      if( WITH_ASAN )
+         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fsanitize=address -fno-optimize-sibling-calls -DVOGL_USE_STB_MALLOC=0")
+         set(CMAKE_CXX_FLAGS_LIST "${CMAKE_CXX_FLAGS_LIST}  -fno-omit-frame-pointer -fsanitize=address -fno-optimize-sibling-calls -DVOGL_USE_STB_MALLOC=0")
+         set(CMAKE_EXE_LINK_FLAGS_LIST "${CMAKE_EXE_LINK_FLAGS_LIST} -fsanitize=address -fno-omit-frame-pointer")
+         set(CMAKE_SHARED_LINK_FLAGS_LIST "${CMAKE_SHARED_LINK_FLAGS_LIST} -fsanitize=address -fno-omit-frame-pointer")
+      endif()
    endif()
-endif()
-
+   set(CMAKE_COMPILER_SET ON)
+endif( NOT CMAKE_COMPILER_SET)
 
 option(MAKE_TESTS "Build test executables" ON)
 

@@ -19,7 +19,6 @@ if(DOXYGEN_FOUND)
    )
 endif(DOXYGEN_FOUND)
 
-
 #If we use clang, set up parameters
 if( NOT CMAKE_COMPILER_SET )
    set(USE_CLANG ON)
@@ -36,7 +35,9 @@ if( NOT CMAKE_COMPILER_SET )
          set(CMAKE_SHARED_LINK_FLAGS_LIST "${CMAKE_SHARED_LINK_FLAGS_LIST} -fsanitize=address -fno-omit-frame-pointer")
       endif()
    endif()
-   set(CMAKE_COMPILER_SET ON)
+   #This flag is set to indicate that the compiler has been specified. This is
+   #necessary for using the compiler specified by a Superbuild
+   set(CMAKE_COMPILER_SET ON) 
 endif( NOT CMAKE_COMPILER_SET)
 
 option(MAKE_TESTS "Build test executables" ON)

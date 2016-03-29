@@ -73,6 +73,8 @@ set( ATL_Headers
    ABuffer/DataBuffer.h
    ABuffer/BaseContainer.h
    ABuffer/ExtendedBuffer.tcc
+   ABuffer/TSArray.tcc
+   ABuffer/TSMatrix.tcc
    ASocket/BaseSocket.h
    ASocket/SocketServer.h
    AThread/AThread.h

@@ -40,7 +40,8 @@ if( NOT CMAKE_COMPILER_SET )
    set(CMAKE_COMPILER_SET ON) 
 endif( NOT CMAKE_COMPILER_SET)
 
-option(MAKE_TESTS "Build test executables" ON)
+#Option to make test executables
+option(MAKE_TESTS "Build test executables" OFF)
 
 # Additional build flags
 if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
@@ -65,15 +66,22 @@ include_directories(include AThread)
 include_directories(include ATSQueue)
 include_directories(include ASocket)
 
+set( ATL_Headers
+   ABuffer/BaseMetadata.h
+   Image/ImageMetadata.h
+   ABuffer/BaseBuffer.h
+   ABuffer/DataBuffer.h
+   ABuffer/BaseContainer.h
+   ABuffer/ExtendedBuffer.tcc
+   ASocket/BaseSocket.h
+   ASocket/SocketServer.h
+   AThread/AThread.h
+   ATimer/ATimer.h
+)
+
 
 #Set up compiler options
 add_definitions(-std=c++11 -fPIC)     #Use C++11 
-
-#set( INC_FILES
-#   ABuffer/TSMatrix.tcc
-#   ATSQueue/ATSQueue.tcc 
-#   AThread/AThread.h
-#)
 
 #create a list of files
 set( SOURCE_FILES 
@@ -113,6 +121,5 @@ install(TARGETS
 )
 
 #Install the FindAtl.cmake file of a find directory is specified
-#install(FILES ${INC_FILES} DESTINATION ${CMAKE_INCLUDE_PATH} )
-
 install(FILES cmake/FindAtl.cmake DESTINATION ${CMAKE_INSTALL_PREFIX}/cmake)
+install(FILES ${ATL_Headers} DESTINATION include )

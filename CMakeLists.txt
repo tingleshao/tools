@@ -19,24 +19,28 @@ if(DOXYGEN_FOUND)
    )
 endif(DOXYGEN_FOUND)
 
-
 #If we use clang, set up parameters
-option(USE_CLANG "Use clang for compiler instead of gcc" ON)
-if( USE_CLANG)
-   set(CMAKE_C_COMPILER "/usr/bin/clang")
-   set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
-   option(WITH_ASAN "Enable Address sanitizer" OFF)
-
-   if( WITH_ASAN )
-      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fsanitize=address -fno-optimize-sibling-calls -DVOGL_USE_STB_MALLOC=0")
-      set(CMAKE_CXX_FLAGS_LIST "${CMAKE_CXX_FLAGS_LIST}  -fno-omit-frame-pointer -fsanitize=address -fno-optimize-sibling-calls -DVOGL_USE_STB_MALLOC=0")
-      set(CMAKE_EXE_LINK_FLAGS_LIST "${CMAKE_EXE_LINK_FLAGS_LIST} -fsanitize=address -fno-omit-frame-pointer")
-      set(CMAKE_SHARED_LINK_FLAGS_LIST "${CMAKE_SHARED_LINK_FLAGS_LIST} -fsanitize=address -fno-omit-frame-pointer")
+if( NOT CMAKE_COMPILER_SET )
+   option(USE_CLANG "Use clang for compiler instead of gcc" ON)
+   if( USE_CLANG)
+      set(CMAKE_C_COMPILER "/usr/bin/clang")
+      set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
+      option(WITH_ASAN "Enable Address sanitizer" OFF)
+   
+      if( WITH_ASAN )
+         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fsanitize=address -fno-optimize-sibling-calls -DVOGL_USE_STB_MALLOC=0")
+         set(CMAKE_CXX_FLAGS_LIST "${CMAKE_CXX_FLAGS_LIST}  -fno-omit-frame-pointer -fsanitize=address -fno-optimize-sibling-calls -DVOGL_USE_STB_MALLOC=0")
+         set(CMAKE_EXE_LINK_FLAGS_LIST "${CMAKE_EXE_LINK_FLAGS_LIST} -fsanitize=address -fno-omit-frame-pointer")
+         set(CMAKE_SHARED_LINK_FLAGS_LIST "${CMAKE_SHARED_LINK_FLAGS_LIST} -fsanitize=address -fno-omit-frame-pointer")
+      endif()
    endif()
-endif()
+   #This flag is set to indicate that the compiler has been specified. This is
+   #necessary for using the compiler specified by a Superbuild
+   set(CMAKE_COMPILER_SET ON) 
+endif( NOT CMAKE_COMPILER_SET)
 
-
-option(MAKE_TESTS "Build test executables" ON)
+#Option to make test executables
+option(MAKE_TESTS "Build test executables" OFF)
 
 # Additional build flags
 if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
@@ -61,6 +65,23 @@ include_directories(include AThread)
 include_directories(include ATSQueue)
 include_directories(include ASocket)
 
+set( ATL_Headers
+   ABuffer/BaseMetadata.h
+   Image/ImageMetadata.h
+   ABuffer/BaseBuffer.h
+   ABuffer/DataBuffer.h
+   ABuffer/BaseContainer.h
+   ABuffer/ExtendedBuffer.tcc
+   ABuffer/TSArray.tcc
+   ABuffer/TSMatrix.tcc
+   ASocket/BaseSocket.h
+   ASocket/SocketServer.h
+   AThread/AThread.h
+   ATimer/ATimer.h
+   ATSQueue/ATSQueue.tcc
+)
+
+
 #Set up compiler options
 add_definitions(-std=c++11 -fPIC)     #Use C++11 
 
@@ -72,6 +93,7 @@ set( SOURCE_FILES
    ABuffer/DataBuffer.cpp
    ABuffer/BaseContainer.cpp
    ABuffer/ExtendedBuffer.cpp
+   ABuffer/TSArray.cpp
    ASocket/BaseSocket.cpp
    ASocket/SocketServer.cpp
    AThread/AThread.cpp
@@ -102,3 +124,4 @@ install(TARGETS
 
 #Install the FindAtl.cmake file of a find directory is specified
 install(FILES cmake/FindAtl.cmake DESTINATION ${CMAKE_INSTALL_PREFIX}/cmake)
+install(FILES ${ATL_Headers} DESTINATION include )

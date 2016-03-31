@@ -24,10 +24,26 @@ namespace atl
          //function
          bool   setSize( size_t size );
          size_t getSize();
+
          bool   setItem( T item, size_t index, double waitTime = 0 );
          bool   getItem( T* itemPtr, size_t index, double waitTime = 0);
-   };
 
+         T operator [](size_t index)  const
+         {
+            T item;
+            m_mutex.lock();
+            item = m_array[index];
+            m_mutex.unlock();
+            return item;
+         }
+         T & operator[](size_t index) 
+         {
+//            m_mutex.lock();
+            return m_array[index];
+//            m_mutex.unlock();
+
+         }
+   };
 
    /**
     * \brief Returns the number of allocated elements in the array

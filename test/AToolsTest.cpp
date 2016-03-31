@@ -10,6 +10,7 @@
 #include <ExtendedBuffer.tcc>
 #include <BaseSocket.h>
 #include <SocketServer.h>
+#include <TSArray.tcc>
 
 using namespace std;
 using namespace atl;
@@ -81,6 +82,13 @@ int main(void)
       return 1;
    }
    */
+   std::cout << "Testing TSArray" << std::endl;
+   if( !testTSArray()) 
+   {
+      std::cout << "TSArray failed test" << std::endl;
+      return 1;
+   }
+
    cout << "All tests completed successfully!" << endl;
    return 0;
 }

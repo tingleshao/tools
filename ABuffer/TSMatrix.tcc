@@ -20,8 +20,8 @@ namespace atl
       public:
          bool setDimensions( std::vector<size_t> dims);
          std::vector<size_t> getDimensions();
-         bool getItem( T * item, std::vector<size_t> coords);
-         bool setItem( T item, std::vector<size_t> coords );
+         bool getItem( T &item, std::vector<size_t> coords);
+         bool setItem( T &item, std::vector<size_t> coords );
    };
 
    
@@ -62,7 +62,7 @@ namespace atl
 
          //Loop to calculate the total size
          size_t totalSize = 1;
-         for( size_t i = m_dimensions.size()-1; i >= 0; i-- ) {
+         for( size_t i = m_dimensions.size()-1; i > 0; i-- ) {
             if( i == m_dimensions.size()-1) {
                m_dimScalar[i] = totalSize;
             }
@@ -105,7 +105,7 @@ namespace atl
     * \return true on success, false on failure
     **/
    template <typename T>
-   bool TSMatrix<T>::getItem( T * item, std::vector<size_t> coords)
+   bool TSMatrix<T>::getItem( T &item, std::vector<size_t> coords)
    {
       if( coords.size() != m_dimensions.size()) {
          std::cerr << "TSArray getItem: requested coordinates do not match"<<std::endl;
@@ -126,7 +126,7 @@ namespace atl
     * \return true on success, false on failure
     **/
    template <typename T>
-   bool TSMatrix<T>::setItem( T item, std::vector<size_t> coords)
+   bool TSMatrix<T>::setItem( T &item, std::vector<size_t> coords)
    {
       return TSArray<T>::setItem( item, calculateOffset(coords));
    }

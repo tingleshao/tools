@@ -50,6 +50,13 @@ bool testTSArray()
       return false;
    }
 
+   tsa[98] = 98.0;
+   if( tsa[98] != 98.0) {
+      cout << "TSArray bracket value = "<<tsa[98]<<" not 98"<<endl;
+      return false;
+   }
+
+
    std::thread t[threadCount];
 
    //Spawn a bunch of threads

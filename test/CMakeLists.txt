@@ -12,6 +12,16 @@ include_directories( ${CMAKE_SOURCE_DIR}/ThreadSafeQueue)
 #Find OS Threads Library
 find_package(Threads REQUIRED)
 
+add_executable( WriteTest
+   WriteTest.cpp
+)
+
+target_link_libraries( WriteTest
+   ${CMAKE_THREAD_LIBS_INIT}               #For threaded operation
+   ATL_static
+)
+
+
 #Specify the output executable of this file
 add_executable( ATLTest
    AToolsTest.cpp
@@ -54,6 +64,7 @@ target_link_libraries( SocketTerminal
 
 #Specify where the targets are installed when a "make install" is executed
 install(TARGETS
+   WriteTest
 #   AToolsTest
    SampleServer
    SocketTerminal

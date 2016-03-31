@@ -21,7 +21,6 @@ endif(DOXYGEN_FOUND)
 
 #If we use clang, set up parameters
 if( NOT CMAKE_COMPILER_SET )
-   set(USE_CLANG ON)
    option(USE_CLANG "Use clang for compiler instead of gcc" ON)
    if( USE_CLANG)
       set(CMAKE_C_COMPILER "/usr/bin/clang")

@@ -2,6 +2,27 @@ cmake_minimum_required(VERSION 2.8)
 
 PROJECT(ATL)
 
+#If we use clang, set up parameters
+if( NOT CMAKE_COMPILER_SET )
+   option(USE_CLANG "Use clang for compiler instead of gcc" ON)
+   if( USE_CLANG)
+      set(CMAKE_C_COMPILER "/usr/bin/clang")
+      set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
+      option(WITH_ASAN "Enable Address sanitizer" OFF)
+
+      if( WITH_ASAN )
+         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fsanitize=address -fno-optimize-sibling-calls -DVOGL_USE_STB_MALLOC=0")
+         set(CMAKE_CXX_FLAGS_LIST "${CMAKE_CXX_FLAGS_LIST}  -fno-omit-frame-pointer -fsanitize=address -fno-optimize-sibling-calls -DVOGL_USE_STB_MALLOC=0")
+         set(CMAKE_EXE_LINK_FLAGS_LIST "${CMAKE_EXE_LINK_FLAGS_LIST} -fsanitize=address -fno-omit-frame-pointer")
+         set(CMAKE_SHARED_LINK_FLAGS_LIST "${CMAKE_SHARED_LINK_FLAGS_LIST} -fsanitize=address -fno-omit-frame-pointer")
+      endif()
+   endif()
+   #This flag is set to indicate that the compiler has been specified. This is
+   #necessary for using the compiler specified by a Superbuild
+   set(CMAKE_COMPILER_SET ON)
+endif( NOT CMAKE_COMPILER_SET)
+
+
 #specify location of include directories within this project
 include_directories( ${CMAKE_SOURCE_DIR}/ATimer)
 include_directories( ${CMAKE_SOURCE_DIR}/AThread)

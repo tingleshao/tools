@@ -36,7 +36,7 @@ if( NOT CMAKE_COMPILER_SET )
    endif()
    #This flag is set to indicate that the compiler has been specified. This is
    #necessary for using the compiler specified by a Superbuild
-   set(CMAKE_COMPILER_SET ON) 
+   set(CMAKE_COMPILER_SET ON CACHE BOOL "Indicated compiler is specified") 
 endif( NOT CMAKE_COMPILER_SET)
 
 #Option to make test executables

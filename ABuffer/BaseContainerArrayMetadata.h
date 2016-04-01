@@ -14,21 +14,19 @@ namespace atl
     * itself. There is no inherent method for data management allocated data is must be
     * freed with an external call to the deallocate function
     **/
-   class BaseMetadata
+   class BaseContainerArrayMetadata
    {
       private:
          
       public: 
          uint64_t    m_id = 0;              //!< ID of the object
-         uint64_t    m_offset = 0;          //!< Offset into binary data
-         uint64_t    m_elementSize = 1;     //!< Size of a databuffer element
-         uint64_t    m_elementCount = 0;    //!< Number of elements in the associated buffer
-         std::string m_type;                //!< Indicates metadata type
+         uint64_t    m_elementCount = 0;    //!< Number of containers
+         uint64_t    m_size = 0;            //!< Total size of all data in the array
 
          std::string getJsonString( bool brackets = true );
    };
 
 
    //Test functions
-   bool testBaseMetadata();
+   bool testBaseContainerArrayMetadata();
 };

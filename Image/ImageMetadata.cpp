@@ -20,7 +20,7 @@ namespace atl
          ss << "{";
       }
 
-      std::string baseString = BaseMetadata::getJsonString(false);
+      std::string baseString = BaseContainerMetadata::getJsonString(false);
       ss << baseString << ","
          << "\"image\":{"
             << "\"mode\":"   << m_mode    << ","
@@ -38,7 +38,7 @@ namespace atl
    }
 
    /**
-    * \brief test function for the BaseMetadata class
+    * \brief test function for the BaseContainerMetadata class
     * \return true on success, false on failure
     **/
    bool testImageMetadata()

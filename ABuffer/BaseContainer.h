@@ -2,8 +2,10 @@
 #include <memory>
 #include <climits>
 #include <stddef.h>
-#include <BaseMetadata.h>
+#include <BaseContainerMetadata.h>
 #include <BaseBuffer.h>
+
+#define MAGIC "AGT"; //Aqueti Generic container
 
 namespace atl
 {
@@ -15,11 +17,15 @@ namespace atl
       private:
          
       public: 
-         BaseMetadata * m_metadata = NULL;  //!< Metadata fro the container
+         BaseContainerMetadata m_metadata;  //!< Metadata fro the container
          BaseBuffer   * m_buffer   = NULL;  //!< DataBuffer
 
+         BaseContainer( uint64_t id = 0 );
          virtual ~BaseContainer();
          virtual bool allocate(size_t bytes = 0 );
+
+         virtual bool save( std::string filename );
+         uint64_t getId();
    };
 
    //Test functions

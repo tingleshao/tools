@@ -87,7 +87,7 @@ add_definitions(-std=c++11 -fPIC)     #Use C++11
 
 #create a list of files
 set( SOURCE_FILES 
-   ABuffer/BaseMetadata.cpp
+   ABuffer/BaseContainerMetadata.cpp
    Image/ImageMetadata.cpp
    ABuffer/BaseBuffer.cpp
    ABuffer/DataBuffer.cpp

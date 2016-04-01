@@ -66,7 +66,7 @@ include_directories(include ATSQueue)
 include_directories(include ASocket)
 
 set( ATL_Headers
-   ABuffer/BaseMetadata.h
+   ABuffer/BaseContainerMetadata.h
    Image/ImageMetadata.h
    ABuffer/BaseBuffer.h
    ABuffer/DataBuffer.h

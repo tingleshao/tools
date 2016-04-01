@@ -26,7 +26,6 @@ namespace atl
          std::string getJsonString( bool brackets = true );
    };
 
-
    //Test functions
    bool testBaseContainerArrayMetadata();
 };

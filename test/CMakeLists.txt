@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 2.8)
 
 PROJECT(ATL)
 
+add_definitions(-std=c++11 -fPIC)     #Use C++11 
+
 #If we use clang, set up parameters
 if( NOT CMAKE_COMPILER_SET )
    option(USE_CLANG "Use clang for compiler instead of gcc" ON)

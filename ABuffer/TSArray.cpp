@@ -1,6 +1,6 @@
 #include <iostream>
-#include "TSArray.tcc"
 #include <thread>
+#include "TSArray.tcc"
 
 using namespace std;
 using namespace atl;
@@ -50,6 +50,7 @@ bool testTSArray()
       return false;
    }
 
+/*
    std::thread t[threadCount];
 
    //Spawn a bunch of threads
@@ -60,6 +61,22 @@ bool testTSArray()
    for( size_t i = 0; i < threadCount; i++ ) {
       t[i].join();
    }
+*/
+   sz = tsa.getSize();
+   tsa.push(44);
+   size_t sz2 = tsa.getSize();
+   if( sz2 != sz+1) {
+      std::cout<<"TSArray failed to push item (size does not match):"<<sz2<<"!="<<sz<<std::endl;
+      return false;
+   }
+
+   sz2 = tsa[sz];
+   if( sz2 != 44) {
+      std::cout<<"TSArray failed to push item. Unexpected value:"<<sz2<<"!="<<44<<std::endl;
+      return false;
+   }
+   
+
    
    return true;
 }

@@ -3,7 +3,6 @@
 #include <climits>
 #include <stddef.h>
 #include <TSArray.h>
-#include <BaseContainer.h>
 
 namespace atl
 {
@@ -20,8 +19,8 @@ namespace atl
       private:
          
       public: 
-         BaseContainerArrayMetadata metadata;              //Metadata about this container
-         TSArray<BaseContainer *> containerArray;          //Array of container objects
+         BaseContainerArrayMetadata metadata;              //!< Metadata about this container
+         TSArray<BaseContainer>     containerArray;        //!< Array of container objects
          
          //Interface functions
          size_t push(BaseContainer container);
@@ -30,5 +29,5 @@ namespace atl
    };
 
    //Test functions
-   bool testBaseContainer();
+   bool testBaseContainerArray();
 };

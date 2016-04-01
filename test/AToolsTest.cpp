@@ -3,6 +3,7 @@
 #include <ATimer.h>
 #include <AThread.h>
 #include <BaseContainerMetadata.h>
+#include <BaseContainerArrayMetadata.h>
 #include <BaseContainer.h>
 #include <ImageMetadata.h>
 #include <BaseBuffer.h>
@@ -10,6 +11,7 @@
 #include <ExtendedBuffer.tcc>
 #include <BaseSocket.h>
 #include <SocketServer.h>
+#include <TSArray.tcc>
 
 using namespace std;
 using namespace atl;
@@ -81,6 +83,17 @@ int main(void)
       return 1;
    }
    */
+
+   cout << "Testing TSArray"<<endl;
+   if( !testTSArray()) {
+      std::cout << "TSArray test failed" <<std::endl;
+      return 1;
+   }
+   cout << "Testing BaseContainerArrayMetadata"<<endl;
+   if( !testBaseContainerArrayMetadata()) {
+      std::cout << "BaseContainerArrayMetadata test failed" <<std::endl;
+      return 1;
+   }
    cout << "All tests completed successfully!" << endl;
    return 0;
 }

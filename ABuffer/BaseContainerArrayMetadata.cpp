@@ -1,7 +1,7 @@
-#pragma once
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <BaseContainerArrayMetadata.h>
 
 namespace atl
 {
@@ -45,13 +45,13 @@ namespace atl
       std::string nobracket ="\"id\":1,\"elementCount\":2,\"size\":3";
 
       std::string result = meta.getJsonString(true);
-      if( result.strcmp(bracket.c_str()) {
+      if( result.compare(bracket)) {
          std::cout << "testBaseContainerArrayMetadata failed with brackets" <<std::endl;
          return false;
       }
 
       result = meta.getJsonString(false);
-      if( result.strcmp(nobracket.c_str()) {
+      if( result.compare(nobracket)) {
          std::cout << "testBaseContainerArrayMetadata failed with no brackets" <<std::endl;
          return false;
       }

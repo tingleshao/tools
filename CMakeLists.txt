@@ -67,6 +67,7 @@ include_directories(include ASocket)
 
 set( ATL_Headers
    ABuffer/BaseContainerMetadata.h
+   ABuffer/BaseContainerArrayMetadata.h
    Image/ImageMetadata.h
    ABuffer/BaseBuffer.h
    ABuffer/DataBuffer.h
@@ -88,11 +89,14 @@ add_definitions(-std=c++11 -fPIC)     #Use C++11
 #create a list of files
 set( SOURCE_FILES 
    ABuffer/BaseContainerMetadata.cpp
-   Image/ImageMetadata.cpp
+   ABuffer/BaseContainerArrayMetadata.cpp
+   ABuffer/TSArray.cpp
    ABuffer/BaseBuffer.cpp
    ABuffer/DataBuffer.cpp
    ABuffer/BaseContainer.cpp
    ABuffer/ExtendedBuffer.cpp
+   ABuffer/TSArray.cpp
+   Image/ImageMetadata.cpp
    ASocket/BaseSocket.cpp
    ASocket/SocketServer.cpp
    AThread/AThread.cpp

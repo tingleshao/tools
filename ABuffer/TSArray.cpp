@@ -9,6 +9,10 @@ size_t testSize = 100;
 const size_t threadCount  = 100;
 
 TSArray<double> tsa;
+
+/**
+ * \brief consumer thread for the TSAArray test function
+ **/
 void consumerThread( double id) 
 {
    for( size_t i = 0; i < testSize; i++ ) {
@@ -63,7 +67,7 @@ bool testTSArray()
    }
 */
    sz = tsa.getSize();
-   tsa.push(44);
+   tsa.push_back(44);
    size_t sz2 = tsa.getSize();
    if( sz2 != sz+1) {
       std::cout<<"TSArray failed to push item (size does not match):"<<sz2<<"!="<<sz<<std::endl;

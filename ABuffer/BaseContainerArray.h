@@ -2,7 +2,9 @@
 #include <memory>
 #include <climits>
 #include <stddef.h>
-#include <TSArray.h>
+#include <TSArray.tcc>
+#include <BaseContainer.h>
+#include <BaseContainerArrayMetadata.h>
 
 namespace atl
 {
@@ -19,13 +21,15 @@ namespace atl
       private:
          
       public: 
-         BaseContainerArrayMetadata metadata;              //!< Metadata about this container
-         TSArray<BaseContainer>     containerArray;        //!< Array of container objects
+         BaseContainerArrayMetadata m_metadata;            //!< Metadata about this container
+         TSArray<BaseContainer>     m_containerArray;      //!< Array of container objects
          
          //Interface functions
-         size_t push(BaseContainer container);
+//         BaseContainerArray::BaseContainerArray();
+         size_t push_back(BaseContainer container);
          BaseContainer pop();
-         BaseContainer operator[] (size_t index) const {return containerArray[index];};
+         BaseContainer operator[] (size_t index) const {return m_containerArray[index];};
+         size_t getSize();
    };
 
    //Test functions

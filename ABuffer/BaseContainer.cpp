@@ -19,11 +19,6 @@ namespace atl
     **/
    BaseContainer::~BaseContainer( )
    {
-      //Delete the buffer
-      if( m_buffer != NULL ) {
-         delete m_buffer;
-         m_buffer = NULL;
-      }
    }
    /**
     * \brief allocates the container data.
@@ -37,14 +32,7 @@ namespace atl
     **/
    bool BaseContainer::allocate( size_t bytes) 
    {
-      if( m_buffer != NULL) {
-         std::cerr << "BaseContainer: Cannot reinitialze a container. " <<std::endl;
-         return false;
-      }
-
-      m_buffer   = new BaseBuffer;
-
-      if( !m_buffer->allocate( bytes )) {
+      if( !m_buffer.allocate( bytes )) {
          std::cerr << "BaseContainer: Failed to allocated "<<bytes<<" bytes."<<std::endl;
          return false;
       }
@@ -63,12 +51,33 @@ namespace atl
    }
 
    /**
+    * \brief returns the size of the container
+    **/
+    size_t BaseContainer::getSize() 
+    {
+       return m_metadata.getSize() + m_buffer.getSize();
+    }
+
+   /**
     * \brief Test function
     **/
    bool testBaseContainer() 
    {
+      size_t bcSize = BASECONTAINERMETA_SIZE;
       BaseContainer container;
+
+      size_t sz = container.getSize();
+      if( sz != bcSize ) {
+         std::cout << "Invalid container size: "<<sz << "!="<<bcSize<<std::endl;
+         return false;
+      }
       container.allocate(100);
+
+      sz = container.getSize();
+      if( sz != bcSize + 100  ) {
+         std::cout << "Invalid container size: "<<sz << "!="<<100+bcSize<<std::endl;
+         return false;
+      }
 
       container.m_metadata.m_id = 1;
       container.m_metadata.m_offset = 2;

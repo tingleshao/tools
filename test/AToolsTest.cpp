@@ -1,9 +1,9 @@
 #include <iostream>
-
 #include <ATimer.h>
 #include <AThread.h>
 #include <BaseContainerMetadata.h>
 #include <BaseContainerArrayMetadata.h>
+#include <BaseContainerArray.h>
 #include <BaseContainer.h>
 #include <ImageMetadata.h>
 #include <BaseBuffer.h>
@@ -45,7 +45,21 @@ int main(void)
       cout << "Test BaseContainer Failed!" << endl;
       return 1;
    }
-
+   cout << "Testing TSArray"<<endl;
+   if( !testTSArray()) {
+      std::cout << "TSArray test failed" <<std::endl;
+      return 1;
+   }
+   cout << "Testing BaseContainerArrayMetadata"<<endl;
+   if( !testBaseContainerArrayMetadata()) {
+      std::cout << "BaseContainerArrayMetadata test failed" <<std::endl;
+      return 1;
+   }
+   cout << "Testing BaseContainerArray"<<endl;
+   if( !testBaseContainerArray()) {
+      std::cout << "BaseContainerArray test failed" <<std::endl;
+      return 1;
+   }
    cout << "Testing ImageMetadata"<<endl;
    if( !atl::testImageMetadata() )
    {
@@ -84,16 +98,7 @@ int main(void)
    }
    */
 
-   cout << "Testing TSArray"<<endl;
-   if( !testTSArray()) {
-      std::cout << "TSArray test failed" <<std::endl;
-      return 1;
-   }
-   cout << "Testing BaseContainerArrayMetadata"<<endl;
-   if( !testBaseContainerArrayMetadata()) {
-      std::cout << "BaseContainerArrayMetadata test failed" <<std::endl;
-      return 1;
-   }
+
    cout << "All tests completed successfully!" << endl;
    return 0;
 }

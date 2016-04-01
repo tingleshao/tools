@@ -32,6 +32,17 @@ namespace atl
    }
 
    /**
+    * \brief Returns the size of the data contained in the metadata
+    *
+    * This function must be implemented by all metadata classes to ensure that 
+    * the appropriate size is returned.
+    **/
+   size_t BaseContainerMetadata::getSize() 
+   {
+      return BASECONTAINERMETA_SIZE + m_type.length();
+      
+   }
+   /**
     * \brief test function for the BaseContainerMetadata class
     * \return true on success, false on failure
     **/

@@ -1,4 +1,5 @@
-#include <BaseContainerArrayMetadata.h>
+#include <BaseContainer.h>
+#include <BaseContainerArray.h>
 
 namespace atl
 {
@@ -10,23 +11,51 @@ namespace atl
     * This function adds the specifed container to the end of the array and updates the 
     * cumulative size of the data contained in the array.
     **/ 
-   size_t BaseContainerArray::push( BaseContainer container )
+   size_t BaseContainerArray::push_back( BaseContainer container )
    {
+      m_metadata.m_elementCount = m_containerArray.push_back(container);
+      m_metadata.m_size += container.getSize();
+
+      return m_metadata.m_elementCount;
    }
 
+   /** 
+    * \brief Size of all of the data in the container
+    **/
+   size_t BaseContainerArray::getSize() 
    {
-      private:
-         
-      public: 
-         BaseContainerArrayMetadata metadata;              //Metadata about this container
-         TSArray<BaseContainer>     containerArray;        //Array of container objects
-         
-         //Interface functions
-         size_t push(BaseContainer container);
-         BaseContainer pop();
-         BaseContainer operator[] (size_t index) const {return containerArray[index];};
-   };
+      return m_metadata.m_size;
+   }
 
    //Test functions
-   bool testBaseContainerArray();
+   bool testBaseContainerArray() 
+   {
+      BaseContainerArray arr;
+      BaseContainer container;
+
+      size_t sz = arr.getSize();
+      if( sz != 0 ) {
+         std::cout << "Default array size is non-zero!" << std::endl;
+         return false;
+      }
+
+      container.allocate(100);
+      size_t itemSize = container.getSize();
+      arr.push_back( container);
+      sz = arr.getSize();
+
+      if( sz != itemSize ) {
+         std::cout << "Array size does not match container size:"<<sz<<"!="<<itemSize<<std::endl;
+         return false;
+      }
+
+      arr.push_back( container);
+      sz = arr.getSize();
+      if( sz != 2*itemSize ) {
+         std::cout << "Array size does not 2 container size:"<<sz<<"!="<<2*itemSize<<std::endl;
+         return false;
+      }
+
+      return true;
+   }
 };

@@ -26,7 +26,7 @@ namespace atl
          size_t getSize();
          bool   setItem( T item, size_t index, double waitTime = 0 );
          bool   getItem( T* itemPtr, size_t index, double waitTime = 0);
-         size_t push( T item );
+         size_t push_back( T item );
 
          T   operator [](size_t index) const {return m_array.at(index);};
          T & operator [](size_t index)       {return m_array.at(index);};
@@ -37,7 +37,7 @@ namespace atl
     * \param [in] item new item to push onto the array
     **/
     template <typename T>
-    size_t TSArray<T>::push( T item ) 
+    size_t TSArray<T>::push_back( T item ) 
     {
        m_mutex.lock();
        m_array.push_back( item );

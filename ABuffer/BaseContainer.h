@@ -18,7 +18,7 @@ namespace atl
          
       public: 
          BaseContainerMetadata m_metadata;  //!< Metadata fro the container
-         BaseBuffer   * m_buffer   = NULL;  //!< DataBuffer
+         BaseBuffer   m_buffer;             //!< DataBuffer
 
          BaseContainer( uint64_t id = 0 );
          virtual ~BaseContainer();
@@ -26,6 +26,7 @@ namespace atl
 
          virtual bool save( std::string filename );
          uint64_t getId();
+         size_t getSize();
    };
 
    //Test functions

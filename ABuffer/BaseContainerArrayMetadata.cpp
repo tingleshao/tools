@@ -32,6 +32,16 @@ namespace atl
       return result;
    }
 
+   /**
+    * \brief This function calculates the size of the metadata
+    *
+    * \returns the size of all of the metadata in bytes
+    **/
+    size_t BaseContainerArrayMetadata::getSize() 
+    {
+       return BC_ARRAY_META_SIZE + m_size;
+    }
+
 
    //Test functions
    bool testBaseContainerArrayMetadata()
@@ -39,10 +49,9 @@ namespace atl
       BaseContainerArrayMetadata meta;
       meta.m_id = 1;
       meta.m_elementCount = 2;
-      meta.m_size = 3;
 
-      std::string bracket ="{\"id\":1,\"elementCount\":2,\"size\":3}";
-      std::string nobracket ="\"id\":1,\"elementCount\":2,\"size\":3";
+      std::string bracket ="{\"id\":1,\"elementCount\":2,\"size\":0}";
+      std::string nobracket ="\"id\":1,\"elementCount\":2,\"size\":0";
 
       std::string result = meta.getJsonString(true);
       if( result.compare(bracket)) {
@@ -53,6 +62,14 @@ namespace atl
       result = meta.getJsonString(false);
       if( result.compare(nobracket)) {
          std::cout << "testBaseContainerArrayMetadata failed with no brackets" <<std::endl;
+         return false;
+      }
+
+      size_t expected = BC_ARRAY_META_SIZE;
+      size_t sz = meta.getSize();
+      if( sz != expected )
+      {
+         std::cout << "metadata size does not match expected: "<<sz<<"!="<<expected <<std::endl;
          return false;
       }
 

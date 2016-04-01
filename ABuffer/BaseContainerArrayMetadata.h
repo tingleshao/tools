@@ -6,6 +6,7 @@
 
 namespace atl
 {
+   #define BC_ARRAY_META_SIZE 24
    /**
     * \brief Low level data structure to associate pointer with a data size
     *
@@ -23,7 +24,9 @@ namespace atl
       public: 
          uint64_t    m_id = 0;              //!< ID of the object
          uint64_t    m_elementCount = 0;    //!< Number of containers
-         uint64_t    m_size = 0;            //!< Total size of all contained data
+         uint64_t    m_size = 0;            //!< size of containers (does not include header)
+
+         size_t      getSize();             //!< Returns the size of the metadata
 
          std::string getJsonString( bool brackets = true );
    };

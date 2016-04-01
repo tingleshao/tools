@@ -24,7 +24,7 @@ namespace atl
     **/
    size_t BaseContainerArray::getSize() 
    {
-      return m_metadata.m_size;
+      return m_metadata.getSize();
    }
 
    //Test functions
@@ -32,27 +32,28 @@ namespace atl
    {
       BaseContainerArray arr;
       BaseContainer container;
-
-      size_t sz = arr.getSize();
-      if( sz != 0 ) {
-         std::cout << "Default array size is non-zero!" << std::endl;
+  
+      size_t expected = BC_ARRAY_META_SIZE;
+      size_t baseSize = arr.getSize();
+      if( baseSize != expected ) {
+         std::cout << "invalid intial array size:"<<baseSize<<"!="<<expected << std::endl;
          return false;
       }
 
       container.allocate(100);
       size_t itemSize = container.getSize();
       arr.push_back( container);
-      sz = arr.getSize();
+      size_t sz = arr.getSize();
 
-      if( sz != itemSize ) {
-         std::cout << "Array size does not match container size:"<<sz<<"!="<<itemSize<<std::endl;
+      if( sz != itemSize+baseSize ) {
+         std::cout << "Array size does not match container size:"<<sz<<"!="<<itemSize+baseSize<<std::endl;
          return false;
       }
 
       arr.push_back( container);
       sz = arr.getSize();
-      if( sz != 2*itemSize ) {
-         std::cout << "Array size does not 2 container size:"<<sz<<"!="<<2*itemSize<<std::endl;
+      if( sz != 2*itemSize+baseSize ) {
+         std::cout << "Array size does not 2 container size:"<<sz<<"!="<<2*itemSize+baseSize<<std::endl;
          return false;
       }
 

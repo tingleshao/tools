@@ -81,17 +81,16 @@ namespace atl
 
       container.m_metadata.m_id = 1;
       container.m_metadata.m_offset = 2;
-      container.m_metadata.m_elementSize = 3;
 
-      std::string expected = "{\"id\":1,\"offset\":2,\"elementSize\":3}";
+      std::string expected = "{\"id\":1,\"offset\":2,\"elementSize\":1}";
       std::string result   = container.m_metadata.getJsonString();
 
-      if( !result.compare(expected)) {
-         return true;
+      if( result.compare(expected)) {
+         std::cerr << "testBaseContainer failed:"<<result.c_str()<<"!="<<expected.c_str()<<std::endl;
+         return false;
       }
 
-      std::cerr << "testBaseContainer failed:"<<result.c_str()<<"!="<<expected.c_str()<<std::endl;
-      return false;
+      return true;
  
    }
 };

@@ -2,30 +2,33 @@
 #include <memory>
 #include <climits>
 #include <stddef.h>
+#include <TSArray.tcc>
+#include <BaseChunk.h>
 #include <BaseContainerMetadata.h>
-#include <BaseBuffer.h>
-
-#define MAGIC "AGT"; //Aqueti Generic container
 
 namespace atl
 {
    /**
-    * \brief Basic container class that associates metadata with a buffer
+    * \brief Basic class that contains an array of containers.
+    *
+    * This this class manages multiple independent container objects, each
+    * with their own metadata and allocated memory. Methods in the class
+    * map the embedded containers into a aggregate container object with 
+    * a common memory allocation
     **/
    class BaseContainer
    {
       private:
          
       public: 
-         BaseContainerMetadata m_metadata;  //!< Metadata fro the container
-         BaseBuffer   m_buffer;             //!< DataBuffer
-
-         BaseContainer( uint64_t id = 0 );
-         virtual ~BaseContainer();
-         virtual bool allocate(size_t bytes = 0 );
-
-         virtual bool save( std::string filename );
-         uint64_t getId();
+         BaseContainerMetadata m_metadata;            //!< Metadata about this container
+         TSArray<BaseChunk>     m_containerArray;      //!< Array of container objects
+         
+         //Interface functions
+//         BaseContainer::BaseContainer();
+         size_t push_back(BaseChunk chunk);
+         BaseChunk pop();
+         BaseChunk operator[] (size_t index) const {return m_containerArray[index];};
          size_t getSize();
    };
 

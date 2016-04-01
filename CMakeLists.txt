@@ -66,13 +66,13 @@ include_directories(include ATSQueue)
 include_directories(include ASocket)
 
 set( ATL_Headers
+   ABuffer/BaseChunkMetadata.h
    ABuffer/BaseContainerMetadata.h
-   ABuffer/BaseContainerArrayMetadata.h
-   ABuffer/BaseContainerArray.h
+   ABuffer/BaseContainer.h
    Image/ImageMetadata.h
    ABuffer/BaseBuffer.h
    ABuffer/DataBuffer.h
-   ABuffer/BaseContainer.h
+   ABuffer/BaseChunk.h
    ABuffer/ExtendedBuffer.tcc
    ABuffer/TSArray.tcc
    ABuffer/TSMatrix.tcc
@@ -89,13 +89,13 @@ add_definitions(-std=c++11 -fPIC)     #Use C++11
 
 #create a list of files
 set( SOURCE_FILES 
+   ABuffer/BaseChunkMetadata.cpp
    ABuffer/BaseContainerMetadata.cpp
-   ABuffer/BaseContainerArrayMetadata.cpp
-   ABuffer/BaseContainerArray.cpp
+   ABuffer/BaseContainer.cpp
    ABuffer/TSArray.cpp
    ABuffer/BaseBuffer.cpp
    ABuffer/DataBuffer.cpp
-   ABuffer/BaseContainer.cpp
+   ABuffer/BaseChunk.cpp
    ABuffer/ExtendedBuffer.cpp
    ABuffer/TSArray.cpp
    Image/ImageMetadata.cpp

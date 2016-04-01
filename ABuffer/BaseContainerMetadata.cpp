@@ -1,29 +1,30 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-
-#include "BaseContainerMetadata.h"
+#include <BaseContainerMetadata.h>
 
 namespace atl
 {
    /**
-    * \brief Generates a jsonString based on the contained metadata
-    * \param [in] brackets flag to indicate if surrounding brackets are needed (default = true)
-    * \return std::string with Json representation
+    * \brief Low level data structure to associate pointer with a data size
+    *
+    * This class is a very simple interface to represent a continuous array of data.
+    * The size value is the number of elements in the buffer and the buffer is the data
+    * itself. There is no inherent method for data management allocated data is must be
+    * freed with an external call to the deallocate function
     **/
-   std::string BaseContainerMetadata::getJsonString( bool brackets)
+   std::string BaseContainerMetadata::getJsonString( bool brackets ) 
    {
       std::stringstream ss;
-
       if( brackets ) {
          ss << "{";
       }
-      
-      ss << "\"id\":"     << m_id << ","
-         << "\"offset\":" << m_offset << ","
-         << "\"elementSize\":" << m_elementSize;
 
-      if(brackets) { 
+      ss << "\"id\":"           << m_id           << ","
+         << "\"elementCount\":" << m_elementCount << ","
+         << "\"size\":"         << m_size;
+
+      if(brackets) {
          ss << "}";
       }
 
@@ -32,40 +33,43 @@ namespace atl
    }
 
    /**
-    * \brief Returns the size of the data contained in the metadata
+    * \brief This function calculates the size of the metadata
     *
-    * This function must be implemented by all metadata classes to ensure that 
-    * the appropriate size is returned.
+    * \returns the size of all of the metadata in bytes
     **/
-   size_t BaseContainerMetadata::getSize() 
-   {
-      return BASECONTAINERMETA_SIZE + m_type.length();
-      
-   }
-   /**
-    * \brief test function for the BaseContainerMetadata class
-    * \return true on success, false on failure
-    **/
+    size_t BaseContainerMetadata::getSize() 
+    {
+       return BC_META_SIZE + m_size;
+    }
+
+
+   //Test functions
    bool testBaseContainerMetadata()
    {
-      BaseContainerMetadata metadata;
-      metadata.m_id = 1234;
-      metadata.m_offset = 1235;
-      metadata.m_elementSize = 1;
+      BaseContainerMetadata meta;
+      meta.m_id = 1;
+      meta.m_elementCount = 2;
 
-      std::string expected("{\"id\":1234,\"offset\":1235,\"elementSize\":1}");
-      std::string result = metadata.getJsonString();
+      std::string bracket ="{\"id\":1,\"elementCount\":2,\"size\":0}";
+      std::string nobracket ="\"id\":1,\"elementCount\":2,\"size\":0";
 
-      if( expected.compare(result)) {
-         std::cout << "testBaseContainerMetadata failed(true). "<<result<<"!="<<expected<<std::endl;
+      std::string result = meta.getJsonString(true);
+      if( result.compare(bracket)) {
+         std::cout << "testBaseContainerMetadata failed with brackets" <<std::endl;
          return false;
       }
 
-      expected.assign("\"id\":1234,\"offset\":1235,\"elementSize\":1");
-      result.clear();
-      result = metadata.getJsonString(false);
-      if( expected.compare(result)) {
-         std::cout << "testBaseContainerMetadata failed(false). "<<result<<"!="<<expected<<std::endl;
+      result = meta.getJsonString(false);
+      if( result.compare(nobracket)) {
+         std::cout << "testBaseContainerMetadata failed with no brackets" <<std::endl;
+         return false;
+      }
+
+      size_t expected = BC_META_SIZE;
+      size_t sz = meta.getSize();
+      if( sz != expected )
+      {
+         std::cout << "metadata size does not match expected: "<<sz<<"!="<<expected <<std::endl;
          return false;
       }
 

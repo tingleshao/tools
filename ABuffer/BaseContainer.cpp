@@ -1,96 +1,61 @@
-#include <iostream>
-#include <sstream>
-#include <string>
-
-#include "BaseContainer.h"
+#include <BaseContainer.h>
 
 namespace atl
 {
-   /**
-    * \brief constructor
-    **/
-    BaseContainer::BaseContainer( uint64_t id ) 
-    {
-      m_metadata.m_id = id;
-    }
-    
-   /**
-    * \brief Destructore
-    **/
-   BaseContainer::~BaseContainer( )
-   {
-   }
-   /**
-    * \brief allocates the container data.
+   /** 
+    * \brief This function pushes a new container onto the end of the container array
+    * \param [in] container object to be added to the array
+    * \return number of elements in the array
     *
-    * \param [in] bytes number of bytes to allocate (default = 0)
-    * \return true on success, false on failure
-    * 
-    * This function allocates internal variables. All containers will contain a BaseContainerMetadata 
-    * and BaseBuffer class or derivatives. This function allocates the proper version based
-    * on the class they are contained in.
-    **/
-   bool BaseContainer::allocate( size_t bytes) 
+    * This function adds the specifed container to the end of the array and updates the 
+    * cumulative size of the data contained in the array.
+    **/ 
+   size_t BaseContainer::push_back( BaseChunk chunk)
    {
-      if( !m_buffer.allocate( bytes )) {
-         std::cerr << "BaseContainer: Failed to allocated "<<bytes<<" bytes."<<std::endl;
-         return false;
-      }
+      m_metadata.m_elementCount = m_containerArray.push_back(chunk);
+      m_metadata.m_size += chunk.getSize();
 
-      return true;
+      return m_metadata.m_elementCount;
    }
 
-
-   /**
-    * \brief Function to save the base container
+   /** 
+    * \brief Size of all of the data in the container
     **/
-   bool BaseContainer::save( std::string filename ) 
+   size_t BaseContainer::getSize() 
    {
-      std::cerr << "saveBaseContainer not currently supported" <<std::endl;
-      return false;
+      return m_metadata.getSize();
    }
 
-   /**
-    * \brief returns the size of the container
-    **/
-    size_t BaseContainer::getSize() 
-    {
-       return m_metadata.getSize() + m_buffer.getSize();
-    }
-
-   /**
-    * \brief Test function
-    **/
+   //Test functions
    bool testBaseContainer() 
    {
-      size_t bcSize = BASECONTAINERMETA_SIZE;
-      BaseContainer container;
-
-      size_t sz = container.getSize();
-      if( sz != bcSize ) {
-         std::cout << "Invalid container size: "<<sz << "!="<<bcSize<<std::endl;
-         return false;
-      }
-      container.allocate(100);
-
-      sz = container.getSize();
-      if( sz != bcSize + 100  ) {
-         std::cout << "Invalid container size: "<<sz << "!="<<100+bcSize<<std::endl;
+      BaseContainer arr;
+      BaseChunk chunk;
+  
+      size_t expected = BC_META_SIZE;
+      size_t baseSize = arr.getSize();
+      if( baseSize != expected ) {
+         std::cout << "invalid intial array size:"<<baseSize<<"!="<<expected << std::endl;
          return false;
       }
 
-      container.m_metadata.m_id = 1;
-      container.m_metadata.m_offset = 2;
+      chunk.allocate(100);
+      size_t itemSize = chunk.getSize();
+      arr.push_back( chunk);
+      size_t sz = arr.getSize();
 
-      std::string expected = "{\"id\":1,\"offset\":2,\"elementSize\":1}";
-      std::string result   = container.m_metadata.getJsonString();
+      if( sz != itemSize+baseSize ) {
+         std::cout << "Array size does not match chunk size:"<<sz<<"!="<<itemSize+baseSize<<std::endl;
+         return false;
+      }
 
-      if( result.compare(expected)) {
-         std::cerr << "testBaseContainer failed:"<<result.c_str()<<"!="<<expected.c_str()<<std::endl;
+      arr.push_back( chunk);
+      sz = arr.getSize();
+      if( sz != 2*itemSize+baseSize ) {
+         std::cout << "Array size does not 2 chunk size:"<<sz<<"!="<<2*itemSize+baseSize<<std::endl;
          return false;
       }
 
       return true;
- 
    }
 };

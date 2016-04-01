@@ -6,7 +6,7 @@
 
 namespace atl
 {
-#define BASECONTAINERMETA_SIZE 4*8
+   #define BC_META_SIZE 24
    /**
     * \brief Low level data structure to associate pointer with a data size
     *
@@ -14,6 +14,8 @@ namespace atl
     * The size value is the number of elements in the buffer and the buffer is the data
     * itself. There is no inherent method for data management allocated data is must be
     * freed with an external call to the deallocate function
+    *
+    * The m_size variable tracks the size of all data not inherent in the structure
     **/
    class BaseContainerMetadata
    {
@@ -21,15 +23,13 @@ namespace atl
          
       public: 
          uint64_t    m_id = 0;              //!< ID of the object
-         uint64_t    m_elementSize = 1;     //!< Size of a databuffer element
-         uint64_t    m_elementCount = 0;    //!< Number of elements in the associated buffer
-         uint64_t    m_offset = 0;          //!< Offset into the binary data
-         std::string m_type;                //!< Indicates metadata type
+         uint64_t    m_elementCount = 0;    //!< Number of containers
+         uint64_t    m_size = 0;            //!< size of containers (does not include header)
 
-         virtual size_t  getSize();         //!< Returns the size of the metadata container
+         size_t      getSize();             //!< Returns the size of the metadata
+
          std::string getJsonString( bool brackets = true );
    };
-
 
    //Test functions
    bool testBaseContainerMetadata();

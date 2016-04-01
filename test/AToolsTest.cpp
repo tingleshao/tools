@@ -1,10 +1,10 @@
 #include <iostream>
 #include <ATimer.h>
 #include <AThread.h>
+#include <BaseChunkMetadata.h>
 #include <BaseContainerMetadata.h>
-#include <BaseContainerArrayMetadata.h>
-#include <BaseContainerArray.h>
 #include <BaseContainer.h>
+#include <BaseChunk.h>
 #include <ImageMetadata.h>
 #include <BaseBuffer.h>
 #include <DataBuffer.h>
@@ -33,16 +33,16 @@ int main(void)
       return 1;
    }
    */
-   cout << "Testing BaseContainerMetadata"<<endl;
-   if( !atl::testBaseContainerMetadata() )
+   cout << "Testing BaseChunkMetadata"<<endl;
+   if( !atl::testBaseChunkMetadata() )
    {
-      cout << "BaseMetadata Test Failed!" << endl;
+      cout << "BaseChunkMetadata Test Failed!" << endl;
       return 1;
    }
-   cout << "Testing BaseContainer"<<endl;
-   if( !atl::testBaseContainer() )
+   cout << "Testing BaseChunk"<<endl;
+   if( !atl::testBaseChunk() )
    {
-      cout << "Test BaseContainer Failed!" << endl;
+      cout << "Test BaseChunk Failed!" << endl;
       return 1;
    }
    cout << "Testing TSArray"<<endl;
@@ -50,14 +50,14 @@ int main(void)
       std::cout << "TSArray test failed" <<std::endl;
       return 1;
    }
-   cout << "Testing BaseContainerArrayMetadata"<<endl;
-   if( !testBaseContainerArrayMetadata()) {
-      std::cout << "BaseContainerArrayMetadata test failed" <<std::endl;
+   cout << "Testing BaseContainerMetadata"<<endl;
+   if( !testBaseContainerMetadata()) {
+      std::cout << "BaseContainerMetadata test failed" <<std::endl;
       return 1;
    }
-   cout << "Testing BaseContainerArray"<<endl;
-   if( !testBaseContainerArray()) {
-      std::cout << "BaseContainerArray test failed" <<std::endl;
+   cout << "Testing BaseContainer"<<endl;
+   if( !testBaseContainer()) {
+      std::cout << "BaseContainer test failed" <<std::endl;
       return 1;
    }
    cout << "Testing ImageMetadata"<<endl;

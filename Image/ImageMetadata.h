@@ -2,7 +2,7 @@
 #include <memory>
 #include <climits>
 #include <stddef.h>
-#include <BaseContainerMetadata.h>
+#include <BaseChunkMetadata.h>
 
 namespace atl
 {
@@ -14,7 +14,7 @@ namespace atl
     * itself. There is no inherent method for data management allocated data is must be
     * freed with an external call to the deallocate function
     **/
-   class ImageMetadata : public BaseContainerMetadata
+   class ImageMetadata : public BaseChunkMetadata
    {
       private:
          

@@ -89,17 +89,13 @@ int main(void)
       cout << "SocketServer Test Failed!" << endl;
       return 1;
    }
-   */
-<<<<<<< HEAD:test/ATLTest.cpp
 
-=======
-   std::cout << "Testing TSArray" << std::endl;
    if( !testTSArray()) 
    {
       std::cout << "TSArray failed test" << std::endl;
       return 1;
    }
->>>>>>> 0f915fcaf3a1e076be5df0c74de2d3d858ed9303:test/AToolsTest.cpp
+   */
 
    cout << "All tests completed successfully!" << endl;
    return 0;

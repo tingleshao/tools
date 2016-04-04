@@ -9,7 +9,7 @@
 #include <thread>
 #include <vector>
 
-#include "AThread.h"
+#include "Thread.h"
 
 using namespace std;
 namespace atl

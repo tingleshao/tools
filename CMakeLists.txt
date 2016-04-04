@@ -77,8 +77,8 @@ set( ATL_Headers
    Buffer/TSMatrix.tcc
    Socket/BaseSocket.h
    Socket/SocketServer.h
-   Thread/AThread.h
-   Timer/ATimer.h
+   Thread/Thread.h
+   Timer/Timer.h
    TSQueue/ATSQueue.tcc
 )
 
@@ -99,8 +99,8 @@ set( SOURCE_FILES
    Image/ImageMetadata.cpp
    Socket/BaseSocket.cpp
    Socket/SocketServer.cpp
-   Thread/AThread.cpp
-   Timer/ATimer.cpp
+   Thread/Thread.cpp
+   Timer/Timer.cpp
 )
 
 add_library( ATL SHARED

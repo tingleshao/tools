@@ -1,6 +1,6 @@
 #include <iostream>
-#include <ATimer.h>
-#include <AThread.h>
+#include <Timer.h>
+#include <Thread.h>
 #include <BaseContainerMetadata.h>
 #include <BaseContainerArrayMetadata.h>
 #include <BaseContainerArray.h>

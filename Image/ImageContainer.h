@@ -11,6 +11,7 @@
 
 namespace atl
 {
+   /*
    // Image modes
    const uint16_t APL_MODE_NONE=0;      //!< No data yet stored in the image
    const uint16_t APL_MODE_GRAY=1;      //!< Single gray-scale value, non-Bayer
@@ -23,7 +24,7 @@ namespace atl
    const uint16_t APL_MODE_BGRA=8;      //!< Four colors per pixel, in order B,G,R,A
    const uint16_t APL_MODE_BT601_YUV_422=9; //!< YCrCb in 422 format with black of 16 white of 235
    const uint16_t APL_MODE_RGGB=10;     //!< Single color per pixel, first line R,G second G,B
-   
+   */
    /**
     * \brief This class is a very simple container class that represents image data.
     **/
@@ -34,8 +35,21 @@ namespace atl
       protected:
 
       public: 
-         ImageMetadata m_metadata;            //!<Image metadata structure
-         ExtendedBuffer<T> m_data;            //!<Image Data Buffer
+         ImageMetadata m_metadata;                  //!<Image metadata structure
+         ExtendedBuffer<T> m_data;                  //!<Image Data Buffer
+
+         //Access functions
+         ImageMetadata setMetadata();
+         void setWidth ( uint32_t );
+         void setHeight( uint32_t );
+         void setBpp   ( uint32_t );
+         void setMode  ( uint32_t );
+
+         ImageMetadata getMetadata();
+         uint32_t getWidth();
+         uint32_t getHeight();
+         uint32_t getBpp();
+         uint32_t getMode();
    };
 
    bool testImageContainer();

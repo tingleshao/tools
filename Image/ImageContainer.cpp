@@ -2,7 +2,7 @@
 #include <sstream>
 #include <string>
 
-#include "ImageMetadata.h"
+#include "ImageContainer.h"
 
 namespace atl
 {
@@ -12,36 +12,103 @@ namespace atl
     *
     * \return std::string with Json representation
     **/
-   std::string ImageMetadata::getJsonString(bool brackets )
+   std::string ImageContainer::getJsonString(bool brackets )
    {
-      std::stringstream ss;
+      return m_metadata.getJsonString();
+   }
 
-      if(brackets) {
-         ss << "{";
-      }
+   /**
+    * \brief Returns the image width
+    **/
+   size_t ImageContainer::getWidth()
+   {
+      return m_metadata.m_width;
+   }
 
-      std::string baseString = BaseMetadata::getJsonString(false);
-      ss << baseString << ","
-         << "\"image\":{"
-            << "\"mode\":"   << m_mode    << ","
-            << "\"width\":"  << m_width   << ","
-            << "\"height\":" << m_height  << ","
-            << "\"bpp\":"  << m_bpp     
-         << "}";
+   /**
+    * \brief Returns the image width
+    **/
+   size_t ImageContainer::getHeight()
+   {
+      return m_metadata.m_height;
+   }
 
-      if(brackets) {
-         ss << "}";
-      }
-      std::string result = ss.str();
+   /**
+    * \brief Returns the image width
+    **/
+   size_t ImageContainer::getBpp()
+   {
+      return m_metadata.m_bpp;
+   }
 
-      return result;
+   /**
+    * \brief Returns the image width
+    **/
+   size_t ImageContainer::getMode()
+   {
+      return m_metadata.m_mode;
+   }
+
+   /**
+    * \brief returns the ImageMetadata structure
+    **/
+   ImageMetadata ImageContainer::getMetadata() 
+   {
+      return m_metadata;
+   }
+
+   /**
+    * \brief returns a jsonString of the metadat structure
+    **/
+   std::string ImageContainer::getMetadata() 
+   {
+      return m_metadata.getJsonString();
+   }
+
+   /**
+    * \brief Sets the metadata from the given structure
+    **/
+   bool ImageContainer::setMetadata( ImageMetadata metadata )
+   {
+      m_metadata = metadata;
+      return true;
+   }
+
+   /**
+    * \brief Sets the width of the image
+    **/
+   void ImageContainer::setWidth( uint32_t width )
+   {
+      m_metadata.m_width = width;
+   }
+  
+   /**
+    * \brief Sets the width of the image
+    **/
+   void ImageContainer::setHeight( uint32_t width )
+   {
+      m_metadata.m_height = width;
+   }
+   /**
+    * \brief Sets the width of the image
+    **/
+   void ImageContainer::setBpp( uint32_t width )
+   {
+      m_metadata.m_bpp = bpp;
+   }
+   /**
+    * \brief Sets the width of the image
+    **/
+   void ImageContainer::setMode( uint32_t width )
+   {
+      m_metadata.m_mode = mode;
    }
 
    /**
     * \brief test function for the BaseMetadata class
     * \return true on success, false on failure
     **/
-   bool testImageMetadata()
+   bool testImageContainer()
    {
       ImageMetadata metadata;
       metadata.m_id = 1234;

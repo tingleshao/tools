@@ -19,7 +19,7 @@
 #include <string.h>
 
 #include <iostream>
-#include <ATimer.h>
+#include <Timer.h>
 #include "BaseSocket.h"
 
 namespace atl

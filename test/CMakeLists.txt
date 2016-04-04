@@ -26,10 +26,10 @@ endif( NOT CMAKE_COMPILER_SET)
 
 
 #specify location of include directories within this project
-include_directories( ${CMAKE_SOURCE_DIR}/ATimer)
-include_directories( ${CMAKE_SOURCE_DIR}/AThread)
-include_directories( ${CMAKE_SOURCE_DIR}/ABuffer)
-include_directories( ${CMAKE_SOURCE_DIR}/ASocket)
+include_directories( ${CMAKE_SOURCE_DIR}/Timer)
+include_directories( ${CMAKE_SOURCE_DIR}/Thread)
+include_directories( ${CMAKE_SOURCE_DIR}/Buffer)
+include_directories( ${CMAKE_SOURCE_DIR}/Socket)
 include_directories( ${CMAKE_SOURCE_DIR}/ThreadSafeQueue)
 
 #Find OS Threads Library

@@ -23,7 +23,6 @@
 
 namespace atl
 {
-
    /**
     * \brief Timecode structure that represents time as hhmmssff
     *

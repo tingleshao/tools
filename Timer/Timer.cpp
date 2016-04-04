@@ -16,7 +16,7 @@
 
 //#include <curl/curl.h>
 //#include <JsonBox.h>
-#include "ATimer.h"
+#include "Timer.h"
 
 namespace atl 
 {
@@ -262,7 +262,7 @@ namespace atl
    {
       return convertTimeValToTimeCode( convertDoubleToTimeVal( dTime ), fps) ;
    }
-   
+  
    //***********************************************************
    /**
     * \brief Gets the current time as a double
@@ -275,8 +275,7 @@ namespace atl
       
       return convertTimeValToDouble( tv );
    }
-   
-   
+
    //***********************************************************
    /*!\brief Returns the current timestamp 
     *

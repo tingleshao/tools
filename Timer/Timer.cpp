@@ -276,6 +276,18 @@ namespace atl
       return convertTimeValToDouble( tv );
    }
 
+   /**
+    * \brief Retursn the currrent time with 2^16 sub second steps
+    **/ 
+   uint64_t getTimeStamp()
+   {
+      auto now = std::chrono::system_clock::now();
+      auto now_ms = std::chrono::time_point_cast<std::chrono::milliseconds>(now);
+      auto value = now_ms.time_since_epoch();
+      uint64_t result = value.count()/15;
+      return result;
+   }
+
    //***********************************************************
    /*!\brief Returns the current timestamp 
     *

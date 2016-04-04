@@ -63,6 +63,7 @@ namespace atl
    
    //Support functions
    double getTime();
+   uint64_t    getTimeStamp();
    double convertTimeValToDouble( timeval tv );
    SMPTETime   convertTimeValToSMPTE( timeval tv, int fps ); 
    timeval     convertDoubleToTimeVal( double dTime );

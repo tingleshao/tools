@@ -2,10 +2,11 @@
 #include <memory>
 #include <climits>
 #include <stddef.h>
-#include <BaseContainerMetadata.h>
+#include <string>
 
 namespace atl
 {
+   #define BC_META_SIZE 24
    /**
     * \brief Low level data structure to associate pointer with a data size
     *
@@ -13,22 +14,24 @@ namespace atl
     * The size value is the number of elements in the buffer and the buffer is the data
     * itself. There is no inherent method for data management allocated data is must be
     * freed with an external call to the deallocate function
+    *
+    * The m_size variable tracks the size of all data not inherent in the structure
     **/
-   class ImageMetadata : public BaseContainerMetadata
+   class BaseContainerArrayMetadata
    {
       private:
          
       public: 
-         uint16_t m_mode   = 0;               //!< Image mode (Bayer, RGB, etc)
-         uint16_t m_width  = 0;               //!< Width of image
-         uint16_t m_height = 0;               //!< Height of image
-         uint16_t m_bpp    = 0;               //!< Bits per pixel
+         uint64_t    m_id = 0;              //!< ID of the object
+         uint64_t    m_elementCount = 0;    //!< Number of containers
+         uint64_t    m_size = 0;            //!< size of containers (does not include header)
+         uint64_t    m_blockSize = 1;       //!< Base block size container is mapped to in bytes (default = 1)
 
+         size_t      getSize();             //!< Returns the size of the metadata
 
          std::string getJsonString( bool brackets = true );
    };
 
-
    //Test functions
-   bool testImageMetadata();
+   bool testBaseContainerArrayMetadata();
 };

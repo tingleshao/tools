@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/sfeller/develop/Aqueti/tools/ATimer/ATimer.cpp
+unistd.h
+-
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+sys/time.h
+-
+math.h
+-
+thread
+-
+chrono
+-
+ATimer.h
+/home/sfeller/develop/Aqueti/tools/ATimer/ATimer.h
+
+/home/sfeller/develop/Aqueti/tools/ATimer/ATimer.h
+sys/time.h
+-
+time.h
+-
+stdint.h
+-
+string
+-
+

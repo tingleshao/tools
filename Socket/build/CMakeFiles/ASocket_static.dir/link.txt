@@ -1,0 +1,2 @@
+/usr/bin/ar cr libASocket_static.a  CMakeFiles/ASocket_static.dir/BaseSocket.cpp.o CMakeFiles/ASocket_static.dir/SocketServer.cpp.o CMakeFiles/ASocket_static.dir/home/sfeller/develop/Aqueti/tools/ATimer/ATimer.cpp.o CMakeFiles/ASocket_static.dir/home/sfeller/develop/Aqueti/tools/ABuffer/DataBuffer.cpp.o CMakeFiles/ASocket_static.dir/home/sfeller/develop/Aqueti/tools/AThread/AThread.cpp.o
+/usr/bin/ranlib libASocket_static.a

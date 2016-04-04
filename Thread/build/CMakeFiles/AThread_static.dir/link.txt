@@ -1,0 +1,2 @@
+/usr/bin/ar cr libAThread_static.a  CMakeFiles/AThread_static.dir/AThread.cpp.o
+/usr/bin/ranlib libAThread_static.a

@@ -1,0 +1,2 @@
+/home/sfeller/develop/Aqueti/tools/ATimer/build/CMakeFiles/ATimer.dir
+/home/sfeller/develop/Aqueti/tools/ATimer/build/CMakeFiles/ATimer_static.dir

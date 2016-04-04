@@ -1,0 +1,2 @@
+/usr/bin/ar cr libATimer_static.a  CMakeFiles/ATimer_static.dir/ATimer.cpp.o
+/usr/bin/ranlib libATimer_static.a

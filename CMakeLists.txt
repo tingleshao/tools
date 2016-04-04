@@ -58,29 +58,28 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 #Add additional directories
-include_directories(include ATimer)
-include_directories(include ABuffer)
+include_directories(include Timer)
+include_directories(include Buffer)
 include_directories(include Image)
-include_directories(include AThread)
-include_directories(include ATSQueue)
-include_directories(include ASocket)
+include_directories(include Thread)
+include_directories(include TSQueue)
+include_directories(include Socket)
 
 set( ATL_Headers
-   ABuffer/BaseChunkMetadata.h
-   ABuffer/BaseContainerMetadata.h
-   ABuffer/BaseContainer.h
+   Buffer/BaseContainerMetadata.h
+   Buffer/BaseContainerArrayMetadata.h
+   Buffer/BaseContainerArray.h
    Image/ImageMetadata.h
-   ABuffer/BaseBuffer.h
-   ABuffer/DataBuffer.h
-   ABuffer/BaseChunk.h
-   ABuffer/ExtendedBuffer.tcc
-   ABuffer/TSArray.tcc
-   ABuffer/TSMatrix.tcc
-   ASocket/BaseSocket.h
-   ASocket/SocketServer.h
-   AThread/AThread.h
-   ATimer/ATimer.h
-   ATSQueue/ATSQueue.tcc
+   Buffer/BaseBuffer.h
+   Buffer/BaseContainer.h
+   Buffer/ExtendedBuffer.tcc
+   Buffer/TSArray.tcc
+   Buffer/TSMatrix.tcc
+   Socket/BaseSocket.h
+   Socket/SocketServer.h
+   Thread/AThread.h
+   Timer/ATimer.h
+   TSQueue/ATSQueue.tcc
 )
 
 
@@ -89,20 +88,19 @@ add_definitions(-std=c++11 -fPIC)     #Use C++11
 
 #create a list of files
 set( SOURCE_FILES 
-   ABuffer/BaseChunkMetadata.cpp
-   ABuffer/BaseContainerMetadata.cpp
-   ABuffer/BaseContainer.cpp
-   ABuffer/TSArray.cpp
-   ABuffer/BaseBuffer.cpp
-   ABuffer/DataBuffer.cpp
-   ABuffer/BaseChunk.cpp
-   ABuffer/ExtendedBuffer.cpp
-   ABuffer/TSArray.cpp
+   Buffer/BaseContainerMetadata.cpp
+   Buffer/BaseContainerArrayMetadata.cpp
+   Buffer/BaseContainerArray.cpp
+   Buffer/TSArray.cpp
+   Buffer/BaseBuffer.cpp
+   Buffer/BaseContainer.cpp
+   Buffer/ExtendedBuffer.cpp
+   Buffer/TSArray.cpp
    Image/ImageMetadata.cpp
-   ASocket/BaseSocket.cpp
-   ASocket/SocketServer.cpp
-   AThread/AThread.cpp
-   ATimer/ATimer.cpp
+   Socket/BaseSocket.cpp
+   Socket/SocketServer.cpp
+   Thread/AThread.cpp
+   Timer/ATimer.cpp
 )
 
 add_library( ATL SHARED

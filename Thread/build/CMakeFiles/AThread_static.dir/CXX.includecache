@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/sfeller/develop/Aqueti/tools/AThread/AThread.cpp
+iostream
+-
+sys/types.h
+-
+chrono
+-
+thread
+-
+vector
+-
+AThread.h
+/home/sfeller/develop/Aqueti/tools/AThread/AThread.h
+
+/home/sfeller/develop/Aqueti/tools/AThread/AThread.h
+thread
+-
+mutex
+-
+

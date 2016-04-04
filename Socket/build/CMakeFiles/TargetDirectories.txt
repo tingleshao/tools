@@ -1,0 +1,2 @@
+/home/sfeller/develop/Aqueti/tools/ASocket/build/CMakeFiles/ASocket.dir
+/home/sfeller/develop/Aqueti/tools/ASocket/build/CMakeFiles/ASocket_static.dir

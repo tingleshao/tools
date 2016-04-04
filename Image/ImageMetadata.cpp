@@ -20,7 +20,7 @@ namespace atl
          ss << "{";
       }
 
-      std::string baseString = BaseChunkMetadata::getJsonString(false);
+      std::string baseString = BaseContainerMetadata::getJsonString(false);
       ss << baseString << ","
          << "\"image\":{"
             << "\"mode\":"   << m_mode    << ","

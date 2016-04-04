@@ -47,7 +47,7 @@ target_link_libraries( WriteTest
 
 #Specify the output executable of this file
 add_executable( ATLTest
-   AToolsTest.cpp
+   ATLTest.cpp
 )
 #assign a library to link to this file. This shows a static library
 target_link_libraries( ATLTest
@@ -88,7 +88,6 @@ target_link_libraries( SocketTerminal
 #Specify where the targets are installed when a "make install" is executed
 install(TARGETS
    WriteTest
-#   AToolsTest
    SampleServer
    SocketTerminal
    RUNTIME DESTINATION bin

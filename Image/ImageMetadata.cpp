@@ -6,10 +6,14 @@
 
 namespace atl
 {
+   /**
+    * \brief Constructor that defines the image type
+    **/
    ImageMetadata::ImageMetadata()
    {
       m_type = TYPE_IMAGE;
    }
+
    /**
     * \brief Generates a jsonString based on the contained metadata
     * \param [in] brackets flag to indicate if the output includes enclosing bracketss
@@ -27,7 +31,7 @@ namespace atl
       std::string baseString = BaseContainerMetadata::getJsonString(false);
       ss << baseString << ","
          << "\"image\":{"
-            << "\"mode\":"   << m_mode    << ","
+            << "\"mode\":\""   << modeToStringMap[m_mode] << "\","
             << "\"width\":"  << m_width   << ","
             << "\"height\":" << m_height  << ","
             << "\"bpp\":"  << m_bpp     
@@ -56,7 +60,7 @@ namespace atl
       metadata.m_height= 3;
       metadata.m_bpp= 4;
 
-      std::string expected("{\"id\":1234,\"size\":1234,\"offset\":1235,\"type\":2,\"image\":{\"mode\":1,\"width\":2,\"height\":3,\"bpp\":4}}");
+      std::string expected("{\"id\":1234,\"size\":1234,\"offset\":1235,\"type\":2,\"image\":{\"mode\":\"grayscale\",\"width\":2,\"height\":3,\"bpp\":4}}");
       std::string result = metadata.getJsonString();
 
       if( !expected.compare(result)) {

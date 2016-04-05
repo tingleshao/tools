@@ -2,6 +2,7 @@
 #include <memory>
 #include <climits>
 #include <stddef.h>
+#include <map>
 #include <BaseContainerMetadata.h>
 
 namespace atl
@@ -20,6 +21,27 @@ namespace atl
    const uint16_t ATL_MODE_BGRA=8;      //!< Four colors per pixel, in order B,G,R,A
    const uint16_t ATL_MODE_BT601_YUV_422=9; //!< YCrCb in 422 format with black of 16 white of 235
    
+   static std::map<uint16_t, std::string> modeToStringMap {
+      {ATL_MODE_NONE, "NONE"},
+      {ATL_MODE_GRAY, "grayscale"},
+      {ATL_MODE_GRBG, "GRBG"},
+      {ATL_MODE_BGGR, "BGGR"},
+      {ATL_MODE_RGB, "RGB"},
+      {ATL_MODE_JPEG_RGB, "JPEG_RGB"},
+      {ATL_MODE_YUV_422, "YUV_422"}
+   }; //!< Maps a mode to an associated string
+
+
+   static std::map<std::string, uint16_t> stringToModeMap = {
+      {"NONE", ATL_MODE_NONE },
+      {"grayscale", ATL_MODE_GRAY },
+      {"GRBG", ATL_MODE_GRBG },
+      {"BGGR", ATL_MODE_BGGR },
+      {"RGB",  ATL_MODE_RGB  },
+      {"JPEG_RGB", ATL_MODE_JPEG_RGB },
+      {"YUV_422", ATL_MODE_YUV_422}
+   }; //!< Maps string to the appropriate mode
+
    /**
     * \brief Metadata for a generic image object
     *

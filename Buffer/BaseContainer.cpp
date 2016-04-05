@@ -11,49 +11,38 @@ namespace atl
 {
    /**
     * \brief allocates container data
-    * \param [in] blockCount number of blocks in the container. 0 = unlimited (default = 0)
+    * \param [in] bytes      number of bytes data is expected to require
     * \param [in] blockSize  minimum size of a block in bytes (default = 1)
-    * \return true on sucess, false on failure
+    * \return number of bytes avialable in the data buffer (0 indicates failure)
     *
     * This function allocates the buffer to the given size and assigns the appropriate ID.
     * To speed up file I/O and data management, the memory is stored as a continuous array 
     * with that is an integer multiple of the blockSize as specified by the block count. The 
     * first bytes in the memory contain the metadata pointer. 
     **/
-    bool BaseContainer::allocate( size_t blockCount, size_t blockSize ) 
+    size_t BaseContainer::allocate( size_t bytes, size_t blockSize ) 
     {
-       m_blockCount    = blockCount;
-       m_blockSize     = blockSize;
+       if( blockSize == 0 ) {
+           std::cerr << "BaseContainer::allocate: BlockSize of 0 invalid"<<std::endl;
+           return 0;
+       }
 
-       //If blockCount is 0, calculate how many blocks we need to allocate for the metadata
-       if( blockCount == 0 ) {
-          m_blockCount = (sizeof(BaseContainerMetadata)-blockSize)/blockSize;
-          m_blockSize = blockSize;
-       }
-       //Make sure we are large enough to at least hold the metadata. If not, return false
-       else if(blockCount * blockSize < sizeof( BaseContainerMetadata)) {
-          std::cerr << "BaseContainer instantiation failed. Size not large enough for metadata" << std::endl;
-          return false;
-       } 
-       else {
-          m_blockCount = blockCount;
-          m_blockSize  = blockSize;
-       }
+       m_blockSize  = blockSize;
+       m_blockCount = (bytes+blockSize-1)/m_blockSize;
 
        //Allocate enough memory for the met
        if( !m_buffer.allocate( m_blockCount * m_blockSize )) {
           std::cerr << "BaseContainer: Failed to allocated "<<m_blockCount * m_blockSize<<" bytes."<<std::endl;
-          return false;
+          return 0;
        }
 
        //Map metadat to the appropriate pointer
        m_metadata = (BaseContainerMetadata *)(&m_buffer[0]);
        m_metadata->m_offset = sizeof( BaseContainerMetadata);
        m_metadata->m_type   = TYPE_BASE;
-
        m_metadata->m_size = m_blockCount * m_blockSize;
 
-       return true;
+       return m_metadata->m_size - m_metadata->m_offset;
     }
     
    /**
@@ -61,9 +50,6 @@ namespace atl
     **/
    bool BaseContainer::save( std::string filename ) 
    {
-      bool rc = true;
-      std::string header = m_metadata->getJsonString();
-
       //Open the specified filename
       int fd = open( filename.c_str(), O_WRONLY |O_CREAT, 0777 );
       if( fd < 0 ) {
@@ -71,12 +57,13 @@ namespace atl
          return false;
       }
 
-
+  
       //Write the header
-      size_t byteCount = 0;
+      bool    rc = true;
+      size_t  byteCount = 0;
       ssize_t result = 0;
       while((result >= 0 )&&( byteCount < m_blockCount * m_blockSize )) {
-         result = write( fd, m_metadata, m_blockCount * m_blockSize - byteCount ); 
+         result = write( fd, &m_buffer[0] + byteCount, m_blockCount * m_blockSize - byteCount ); 
          if( result < 0 ) {
             std::cerr << "Based Container failed while writing data " <<std::endl;
             rc = false;
@@ -93,14 +80,30 @@ namespace atl
    /**
     * \brief returns the size of the container
     **/
-    size_t BaseContainer::getSize() 
-    {
-       if( m_metadata == NULL ) {
-          return 0;
-       }
+   size_t BaseContainer::getSize() 
+   {
+      if( m_metadata == NULL ) {
+         return 0;
+      }
 
-       return m_metadata->m_size;
-    }
+      return m_metadata->m_size;
+   }
+
+   /**
+    * \brief returns the size of the data buffer
+    **/
+   size_t BaseContainer::getDataSize()
+   {
+      return m_metadata->m_size - m_metadata->m_offset;
+   }
+
+   /**
+    * \brief Returns a pointer to the head of the data
+    **/
+   void * BaseContainer::getDataPointer()
+   {
+      return &m_buffer[0]+m_metadata->m_offset;
+   }
 
    /**
     * \brief Test function
@@ -135,6 +138,18 @@ namespace atl
          return false;
       }
 
+      uint32_t * buffer = (uint32_t *)container.getDataPointer();
+      size_t count = container.getDataSize() / sizeof(uint32_t);
+      for( uint32_t i = 0; i < count; i++ ) {
+         buffer[i] = i;
+      }
+
+      for( uint32_t i = 0; i < count; i++ ) {
+         if(buffer[i] != i ) {
+            std::cerr << "buffer["<<i<<"] != "<<(char)i<<std::endl;
+            return false;
+         }
+      }
       return true;
  
    }

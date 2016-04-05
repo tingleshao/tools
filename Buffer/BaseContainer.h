@@ -24,10 +24,12 @@ namespace atl
          BaseContainerMetadata * m_metadata = NULL;//!< Metadata fro the container
          BaseBuffer   m_buffer;                    //!< DataBuffer
 
-         virtual bool allocate( size_t blockCount = 0
-                              , size_t blockSize  = BLK_SIZE_BYTE
-                              );
+         virtual size_t allocate( size_t bytes      = 0
+                                , size_t blockSize  = BLK_SIZE_BYTE
+                                );
 
+         size_t       getDataSize();
+         void *       getDataPointer();
          virtual bool save( std::string filename );
          uint64_t     getId();
          size_t       getSize();

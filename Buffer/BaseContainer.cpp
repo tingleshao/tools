@@ -3,7 +3,6 @@
 #include <string>
 #include <cstdlib>
 #include <fstream>
-#include <map>
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -117,6 +116,14 @@ namespace atl
    size_t BaseContainer::getDataSize()
    {
       return m_metadata->m_size - m_metadata->m_offset;
+   }
+
+   /**
+    * \brief returns the size of the metadata
+    **/
+   size_t BaseContainer::getMetadataSize()
+   {
+      return m_metadata->m_offset;
    }
 
    /**

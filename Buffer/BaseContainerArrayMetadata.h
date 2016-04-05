@@ -4,6 +4,7 @@
 #include <stddef.h>
 #include <string>
 
+#include <BaseContainer.h>
 namespace atl
 {
    #define BC_META_SIZE 24
@@ -25,11 +26,11 @@ namespace atl
          uint64_t    m_id = 0;              //!< ID of the object
          uint64_t    m_elementCount = 0;    //!< Number of containers
          uint64_t    m_size = 0;            //!< size of containers (does not include header)
-         uint64_t    m_blockSize = 1;       //!< Base block size container is mapped to in bytes (default = 1)
 
          size_t      getSize();             //!< Returns the size of the metadata
 
          std::string getJsonString( bool brackets = true );
+         bool save(std::string filename, size_t blockSize = BLK_SIZE_4MB );
    };
 
    //Test functions

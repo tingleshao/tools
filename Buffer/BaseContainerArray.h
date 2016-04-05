@@ -32,6 +32,8 @@ namespace atl
          size_t getSize();
          size_t getId();
          size_t getElementCount();
+
+         bool save( std::string filename, size_t blockSize = BLK_SIZE_4MB );
    };
 
    //Test functions

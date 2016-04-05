@@ -47,6 +47,38 @@ namespace atl
       return m_metadata.m_id;
    }
 
+   /*
+    * \brief Saves saves the containers into sequence of blocks
+    * \param [in] filename name of the file to save to
+    * \param [in] blockSize fundamental block size for the file
+    *
+    * This function maps off of the data into a contiguous block of memory on the file system
+    *
+   bool save( std::string filename, size_t blockSize )
+   {
+      //Create a container to hold all of the data
+      std::vector<uint16_t> offsets(m_containerArray.getSize());
+      ArrayContainer container;
+      container.allocate( getSize()); 
+
+      for( size_t i = 0; i < getElementCount(); i++ ) {
+         
+
+      }
+
+
+
+
+      //Open the specified filename
+      int fd = open( filename.c_str(), O_WRONLY |O_CREAT, 0777 );
+      if( fd < 0 ) {
+         std::cerr << "BaseContainer unable to open "<<filename.c_str()<<std::endl;
+         return false;
+      }
+
+
+   }
+   */
    //Test functions
    bool testBaseContainerArray() 
    {

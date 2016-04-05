@@ -33,13 +33,13 @@ namespace atl
 
 
    static std::map<std::string, uint16_t> stringToModeMap = {
-      {"NONE", ATL_MODE_NONE },
+      {"NONE"     , ATL_MODE_NONE },
       {"grayscale", ATL_MODE_GRAY },
-      {"GRBG", ATL_MODE_GRBG },
-      {"BGGR", ATL_MODE_BGGR },
-      {"RGB",  ATL_MODE_RGB  },
-      {"JPEG_RGB", ATL_MODE_JPEG_RGB },
-      {"YUV_422", ATL_MODE_YUV_422}
+      {"GRBG"     , ATL_MODE_GRBG },
+      {"BGGR"     , ATL_MODE_BGGR },
+      {"RGB"      ,  ATL_MODE_RGB  },
+      {"JPEG_RGB" , ATL_MODE_JPEG_RGB },
+      {"YUV_422"  , ATL_MODE_YUV_422}
    }; //!< Maps string to the appropriate mode
 
    /**

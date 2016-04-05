@@ -15,6 +15,7 @@ namespace atl
     * \brief allocates container data
     * \param [in] bytes      number of bytes data is expected to require
     * \param [in] blockSize  minimum size of a block in bytes (default = 1)
+    * \param [in] metaSize   size of the metadata header. 0 indicates BaseMetadataSize. (default = 0)
     * \return number of bytes avialable in the data buffer (0 indicates failure)
     *
     * This function allocates the buffer to the given size and assigns the appropriate ID.
@@ -22,14 +23,19 @@ namespace atl
     * with that is an integer multiple of the blockSize as specified by the block count. The 
     * first bytes in the memory contain the metadata pointer. 
     **/
-    size_t BaseContainer::allocate( size_t bytes, size_t blockSize ) 
+    size_t BaseContainer::allocate( size_t bytes, size_t blockSize, size_t metaSize ) 
     {
        if( blockSize == 0 ) {
            std::cerr << "BaseContainer::allocate: BlockSize of 0 invalid"<<std::endl;
            return 0;
        }
 
-       size_t totalBytes = bytes + sizeof( BaseContainerMetadata );
+       //
+       if( metaSize == 0 ) {
+          metaSize = sizeof( BaseContainerMetadata );
+       }
+
+       size_t totalBytes = bytes + metaSize;
 
        m_blockSize  = blockSize;
        m_blockCount = (totalBytes+blockSize-1)/m_blockSize;
@@ -41,8 +47,8 @@ namespace atl
        }
 
        //Map metadat to the appropriate pointer
-       m_metadata = (BaseContainerMetadata *)(&m_buffer[0]);
-       m_metadata->m_offset = sizeof( BaseContainerMetadata);
+       m_metadata = reinterpret_cast<BaseContainerMetadata *>(&m_buffer[0]);
+       m_metadata->m_offset = metaSize;
        m_metadata->m_type   = TYPE_BASE;
        m_metadata->m_size = m_blockCount * m_blockSize;
 
@@ -72,7 +78,7 @@ namespace atl
       }
 
   
-      //Write the header
+      //Write data
       bool    rc = true;
       size_t  byteCount = 0;
       ssize_t result = 0;

@@ -28,6 +28,7 @@ namespace atl
 
          virtual size_t allocate( size_t bytes      = 0
                                 , size_t blockSize  = BLK_SIZE_BYTE
+                                , size_t metaSize   = 0
                                 );
 
          size_t       getDataSize();

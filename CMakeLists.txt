@@ -70,6 +70,7 @@ set( ATL_Headers
    Buffer/BaseContainerArrayMetadata.h
    Buffer/BaseContainerArray.h
    Image/ImageMetadata.h
+   Image/ImageContainer.h
    Buffer/BaseBuffer.h
    Buffer/BaseContainer.h
    Buffer/ExtendedBuffer.tcc
@@ -97,6 +98,7 @@ set( SOURCE_FILES
    Buffer/ExtendedBuffer.cpp
    Buffer/TSArray.cpp
    Image/ImageMetadata.cpp
+   Image/ImageContainer.cpp
    Socket/BaseSocket.cpp
    Socket/SocketServer.cpp
    Thread/Thread.cpp

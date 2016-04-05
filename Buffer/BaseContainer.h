@@ -19,6 +19,8 @@ namespace atl
       private:
          size_t m_blockSize  = 0;                   //!< Minimum memory chunk in the container
          size_t m_blockCount = 0;                   //!< Number of blocks in the container. 0 is unlimited
+
+      protected:
          
       public: 
          BaseContainerMetadata * m_metadata = NULL;//!< Metadata fro the container
@@ -31,6 +33,7 @@ namespace atl
          size_t       getDataSize();
          void *       getDataPointer();
          virtual bool save( std::string filename );
+         void         setId( uint64_t id );
          uint64_t     getId();
          size_t       getSize();
    };

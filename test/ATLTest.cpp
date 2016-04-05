@@ -6,6 +6,7 @@
 #include <BaseContainerArray.h>
 #include <BaseContainer.h>
 #include <ImageMetadata.h>
+#include <ImageContainer.h>
 #include <BaseBuffer.h>
 #include <ExtendedBuffer.tcc>
 #include <BaseSocket.h>
@@ -63,6 +64,12 @@ int main(void)
    if( !atl::testImageMetadata() )
    {
       cout << "ImageMetadata Test Failed!" << endl;
+      return 1;
+   }
+   cout << "Testing ImageContainer"<<endl;
+   if( !atl::testImageContainer() )
+   {
+      cout << "ImageContainer Test Failed!" << endl;
       return 1;
    }
    cout << "Testing BaseBuffer"<<endl;

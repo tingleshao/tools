@@ -48,6 +48,7 @@ namespace atl {
 
       m_buffer.reset( static_cast<uint8_t *>(std::malloc(bytes)), std::free );
       m_bufferSize = bytes;
+      memset( m_buffer.get(), 0, m_bufferSize);
 
       size_t copySize = bytes;
       if( bufferSize < bytes ) { 

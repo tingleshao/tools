@@ -46,7 +46,14 @@ namespace atl
 
        return m_metadata->m_size - m_metadata->m_offset;
     }
-    
+   /**
+    * \brief sets the container ID to the specified value
+    **/ 
+    void BaseContainer::setId( uint64_t id ) 
+    {
+       m_metadata->m_id =id;
+    }
+
    /**
     * \brief Function to save the base container
     **/
@@ -64,8 +71,9 @@ namespace atl
       bool    rc = true;
       size_t  byteCount = 0;
       ssize_t result = 0;
+      uint8_t * buff = (uint8_t *)&m_buffer[0];
       while((result >= 0 )&&( byteCount < m_blockCount * m_blockSize )) {
-         result = write( fd, &m_buffer[0] + byteCount, m_blockCount * m_blockSize - byteCount ); 
+         result = write( fd, &buff[byteCount], m_blockCount * m_blockSize - byteCount ); 
          if( result < 0 ) {
             std::cerr << "Based Container failed while writing data " <<std::endl;
             rc = false;
@@ -105,6 +113,19 @@ namespace atl
    void * BaseContainer::getDataPointer()
    {
       return &m_buffer[0]+m_metadata->m_offset;
+   }
+
+   /**
+    * \brief Returns the container ID
+    **/
+   uint64_t BaseContainer::getId()
+   {
+      if( m_metadata == NULL ) {
+         return 0;
+      }
+
+      return m_metadata->m_id;
+
    }
 
    /**
@@ -155,6 +176,8 @@ namespace atl
             return false;
          }
       }
+
+      container.save("temp.tmp");
       return true;
  
    }

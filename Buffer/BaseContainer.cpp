@@ -27,8 +27,10 @@ namespace atl
            return 0;
        }
 
+       size_t totalBytes = bytes + sizeof( BaseContainerMetadata );
+
        m_blockSize  = blockSize;
-       m_blockCount = (bytes+blockSize-1)/m_blockSize;
+       m_blockCount = (totalBytes+blockSize-1)/m_blockSize;
 
        //Allocate enough memory for the met
        if( !m_buffer.allocate( m_blockCount * m_blockSize )) {
@@ -119,18 +121,17 @@ namespace atl
          std::cout << "Invalid container size1: "<<sz << "!="<<0<<std::endl;
          return false;
       }
-      container.allocate(100);
+      container.allocate(bcSize);
 
       sz = container.getSize();
-      if( sz != bcSize ) {
-         std::cout << "Invalid container size2: "<<sz << "!="<<bcSize<<std::endl;
+      if( sz != bcSize + sizeof(BaseContainerMetadata)) {
+         std::cout << "Invalid container size2: "<<sz << "!="<<bcSize + sizeof( BaseContainerMetadata) <<std::endl;
          return false;
       }
 
       container.m_metadata->m_id = 1;
-      container.m_metadata->m_offset = 2;
 
-      std::string expected = "{\"id\":1,\"size\":100,\"offset\":2,\"type\":1}";
+      std::string expected = "{\"id\":1,\"size\":140,\"offset\":40,\"type\":1}";
       std::string result   = container.m_metadata->getJsonString();
 
       if( result.compare(expected)) {
@@ -140,6 +141,10 @@ namespace atl
 
       uint32_t * buffer = (uint32_t *)container.getDataPointer();
       size_t count = container.getDataSize() / sizeof(uint32_t);
+      if( count != bcSize/sizeof(uint32_t)) {
+         std::cerr << "Size mismatch:"<<count<<"!="<<bcSize/sizeof(uint32_t) << std::endl;
+         return false;
+      }
       for( uint32_t i = 0; i < count; i++ ) {
          buffer[i] = i;
       }

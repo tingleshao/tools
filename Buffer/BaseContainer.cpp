@@ -1,6 +1,8 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <cstdlib>
+#include <fstream>
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -56,6 +58,9 @@ namespace atl
 
    /**
     * \brief Function to save the base container
+    * \param [in] filename name of the file to save the container to
+    *
+    * This functions saves the binary data in the container directly to disk.
     **/
    bool BaseContainer::save( std::string filename ) 
    {
@@ -177,8 +182,40 @@ namespace atl
          }
       }
 
-      container.save("temp.tmp");
-      return true;
+      /////////////////////////////////////////////
+      // Check file I/O
+      /////////////////////////////////////////////
+      bool rc = true;
+      container.save("cont1.tmp");
+
+      BaseContainer container2;
+      container2.allocate( bcSize, BLK_SIZE_4MB );
+      //Check if we can save data
+      container2.save("cont2.tmp");
+
+      std::ifstream f1("cont1.tmp", std::ios::binary | std::ios::ate);
+      if( (unsigned)f1.tellg() != bcSize + sizeof( BaseContainerMetadata )) {
+         std::cerr << "BaseContainer1 unexpected file size: "
+                   <<f1.tellg()<<"!="<<bcSize+sizeof(BaseContainerMetadata)
+                   <<std::endl;
+         rc = false;
+      }
+
+      std::ifstream f2("cont2.tmp", std::ios::binary | std::ios::ate);
+      if( f2.tellg() != BLK_SIZE_4MB ) {
+         std::cerr << "BaseContainer2 unexpected file size: "
+                   <<f2.tellg()<<"!="<<BLK_SIZE_4MB
+                   <<std::endl;
+         rc = false;
+      }
+      int irc = std::system("rm *.tmp");
+      if( irc != 0 ) {
+         std::cerr << "Failed on system command with code "<<irc <<std::endl;
+         rc = false;
+      }
+
+
+      return rc;
  
    }
 };

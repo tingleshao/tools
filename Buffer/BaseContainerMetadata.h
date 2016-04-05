@@ -6,7 +6,11 @@
 
 namespace atl
 {
-#define BASECONTAINERMETA_SIZE 4*8
+   #define TYPE_SIZE 8
+ 
+   #define TYPE_UNKNOWN 0
+   #define TYPE_BASE  1
+
    /**
     * \brief Low level data structure to associate pointer with a data size
     *
@@ -21,11 +25,11 @@ namespace atl
          
       public: 
          uint64_t    m_id = 0;              //!< ID of the object
-         uint64_t    m_elementSize = 1;     //!< Size of a databuffer element
-         uint64_t    m_elementCount = 0;    //!< Number of elements in the associated buffer
+         uint64_t    m_size = 0;            //!< Total size of the container including metadata
          uint64_t    m_offset = 0;          //!< Offset into the binary data
-         std::string m_type;                //!< Indicates metadata type
+         uint64_t    m_type = TYPE_UNKNOWN; //!< Type of metadata
 
+         BaseContainerMetadata();
          virtual size_t  getSize();         //!< Returns the size of the metadata container
          std::string getJsonString( bool brackets = true );
    };

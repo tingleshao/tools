@@ -1,11 +1,24 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <random>
+#include <iostream>
 
+#include "Timer.h"
 #include "BaseContainerMetadata.h"
 
 namespace atl
 {
+   /**
+    * \brief Constructor
+    *
+    * The constructor should automatically generate a unique when created
+    **/ 
+   BaseContainerMetadata::BaseContainerMetadata()
+   {
+      m_id = getTimeStamp();
+   }
+
    /**
     * \brief Generates a jsonString based on the contained metadata
     * \param [in] brackets flag to indicate if surrounding brackets are needed (default = true)
@@ -19,9 +32,10 @@ namespace atl
          ss << "{";
       }
       
-      ss << "\"id\":"     << m_id << ","
+      ss << "\"id\":"     << m_id     << ","
+         << "\"size\":"   << m_size   << ","
          << "\"offset\":" << m_offset << ","
-         << "\"elementSize\":" << m_elementSize;
+         << "\"type\":"   << m_type;
 
       if(brackets) { 
          ss << "}";
@@ -39,7 +53,7 @@ namespace atl
     **/
    size_t BaseContainerMetadata::getSize() 
    {
-      return BASECONTAINERMETA_SIZE + m_type.length();
+      return sizeof( BaseContainerMetadata);
       
    }
    /**
@@ -49,11 +63,11 @@ namespace atl
    bool testBaseContainerMetadata()
    {
       BaseContainerMetadata metadata;
-      metadata.m_id = 1234;
+      metadata.m_id     = 1234;
       metadata.m_offset = 1235;
-      metadata.m_elementSize = 1;
+      metadata.m_size   = 1;
 
-      std::string expected("{\"id\":1234,\"offset\":1235,\"elementSize\":1}");
+      std::string expected("{\"id\":1234,\"size\":1,\"offset\":1235,\"type\":0}");
       std::string result = metadata.getJsonString();
 
       if( expected.compare(result)) {
@@ -61,7 +75,7 @@ namespace atl
          return false;
       }
 
-      expected.assign("\"id\":1234,\"offset\":1235,\"elementSize\":1");
+      expected.assign("\"id\":1234,\"size\":1,\"offset\":1235,\"type\":0");
       result.clear();
       result = metadata.getJsonString(false);
       if( expected.compare(result)) {

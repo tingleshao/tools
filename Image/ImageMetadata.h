@@ -6,6 +6,8 @@
 
 namespace atl
 {
+   #define  TYPE_IMAGE 2
+
    // Image modes
    const uint16_t APL_MODE_NONE=0;      //!< No data yet stored in the image
    const uint16_t APL_MODE_GRAY=1;      //!< Single gray-scale value, non-Bayer
@@ -35,6 +37,7 @@ namespace atl
          uint16_t m_height = 0;               //!< Height of image
          uint16_t m_bpp    = 0;               //!< Bits per pixel
 
+         ImageMetadata();
          std::string getJsonString( bool brackets = true );
    };
 

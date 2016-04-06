@@ -1,12 +1,14 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <cstring>
 #include <cstdlib>
 #include <fstream>
 
 #include <fcntl.h>
 #include <unistd.h>
 
+#include "Timer.h"
 #include "BaseContainer.h"
 
 namespace atl
@@ -26,8 +28,10 @@ namespace atl
     size_t BaseContainer::allocate( size_t bytes, size_t blockSize, size_t metaSize ) 
     {
        if( blockSize == 0 ) {
-           std::cerr << "BaseContainer::allocate: BlockSize of 0 invalid"<<std::endl;
-           return 0;
+          blockSize = m_blockSize;
+       }
+       else {
+          m_blockSize = blockSize;
        }
 
        //
@@ -37,8 +41,7 @@ namespace atl
 
        size_t totalBytes = bytes + metaSize;
 
-       m_blockSize  = blockSize;
-       m_blockCount = (totalBytes+blockSize-1)/m_blockSize;
+       m_blockCount = (totalBytes+m_blockSize-1)/m_blockSize;
 
        //Allocate enough memory for the met
        if( !m_buffer.allocate( m_blockCount * m_blockSize )) {
@@ -48,9 +51,13 @@ namespace atl
 
        //Map metadat to the appropriate pointer
        m_metadata = reinterpret_cast<BaseContainerMetadata *>(&m_buffer[0]);
+       m_metadata->m_id = getTimeStamp();
        m_metadata->m_offset = metaSize;
        m_metadata->m_type   = TYPE_BASE;
        m_metadata->m_size = m_blockCount * m_blockSize;
+       std::strncpy( m_metadata->m_magic, "ATLc\n", MAGIC_SIZE);
+
+       m_metadata->m_usedBytes = metaSize;
 
        return m_metadata->m_size - m_metadata->m_offset;
     }
@@ -68,8 +75,13 @@ namespace atl
     *
     * This functions saves the binary data in the container directly to disk.
     **/
-   bool BaseContainer::save( std::string filename ) 
+   bool BaseContainer::save( std::string filename, size_t blockSize ) 
    {
+      //If no block size is specified, use default
+      if( blockSize == BLK_SIZE_DEFAULT ) {
+         blockSize = m_blockSize;
+      }
+
       //Open the specified filename
       int fd = open( filename.c_str(), O_WRONLY |O_CREAT, 0777 );
       if( fd < 0 ) {
@@ -120,12 +132,13 @@ namespace atl
 
    /**
     * \brief returns the size of the metadata
-    **/
+    *
    size_t BaseContainer::getMetadataSize()
    {
       return m_metadata->m_offset;
    }
-
+   */
+  
    /**
     * \brief Returns a pointer to the head of the data
     **/
@@ -146,6 +159,7 @@ namespace atl
       return m_metadata->m_id;
 
    }
+
 
    /**
     * \brief Test function
@@ -171,11 +185,13 @@ namespace atl
 
       container.m_metadata->m_id = 1;
 
-      std::string expected = "{\"id\":1,\"size\":140,\"offset\":40,\"type\":1}";
+      std::string expected = "{\"id\":1,\"type\":1,\"size\":156,\"offset\":56}";
       std::string result   = container.m_metadata->getJsonString();
 
       if( result.compare(expected)) {
-         std::cerr << "testBaseContainer failed:"<<result.c_str()<<"!="<<expected.c_str()<<std::endl;
+         std::cerr << "testBaseContainer failed:\n"
+                   << "result   :"<<result.c_str()<<"\n"
+                   << "expected :"<<expected.c_str()<<std::endl;
          return false;
       }
 
@@ -222,11 +238,13 @@ namespace atl
                    <<std::endl;
          rc = false;
       }
+      /*
       int irc = std::system("rm *.tmp");
       if( irc != 0 ) {
          std::cerr << "Failed on system command with code "<<irc <<std::endl;
          rc = false;
       }
+      */
 
 
       return rc;

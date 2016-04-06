@@ -32,5 +32,28 @@ To ensure that the Container class is scalable to support arbitrary implementati
 \endverbatim
 
 
+# HContainer
+An HContainer is a container that povides a wrapping for a heterogenous collection of container types. This is a useful construct for saving multiple related containers in a related memory block.
+
+The buffer in the HContainer class is an array of continuous data that contains all of the information for the subcontainers. 
+
+\code
+{
+   "magic":"ATLc",                         //Magic number for the file
+   "id": uint64_t,                         //Unique ID of the container
+   "type":TYPE_HCONTAINER,                 //container type (2)
+   "size":uint64_t,                        //total memory used by container
+   "offset":uint64_t,                      //offset to binary(buffer) data
+   
+   //Metadata offsets
+   "metaOffsetSize":uint64_t               //size of the metadata
+   "elementCount":uint64_t,                //number of elements
+   
+
+}
+
+\endcode
+
+
 **/
 

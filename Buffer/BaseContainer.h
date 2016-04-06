@@ -8,7 +8,8 @@
 
 namespace atl
 {
-   #define BLK_SIZE_BYTE 1                      //!<4 megabyte block size in bytes
+   #define BLK_SIZE_DEFAULT 0                   //!< Use Default block size
+   #define BLK_SIZE_BYTE 1                      //!< 1 byte block size
    #define BLK_SIZE_4MB  4194304                //!<4 megabyte block size in bytes
 
    /**
@@ -17,23 +18,24 @@ namespace atl
    class BaseContainer
    {
       private:
-         size_t m_blockSize  = 0;                   //!< Minimum memory chunk in the container
-         size_t m_blockCount = 0;                   //!< Number of blocks in the container. 0 is unlimited
 
       protected:
          
       public: 
+         size_t m_blockSize  = BLK_SIZE_BYTE;                   //!< Minimum memory chunk in the container
+         size_t m_blockCount = 0;                   //!< Number of blocks in the container. 0 is unlimited
+
          BaseContainerMetadata * m_metadata = NULL;//!< Metadata fro the container
          BaseBuffer   m_buffer;                    //!< DataBuffer
 
-         virtual size_t allocate( size_t bytes      = 0
-                                , size_t blockSize  = BLK_SIZE_BYTE
+         virtual size_t allocate( size_t bytes      
+                                , size_t blockSize  = 0
                                 , size_t metaSize   = 0
                                 );
 
          size_t       getDataSize();
          void *       getDataPointer();
-         virtual bool save( std::string filename );
+         bool         save( std::string filename, size_t blockSize = BLK_SIZE_DEFAULT );
          void         setId( uint64_t id );
          uint64_t     getId();
          size_t       getSize();

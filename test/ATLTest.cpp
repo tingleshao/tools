@@ -5,6 +5,8 @@
 #include <BaseContainerArrayMetadata.h>
 #include <BaseContainerArray.h>
 #include <BaseContainer.h>
+#include <HContainerMetadata.h>
+#include <HContainer.h>
 #include <ImageMetadata.h>
 #include <ImageContainer.h>
 #include <BaseBuffer.h>
@@ -33,6 +35,18 @@ int main(void)
       return 1;
    }
    */
+   cout << "Testing BaseBuffer"<<endl;
+   if( !atl::testBaseBuffer() )
+   {
+      cout << "BaseBuffer Test Failed!" << endl;
+      return 1;
+   }
+   cout << "Testing extended buffer"<<endl;
+   if( !testExtendedBuffer())
+   {
+      cout << "ExtendedBuffer Test Failed!" << endl;
+      return 1;
+   }
    cout << "Testing BaseContainerMetadata"<<endl;
    if( !atl::testBaseContainerMetadata() )
    {
@@ -72,16 +86,16 @@ int main(void)
       cout << "ImageContainer Test Failed!" << endl;
       return 1;
    }
-   cout << "Testing BaseBuffer"<<endl;
-   if( !atl::testBaseBuffer() )
+   cout << "Testing HContainerMetadata"<<endl;
+   if( !atl::testHContainerMetadata() )
    {
-      cout << "BaseBuffer Test Failed!" << endl;
+      cout << "HContainerMetadata Test Failed!" << endl;
       return 1;
    }
-   cout << "Testing extended buffer"<<endl;
-   if( !testExtendedBuffer())
+   cout << "Testing HContainer"<<endl;
+   if( !atl::testHContainer() )
    {
-      cout << "ExtendedBuffer Test Failed!" << endl;
+      cout << "HContainer Test Failed!" << endl;
       return 1;
    }
    /*

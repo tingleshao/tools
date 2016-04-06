@@ -4,6 +4,7 @@
 #include <stddef.h>
 #include <TSArray.tcc>
 #include <BaseContainer.h>
+#include <HContainer.h>
 #include <BaseContainerArrayMetadata.h>
 
 namespace atl
@@ -26,6 +27,7 @@ namespace atl
          
          //Interface functions
 //         BaseContainerArray::BaseContainerArray();
+         bool genHContainer( HContainer & container, size_t blockSize=0 );
          size_t push_back(BaseContainer container);
          BaseContainer pop();
          BaseContainer operator[] (size_t index) const {return m_containerArray[index];};

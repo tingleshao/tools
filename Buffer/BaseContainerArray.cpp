@@ -1,4 +1,5 @@
 #include <BaseContainerArray.h>
+#include <HContainer.h>
 
 namespace atl
 {
@@ -47,39 +48,61 @@ namespace atl
       return m_metadata.m_id;
    }
 
-   /*
+   /**
+    * \brief Generates an HContainer object from the data
+    * \param [in] container object to populate
+    * \return true on success, false on failure
+    *
+    * This function maps off of the data into a contiguous block of memory 
+    **/
+   bool BaseContainerArray::genHContainer( HContainer & container, size_t blockSize )
+   {
+      bool rc = true;
+      //Create a container to hold all of the data
+      container.allocate( m_metadata.m_size, blockSize );
+
+      //Loop through the containers and add subcontainers
+      size_t count = 0;
+      uint64_t elements = m_containerArray.getSize();
+
+      for( uint64_t i = 0; i < elements; i++ ) {
+         rc = container.add( m_containerArray[i] );
+         if( rc ) {
+            count ++;
+         }
+      }
+
+      if(!rc) {
+         std::cerr << "BaseContainer generated array with "<<count<<" of "<<elements<<std::endl;
+         rc = false;
+      }
+
+      return rc;
+   }
+   
+   /**
     * \brief Saves saves the containers into sequence of blocks
     * \param [in] filename name of the file to save to
     * \param [in] blockSize fundamental block size for the file
     *
     * This function maps off of the data into a contiguous block of memory on the file system
-    *
-   bool save( std::string filename, size_t blockSize )
+    **/
+   bool BaseContainerArray::save( std::string filename, size_t blockSize )
    {
-      //Create a container to hold all of the data
-      std::vector<uint16_t> offsets(m_containerArray.getSize());
-      ArrayContainer container;
-      container.allocate( getSize()); 
+      HContainer container;
 
-      for( size_t i = 0; i < getElementCount(); i++ ) {
-         
-
-      }
-
-
-
-
-      //Open the specified filename
-      int fd = open( filename.c_str(), O_WRONLY |O_CREAT, 0777 );
-      if( fd < 0 ) {
-         std::cerr << "BaseContainer unable to open "<<filename.c_str()<<std::endl;
+      //Create an HContainer object
+      if( !genHContainer( container, blockSize )) {
          return false;
       }
 
-
+      //Save the container as a block
+      return container.save( filename, blockSize );
    }
-   */
-   //Test functions
+
+   /**
+    * \brief Unit Test function
+    **/
    bool testBaseContainerArray() 
    {
       BaseContainerArray arr;

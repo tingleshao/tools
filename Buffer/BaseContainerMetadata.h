@@ -6,10 +6,11 @@
 
 namespace atl
 {
-   #define TYPE_SIZE 8
- 
-   #define TYPE_UNKNOWN 0
-   #define TYPE_BASE  1
+   const uint16_t MAGIC_SIZE      = 6;
+
+   const uint64_t TYPE_UNKNOWN    = 0;
+   const uint64_t TYPE_BASE       = 1;
+   const uint64_t TYPE_HCONTAINER = 2;
 
    /**
     * \brief Low level data structure to associate pointer with a data size
@@ -24,10 +25,12 @@ namespace atl
       private:
          
       public: 
-         uint64_t    m_id = 0;              //!< ID of the object
-         uint64_t    m_size = 0;            //!< Total size of the container including metadata
-         uint64_t    m_offset = 0;          //!< Offset into the binary data
-         uint64_t    m_type = TYPE_UNKNOWN; //!< Type of metadata
+         char        m_magic[MAGIC_SIZE];        //!< Size of the magic number
+         uint64_t    m_id        = 0;            //!< ID of the object
+         uint64_t    m_type      = TYPE_UNKNOWN; //!< Type of metadata
+         uint64_t    m_size      = 0;            //!< Total size of the container 
+         uint64_t    m_offset    = 0;            //!< Offset into the binary data
+         uint64_t    m_usedBytes = 0;            //!< Number of bytes used
 
          BaseContainerMetadata();
          virtual size_t  getSize();         //!< Returns the size of the metadata container

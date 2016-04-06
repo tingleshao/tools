@@ -66,16 +66,18 @@ include_directories(include TSQueue)
 include_directories(include Socket)
 
 set( ATL_Headers
+   Buffer/TSArray.tcc
+   Buffer/TSMatrix.tcc
+   Buffer/BaseBuffer.h
+   Buffer/ExtendedBuffer.tcc
+   Buffer/BaseContainer.h
    Buffer/BaseContainerMetadata.h
+   Buffer/HContainerMetadata.h
+   Buffer/HContainer.h
    Buffer/BaseContainerArrayMetadata.h
    Buffer/BaseContainerArray.h
    Image/ImageMetadata.h
    Image/ImageContainer.h
-   Buffer/BaseBuffer.h
-   Buffer/BaseContainer.h
-   Buffer/ExtendedBuffer.tcc
-   Buffer/TSArray.tcc
-   Buffer/TSMatrix.tcc
    Socket/BaseSocket.h
    Socket/SocketServer.h
    Thread/Thread.h
@@ -89,12 +91,14 @@ add_definitions(-std=c++11 -fPIC)     #Use C++11
 
 #create a list of files
 set( SOURCE_FILES 
-   Buffer/BaseContainerMetadata.cpp
-   Buffer/BaseContainerArrayMetadata.cpp
-   Buffer/BaseContainerArray.cpp
    Buffer/TSArray.cpp
    Buffer/BaseBuffer.cpp
+   Buffer/BaseContainerMetadata.cpp
    Buffer/BaseContainer.cpp
+   Buffer/HContainerMetadata.cpp
+   Buffer/HContainer.cpp
+   Buffer/BaseContainerArrayMetadata.cpp
+   Buffer/BaseContainerArray.cpp
    Buffer/ExtendedBuffer.cpp
    Buffer/TSArray.cpp
    Image/ImageMetadata.cpp

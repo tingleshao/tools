@@ -32,7 +32,7 @@ namespace atl
          uint64_t    m_offset    = 0;            //!< Offset into the binary data
 
          BaseContainerMetadata();
-         virtual size_t  getSize();         //!< Returns the size of the metadata container
+         size_t  getSize();         //!< Returns the size of the metadata container
          std::string getJsonString( bool brackets = true );
    };
 

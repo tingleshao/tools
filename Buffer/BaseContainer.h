@@ -22,10 +22,10 @@ namespace atl
       protected:
          
       public: 
+         BaseContainerMetadata * m_metadata = NULL; //!< Metadata fro the container
          size_t m_blockSize  = BLK_SIZE_BYTE;                   //!< Minimum memory chunk in the container
          size_t m_blockCount = 0;                   //!< Number of blocks in the container. 0 is unlimited
 
-         BaseContainerMetadata * m_metadata = NULL; //!< Metadata fro the container
          BaseBuffer   m_buffer;                     //!< DataBuffer
 
          virtual size_t allocate( size_t bytes      

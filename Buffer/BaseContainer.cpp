@@ -186,7 +186,7 @@ namespace atl
 
       container.m_metadata->m_id = 1;
 
-      std::string expected = "{\"id\":1,\"type\":1,\"size\":148,\"offset\":48}";
+      std::string expected = "{\"id\":1,\"type\":1,\"size\":140,\"offset\":40}";
       std::string result   = container.m_metadata->getJsonString();
 
       if( result.compare(expected)) {

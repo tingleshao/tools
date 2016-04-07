@@ -27,14 +27,15 @@ namespace atl
     **/
     size_t BaseContainer::allocate( size_t bytes, size_t blockSize, size_t metaSize ) 
     {
-       if( blockSize == 0 ) {
+       if( blockSize == BLK_SIZE_DEFAULT ) {
           blockSize = m_blockSize;
        }
        else {
           m_blockSize = blockSize;
        }
 
-       //
+
+       //If metadata is undefined, set it to the basecontainer size
        if( metaSize == 0 ) {
           metaSize = sizeof( BaseContainerMetadata );
        }
@@ -57,10 +58,9 @@ namespace atl
        m_metadata->m_size = m_blockCount * m_blockSize;
        std::strncpy( m_metadata->m_magic, "ATLc\n", MAGIC_SIZE);
 
-       m_metadata->m_usedBytes = metaSize;
-
        return m_metadata->m_size - m_metadata->m_offset;
     }
+
    /**
     * \brief sets the container ID to the specified value
     **/ 
@@ -95,8 +95,9 @@ namespace atl
       size_t  byteCount = 0;
       ssize_t result = 0;
       uint8_t * buff = (uint8_t *)&m_buffer[0];
-      while((result >= 0 )&&( byteCount < m_blockCount * m_blockSize )) {
-         result = write( fd, &buff[byteCount], m_blockCount * m_blockSize - byteCount ); 
+//      while((result >= 0 )&&( byteCount < m_blockCount * m_blockSize )) {
+      while((result >= 0 )&&( byteCount < m_metadata->m_size )) {
+         result = write( fd, &buff[byteCount], m_metadata->m_size - byteCount ); 
          if( result < 0 ) {
             std::cerr << "Based Container failed while writing data " <<std::endl;
             rc = false;
@@ -185,7 +186,7 @@ namespace atl
 
       container.m_metadata->m_id = 1;
 
-      std::string expected = "{\"id\":1,\"type\":1,\"size\":156,\"offset\":56}";
+      std::string expected = "{\"id\":1,\"type\":1,\"size\":148,\"offset\":48}";
       std::string result   = container.m_metadata->getJsonString();
 
       if( result.compare(expected)) {

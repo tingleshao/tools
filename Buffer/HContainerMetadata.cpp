@@ -26,8 +26,9 @@ namespace atl
       }
 
          ss << "\"objectData\":{"  
-            << "\"containerCount\":"<< m_containerCount     << ","
-            << "\"maxContainers\":" << m_maxContainers
+            << "\"containerCount\":" << m_containerCount << ","
+            << "\"tableSize\":"  << m_tableSize  << ","
+            << "\"usedBytes\":"      << m_usedBytes
             << "}";
 
       if(brackets) { 
@@ -46,7 +47,7 @@ namespace atl
     **/
    size_t HContainerMetadata::getSize() 
    {
-      return sizeof( HContainerMetadata) + sizeof( uint64_t)*m_maxContainers;
+      return sizeof( HContainerMetadata) + sizeof( uint64_t)*m_tableSize;
    }
    /**
     * \brief test function for the BaseContainerMetadata class
@@ -59,9 +60,10 @@ namespace atl
       metadata.m_offset = 1235;
       metadata.m_size   = 1;
       metadata.m_containerCount = 4;
-      metadata.m_maxContainers  = 5;
+      metadata.m_tableSize  = 5;
+      metadata.m_usedBytes      = 6;
 
-      std::string expected("{\"id\":1234,\"type\":0,\"size\":1,\"offset\":1235,\"objectData\":{\"containerCount\":4,\"maxContainers\":5}}");
+      std::string expected("{\"id\":1234,\"type\":0,\"size\":1,\"offset\":1235,\"objectData\":{\"containerCount\":4,\"tableSize\":5,\"usedBytes\":6}}");
       std::string result = metadata.getJsonString();
 
       if( expected.compare(result)) {
@@ -71,7 +73,7 @@ namespace atl
          return false;
       }
 
-      expected.assign("\"objectData\":{\"containerCount\":4,\"maxContainers\":5}");
+      expected.assign("\"objectData\":{\"containerCount\":4,\"tableSize\":5,\"usedBytes\":6}");
       result = metadata.getJsonString(false);
       if( expected.compare(result)) {
          std::cout << "testBaseContainerMetadata failed(true).\n"

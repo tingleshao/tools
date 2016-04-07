@@ -30,7 +30,6 @@ namespace atl
          uint64_t    m_type      = TYPE_UNKNOWN; //!< Type of metadata
          uint64_t    m_size      = 0;            //!< Total size of the container 
          uint64_t    m_offset    = 0;            //!< Offset into the binary data
-         uint64_t    m_usedBytes = 0;            //!< Number of bytes used
 
          BaseContainerMetadata();
          virtual size_t  getSize();         //!< Returns the size of the metadata container

@@ -8,6 +8,7 @@
 
 namespace atl
 {
+   const uint16_t DEFAULT_TABLE_SIZE=256;        //!< Default size of elements in lookup table
    /**
     * \brief Defines the Metadata structure for an HContainer class.
     *
@@ -19,9 +20,9 @@ namespace atl
       private:
 
       public: 
-         uint16_t   m_usedBytes      = 0;
-         uint16_t   m_containerCount = 0;         //!< Number of containers 
-         uint16_t   m_maxContainers  = 0;         //!< Max number of containers(element in LUT)
+         uint16_t   m_usedBytes      = 0;                  //!< Number of bytes used in the container
+         uint16_t   m_containerCount = 0;                  //!< Number of containers 
+         uint16_t   m_tableSize      = DEFAULT_TABLE_SIZE; //!< Max number of containers(element in LUT)
 
          size_t      getSize();
          std::string getJsonString( bool brackets = true );

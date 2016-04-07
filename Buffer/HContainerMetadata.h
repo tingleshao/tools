@@ -20,7 +20,7 @@ namespace atl
       private:
 
       public: 
-         uint16_t   m_usedBytes      = 0;                  //!< Number of bytes used in the container
+         uint64_t   m_usedBytes      = 0;                  //!< Number of bytes used in the container
          uint16_t   m_containerCount = 0;                  //!< Number of containers 
          uint16_t   m_tableSize      = DEFAULT_TABLE_SIZE; //!< Max number of containers(element in LUT)
 

@@ -54,11 +54,12 @@ namespace atl
    bool HContainer::add( BaseContainer & container )
    {
       //Map to HContainer metadata
-      HContainerMetadata * meta = reinterpret_cast<HContainerMetadata *>(m_metadata);
+      HContainerMetadata * meta = reinterpret_cast<HContainerMetadata *>(BaseContainer::m_metadata);
       if( meta == NULL ) {
          std::cerr << "HContainer metadata has not been allocated" <<std::endl;
          return false;
       }
+
       //Make sure we are not full 
       if( meta->m_containerCount >= meta->m_tableSize ) {
          std::cerr << "HContainer reached element count("
@@ -67,9 +68,10 @@ namespace atl
          return false;
       }
 
-
       //Get the container size
       size_t containerSize = container.m_metadata->m_size;
+      std::cout << "   container size:"<< containerSize << std::endl;
+      std::cout << "   meta_usedBytes:"<< meta->m_usedBytes << std::endl;
 
       //Make sure we have space
       if(( meta->m_size - meta->m_usedBytes ) < containerSize)
@@ -80,16 +82,19 @@ namespace atl
          return false;
       }
 
-      //Should be good. Copy data in
+      //Copy data to the end
       std::memcpy( &m_buffer[meta->m_usedBytes]
                  , &container.m_buffer[0]
                  , containerSize
                  );
 
+      BaseContainerMetadata * contMeta = reinterpret_cast<BaseContainerMetadata *>(&m_buffer[meta->m_usedBytes]);
+      contMeta->m_offset += meta->m_usedBytes;
 
+      //Set the lookup table to point to the new data and update variables
       m_offsetArray[meta->m_containerCount] = meta->m_usedBytes;
+      meta->m_usedBytes = meta->m_usedBytes + containerSize;
       meta->m_containerCount++;
-      meta->m_usedBytes += containerSize;
 
       return true;
    }
@@ -110,7 +115,7 @@ namespace atl
       std::cout << "++++PixelSize:"<<((ImageMetadata *)metadata)->m_pixelDataSize;
       createStaticMetadata( metadata->m_metaSize );
       memcpy( container.m_metadata, metadata, metadata->m_metaSize );
-      container.m_metadata->m_offset += offset;
+//      container.m_metadata->m_offset += offset;
 
       return true;
    }
@@ -149,6 +154,7 @@ namespace atl
       bool rc = true;
       hc.allocate(total);
       for( unsigned int i = 0; i < conts.size(); i++ ) {
+         std::cout << "   Adding size:"<< conts[i].m_metadata->m_size << std::endl;
          rc = hc.add( conts[i]);
          if( !rc ) {
             std::cerr <<"Unable to add container with Id: "<<i<<std::endl;

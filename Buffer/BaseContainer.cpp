@@ -83,6 +83,8 @@ namespace atl
        m_metadata->m_size = m_blockCount * m_blockSize;
        std::strncpy( m_metadata->m_magic, "ATLc\n", MAGIC_SIZE);
 
+       std::cout << "AllocSize:" << m_metadata->m_size << std::endl; 
+
        return m_metadata->m_size - m_metadata->m_offset;
     }
 

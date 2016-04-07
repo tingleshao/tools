@@ -15,7 +15,7 @@ namespace atl
    class HContainer : public BaseContainer
    {
       private:
-         uint16_t * m_offsetArray = NULL;          //!< Pointer to the table of offsets in memory
+         uint64_t * m_offsetArray = NULL;          //!< Pointer to the table of offsets in memory
 
       protected:
          

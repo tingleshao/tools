@@ -83,8 +83,6 @@ namespace atl
        m_metadata->m_size = m_blockCount * m_blockSize;
        std::strncpy( m_metadata->m_magic, "ATLc\n", MAGIC_SIZE);
 
-       std::cout << "AllocSize:" << m_metadata->m_size << std::endl; 
-
        return m_metadata->m_size - m_metadata->m_offset;
     }
 
@@ -266,14 +264,12 @@ namespace atl
                    <<std::endl;
          rc = false;
       }
-      /*
+
       int irc = std::system("rm *.tmp");
       if( irc != 0 ) {
          std::cerr << "Failed on system command with code "<<irc <<std::endl;
          rc = false;
       }
-      */
-
 
       return rc;
  

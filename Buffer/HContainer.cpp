@@ -40,7 +40,7 @@ namespace atl
          meta->m_tableSize = tableSize;
          meta->m_usedBytes = metaSize+tableSize;
          meta->m_metaSize  = metaSize;
-         m_offsetArray = reinterpret_cast<uint16_t *>(&m_buffer[meta->m_metaSize]);
+         m_offsetArray = reinterpret_cast<uint64_t *>(&m_buffer[meta->m_metaSize]);
       }
 
       return result;
@@ -69,32 +69,35 @@ namespace atl
       }
 
       //Get the container size
+      size_t head          = meta->m_usedBytes;
       size_t containerSize = container.m_metadata->m_size;
-      std::cout << "   container size:"<< containerSize << std::endl;
-      std::cout << "   meta_usedBytes:"<< meta->m_usedBytes << std::endl;
+//      size_t localOff      = container.m_metadata->m_offset;
 
       //Make sure we have space
-      if(( meta->m_size - meta->m_usedBytes ) < containerSize)
+      if(( meta->m_size - head ) < containerSize)
       {
          std::cerr << "HContainer does not have sufficent space to add element\n"
-                   << "   " << meta->m_size - meta->m_usedBytes
+                   << "   " << meta->m_size - head
                    << " < " << container.getSize() <<std::endl;
          return false;
       }
 
       //Copy data to the end
-      std::memcpy( &m_buffer[meta->m_usedBytes]
+      std::memcpy( &m_buffer[head]
                  , &container.m_buffer[0]
                  , containerSize
                  );
 
-      BaseContainerMetadata * contMeta = reinterpret_cast<BaseContainerMetadata *>(&m_buffer[meta->m_usedBytes]);
-      contMeta->m_offset += meta->m_usedBytes;
+
+      BaseContainerMetadata * contMeta = reinterpret_cast<BaseContainerMetadata *>(&m_buffer[head]);
+      contMeta->m_offset += head;
 
       //Set the lookup table to point to the new data and update variables
-      m_offsetArray[meta->m_containerCount] = meta->m_usedBytes;
+      m_offsetArray[meta->m_containerCount] = head;
       meta->m_usedBytes = meta->m_usedBytes + containerSize;
       meta->m_containerCount++;
+
+//      std::cout << "head: "<<head<<" + "<<localOff<< " + " <<containerSize<<" = "<<meta->m_usedBytes <<std::endl;
 
       return true;
    }
@@ -112,10 +115,8 @@ namespace atl
       //Get a pointer to the memory
       size_t offset = m_offsetArray[index];
       BaseContainerMetadata * metadata = reinterpret_cast<BaseContainerMetadata *>(&m_buffer[offset]);
-      std::cout << "++++PixelSize:"<<((ImageMetadata *)metadata)->m_pixelDataSize;
       createStaticMetadata( metadata->m_metaSize );
       memcpy( container.m_metadata, metadata, metadata->m_metaSize );
-//      container.m_metadata->m_offset += offset;
 
       return true;
    }
@@ -126,7 +127,7 @@ namespace atl
    bool testHContainer() {
       HContainer hc;
 
-      std::vector<uint16_t>dims={256,512,256};
+      std::vector<uint16_t>dims={256,500,256};
 
       std::vector<ImageContainer> conts;
       size_t pixSize = 0;
@@ -150,28 +151,20 @@ namespace atl
          return false;
       }
 
-      conts[0].savePNM("C0_ref.pnm", conts[0].getJsonMetadata());
       bool rc = true;
       hc.allocate(total);
       for( unsigned int i = 0; i < conts.size(); i++ ) {
-         std::cout << "   Adding size:"<< conts[i].m_metadata->m_size << std::endl;
          rc = hc.add( conts[i]);
          if( !rc ) {
             std::cerr <<"Unable to add container with Id: "<<i<<std::endl;
             return false;
          }
       }
-      conts[0].savePNM("C0b_ref.pnm", conts[0].getJsonMetadata());
 
-      std::string jsonString = conts[0].getJsonMetadata();
-      if( !conts[0].savePNM("test1b.pnm", jsonString ))
-      {
-         std::cout << "Failed to save container PNM"<<std::endl;
-      }
       ImageContainer bc1;
-      hc.getContainer( bc1, 0 );
+      hc.getContainer( bc1, 1 );
 
-      std::string json1 = conts[0].getJsonMetadata();
+      std::string json1 = conts[1].getJsonMetadata();
       std::string json2 = bc1.getJsonMetadata();
 
       //Make sure not equal (offsets changed)
@@ -182,22 +175,12 @@ namespace atl
          return false;
      }
 
-      ImageContainer recon = genTestImage();
-      if( !recon.savePNM("ref.pnm", recon.getJsonMetadata())) 
-      {
-         std::cout << "Failed to save reference PNM"<<std::endl;
-      }
-
-
-      if( !conts[0].savePNM("test1.pnm", json1.c_str())) {
+      if( !conts[1].savePNM("test1.pnm", json1.c_str())) {
          std::cout << "Failed to save container PNM"<<std::endl;
       }
       if( !bc1.savePNM("test2.pnm", json2.c_str())) {
          std::cout << "Failed to save copy PNM"<<std::endl;
       }
-
-      conts[0].save("c0.tmp");
-      bc1.save("bc1.tmp");
 
       return true;
    }

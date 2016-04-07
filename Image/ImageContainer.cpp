@@ -167,6 +167,7 @@ namespace atl
    bool ImageContainer::savePNM( std::string filename, std::string metadata )
    {
       ImageMetadata * meta =reinterpret_cast<ImageMetadata *>(m_metadata);
+      std::cout << "IC PixelDataSize "<< meta->m_pixelDataSize<<std::endl;
       //Make sure we are a valid object 
       if( meta == NULL ) {
          std::cerr << "Unable to save PNM with undefined metadata" <<std::endl;
@@ -216,6 +217,11 @@ namespace atl
       ss << bpp <<"\n";
       std::string header = ss.str();
 
+      
+      std::cout<<"IC Magic:"<<meta->m_magic<<std::endl;
+      std::cout<<"IC StrSize:"<<header.length()<<std::endl;
+      std::cout<<"IC PixelCount:"<<meta->m_pixelDataSize<<std::endl;
+
       //Open the file
       int fd = open( filename.c_str(), O_WRONLY | O_CREAT, 0777 );
       if( fd < 0 ) {
@@ -240,6 +246,7 @@ namespace atl
          }
       }
 
+      std::cout << "Wrote:"<<byteCount<<std::endl;
       close(fd);
       if( result < 0 ) {
          std::cerr << "Failed to write PNM. Exiting\n"<<std::endl;

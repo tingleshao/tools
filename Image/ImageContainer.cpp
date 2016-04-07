@@ -241,6 +241,36 @@ namespace atl
    }
 
    /**
+    * \brief Generates a test image
+    * \param [in] width width of the image
+    * \param [in] height height of the image
+    * \return test image
+    **/
+   ImageContainer genTestImage( size_t width, size_t height )
+   {
+      ImageMetadata metadata;
+      metadata.m_width =  width;
+      metadata.m_height = height;
+      metadata.m_bpp = 8;
+      metadata.m_mode = ATL_MODE_GRAY;
+
+      ImageContainer pnm;
+       
+      if( !pnm.allocate( metadata)) {
+         std::cerr<<"Failed to allocate"<<std::endl;
+      }
+       
+      uint8_t * buffer = reinterpret_cast<uint8_t *>(pnm.getDataPointer());
+      for( uint32_t i = 0; i < width; i++ ) 
+      {
+         for( uint32_t j = 0; j < height; j++ ) 
+         buffer[i*height+j] = i % 255;
+      }
+
+      return pnm;
+   }
+
+   /**
     * \brief test function for the BaseMetadata class
     * \return true on success, false on failure
     **/
@@ -339,18 +369,8 @@ namespace atl
          rc = false;
       }
 
-       ImageContainer pnm;
-       metadata.m_mode =ATL_MODE_GRAY;
-       if( !pnm.allocate( metadata)) {
-          std::cerr<<"Failed to allocate"<<std::endl;
-       }
-       
-       uint8_t * buffer = reinterpret_cast<uint8_t *>(pnm.getDataPointer());
-       for( uint32_t i = 0; i < width; i++ ) 
-       {
-          for( uint32_t j = 0; j < height; j++ ) 
-          buffer[i*height+j] = i %255;
-       }
+       ImageContainer pnm = genTestImage();
+
 
        rc = pnm.savePNM("test.pnm", pnm.getJsonMetadata());
          

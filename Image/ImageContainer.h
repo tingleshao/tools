@@ -45,6 +45,7 @@ namespace atl
          bool savePNM( std::string filename, std::string metadata );
    };
 
+   ImageContainer genTestImage(size_t width=256, size_t height=256 );
    bool testImageContainer();
 };
 

@@ -20,6 +20,8 @@ namespace atl
    {
       std::strncpy( m_magic, "ATLc\n", MAGIC_SIZE);
       m_id = getTimeStamp();
+      m_metaSize = sizeof( BaseContainerMetadata);
+      m_type     = TYPE_BASE;
    }
 
    /**
@@ -37,8 +39,7 @@ namespace atl
       
       ss << "\"id\":"        << m_id        << ","
          << "\"type\":"      << m_type      << ","
-         << "\"size\":"      << m_size      << ","
-         << "\"offset\":"    << m_offset;
+         << "\"size\":"      << m_size;
 
       if(brackets) { 
          ss << "}";
@@ -70,7 +71,7 @@ namespace atl
       metadata.m_offset = 1235;
       metadata.m_size   = 1;
 
-      std::string expected("{\"id\":1234,\"type\":0,\"size\":1,\"offset\":1235}");
+      std::string expected("{\"id\":1234,\"type\":1,\"size\":1}");
       std::string result = metadata.getJsonString();
 
       if( expected.compare(result)) {
@@ -80,7 +81,7 @@ namespace atl
          return false;
       }
 
-      expected.assign("\"id\":1234,\"type\":0,\"size\":1,\"offset\":1235");
+      expected.assign("\"id\":1234,\"type\":1,\"size\":1");
       result = metadata.getJsonString(false);
 
       if( expected.compare(result)) {

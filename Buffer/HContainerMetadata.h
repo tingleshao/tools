@@ -24,6 +24,7 @@ namespace atl
          uint16_t   m_containerCount = 0;                  //!< Number of containers 
          uint16_t   m_tableSize      = DEFAULT_TABLE_SIZE; //!< Max number of containers(element in LUT)
 
+         HContainerMetadata();
          size_t      getSize();
          std::string getJsonString( bool brackets = true );
    };

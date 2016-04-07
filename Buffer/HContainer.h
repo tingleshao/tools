@@ -20,8 +20,6 @@ namespace atl
       protected:
          
       public: 
-         HContainerMetadata * m_metadata = NULL; //!< Metadata for the container
-
          HContainer();
          size_t allocate( size_t bytes
                         , uint16_t tableSize = DEFAULT_TABLE_SIZE

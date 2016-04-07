@@ -33,7 +33,7 @@ namespace atl
                                   )
    {
       //Calculate the size if it is not specified
-      if( sz == 0 ) { 
+      if( sz == BLK_SIZE_DEFAULT ) { 
          sz = width * height *bpp / 8;
       } 
 
@@ -44,12 +44,13 @@ namespace atl
          return result;
       } 
 
-      m_metadata = reinterpret_cast<ImageMetadata *>(&m_buffer[0]);
-      m_metadata->m_width         = width;
-      m_metadata->m_height        = height;
-      m_metadata->m_bpp           = bpp;
-      m_metadata->m_mode          = mode;
-      m_metadata->m_pixelDataSize = sz;
+      ImageMetadata * meta = reinterpret_cast<ImageMetadata *>(&m_buffer[0]);
+      meta->m_width         = width;
+      meta->m_height        = height;
+      meta->m_bpp           = bpp;
+      meta->m_mode          = mode;
+      meta->m_pixelDataSize = sz;
+      meta->m_metaSize      = sizeof( ImageMetadata );
 
       return result;
    }
@@ -82,7 +83,8 @@ namespace atl
     **/
    std::string ImageContainer::getJsonMetadata()
    {
-      return m_metadata->getJsonString();
+      ImageMetadata * meta =reinterpret_cast<ImageMetadata *>(m_metadata);
+      return meta->getJsonString();
    }
 
    /**
@@ -90,7 +92,8 @@ namespace atl
     **/
    uint32_t ImageContainer::getWidth()
    {
-      return m_metadata->m_width;
+      ImageMetadata * meta =reinterpret_cast<ImageMetadata *>(m_metadata);
+      return meta->m_width;
    }
 
    /**
@@ -98,7 +101,8 @@ namespace atl
     **/
    uint32_t ImageContainer::getHeight()
    {
-      return m_metadata->m_height;
+      ImageMetadata * meta =reinterpret_cast<ImageMetadata *>(m_metadata);
+      return meta->m_height;
    }
 
    /**
@@ -106,7 +110,8 @@ namespace atl
     **/
    uint32_t ImageContainer::getBpp()
    {
-      return m_metadata->m_bpp;
+      ImageMetadata * meta =reinterpret_cast<ImageMetadata *>(m_metadata);
+      return meta->m_bpp;
    }
 
    /**
@@ -114,7 +119,8 @@ namespace atl
     **/
    uint32_t ImageContainer::getMode()
    {
-      return m_metadata->m_mode;
+      ImageMetadata * meta =reinterpret_cast<ImageMetadata *>(m_metadata);
+      return meta->m_mode;
    }
 
    /**
@@ -123,7 +129,7 @@ namespace atl
    ImageMetadata ImageContainer::getMetadata() 
    {
       ImageMetadata metadata;
-      memcpy( &metadata, m_metadata, sizeof( ImageMetadata ));
+      memcpy( &metadata, m_metadata, m_metadata->m_metaSize );
       return metadata;
    }
 
@@ -132,7 +138,7 @@ namespace atl
     **/
    bool ImageContainer::setMetadata( ImageMetadata metadata )
    {
-      memcpy( m_metadata, &metadata, sizeof( ImageMetadata));
+      memcpy( m_metadata, &metadata, metadata.m_metaSize);
       return true;
    }
 
@@ -143,7 +149,8 @@ namespace atl
     * overallocated to force a block boundary
     **/
    size_t ImageContainer::getPixelDataSize() {
-      return m_metadata->m_pixelDataSize;
+      ImageMetadata * meta =reinterpret_cast<ImageMetadata *>(m_metadata);
+      return meta->m_pixelDataSize;
    }
   
    /**
@@ -159,18 +166,19 @@ namespace atl
     **/
    bool ImageContainer::savePNM( std::string filename, std::string metadata )
    {
+      ImageMetadata * meta =reinterpret_cast<ImageMetadata *>(m_metadata);
       //Make sure we are a valid object 
-      if( m_metadata == NULL ) {
+      if( meta == NULL ) {
          std::cerr << "Unable to save PNM with undefined metadata" <<std::endl;
          return false;
       }
       uint8_t * buffer = static_cast<uint8_t *>(getDataPointer());
       if( buffer == NULL ) {
-         std::cerr << "Unable to save PNM. Invalid data pointer received!" <<std::endl;
+        std::cerr << "Unable to save PNM. Invalid data pointer received!" <<std::endl;
          return false;
       }
 
-      if( m_metadata->m_pixelDataSize == 0 ) {
+      if( meta->m_pixelDataSize == 0 ) {
          std::cerr << "Unable to save PNM. No pixel data defined!" <<std::endl;
          return false;
       }
@@ -183,28 +191,28 @@ namespace atl
          return false;
       }
 
-      int bpp = m_metadata->m_bpp;
+      int bpp = meta->m_bpp;
       bpp = pow(2,bpp)-1;
       std::stringstream ss;
 
       //Determine header information
-      if(( m_metadata->m_mode == ATL_MODE_GRAY ) ||
-         ( m_metadata->m_mode == ATL_MODE_GRBG ) ||
-         ( m_metadata->m_mode == ATL_MODE_BGGR ))
+      if(( meta->m_mode == ATL_MODE_GRAY ) ||
+         ( meta->m_mode == ATL_MODE_GRBG ) ||
+         ( meta->m_mode == ATL_MODE_BGGR ))
       {
          ss<<"P5\n";
       }
-      else if(( m_metadata->m_mode == ATL_MODE_RGB ) ||
-              ( m_metadata->m_mode == ATL_MODE_BGR ))
+      else if(( meta->m_mode == ATL_MODE_RGB ) ||
+              ( meta->m_mode == ATL_MODE_BGR ))
       {
          ss<<"P6\n";
       }
       else  {
-         std::cerr << "Unable to save PNM for mode "<<m_metadata->m_mode<<std::endl;
+         std::cerr << "Unable to save PNM for mode "<<meta->m_mode<<std::endl;
       }
 
       ss << "#" << metadata.c_str() << "\n";
-      ss << m_metadata->m_width<<" "<<m_metadata->m_height<<"\n";
+      ss << meta->m_width<<" "<<meta->m_height<<"\n";
       ss << bpp <<"\n";
       std::string header = ss.str();
 
@@ -224,18 +232,20 @@ namespace atl
 
       //Loop to write data
       size_t byteCount = 0;
-      while(( result >= 0 )&&(byteCount < m_metadata->m_pixelDataSize)) 
+      while(( result >= 0 )&&(byteCount < meta->m_pixelDataSize)) 
       {
-         result = write( fd, buffer+byteCount, m_metadata->m_pixelDataSize - byteCount );
+         result = write( fd, buffer+byteCount, meta->m_pixelDataSize - byteCount );
          if( result > 0 ) {
             byteCount += result;
          }
       }
 
+      close(fd);
       if( result < 0 ) {
          std::cerr << "Failed to write PNM. Exiting\n"<<std::endl;
          return false;
       }
+
 
       return true;
    }

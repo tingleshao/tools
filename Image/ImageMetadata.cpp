@@ -12,6 +12,7 @@ namespace atl
    ImageMetadata::ImageMetadata()
    {
       m_type = TYPE_IMAGE;
+      m_metaSize = sizeof( ImageMetadata);
    }
 
    /**
@@ -60,7 +61,7 @@ namespace atl
       metadata.m_height= 3;
       metadata.m_bpp= 4;
 
-      std::string expected("{\"id\":1234,\"type\":2,\"size\":1234,\"offset\":1235,\"image\":{\"mode\":\"grayscale\",\"width\":2,\"height\":3,\"bpp\":4}}");
+      std::string expected("{\"id\":1234,\"type\":2,\"size\":1234,\"image\":{\"mode\":\"grayscale\",\"width\":2,\"height\":3,\"bpp\":4}}");
       std::string result = metadata.getJsonString();
 
       if( !expected.compare(result)) {

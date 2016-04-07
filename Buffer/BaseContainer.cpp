@@ -14,6 +14,30 @@
 namespace atl
 {
    /**
+    * \brief destructor
+    *
+    * If this is a static instance (metadata allocated independent of buffer), delete metadata
+    **/
+   BaseContainer::~BaseContainer()
+   {
+      // if we are the only ones using the m_metaBuffer, set m_metadata to NULL;
+      if( m_metaBuffer.m_buffer.use_count() == 1) {
+            m_metadata = NULL;
+      }
+   }
+
+   /**
+    * \brief this function creates a local BaseBuffer object and maps the m_metadata pointer to it.
+    **/
+   bool BaseContainer::createStaticMetadata( size_t size ) 
+   {
+      m_metaBuffer.allocate(size);
+      m_metadata = (BaseContainerMetadata *)&m_metaBuffer[0];
+
+      return true;
+   }
+
+   /**
     * \brief allocates container data
     * \param [in] bytes      number of bytes data is expected to require
     * \param [in] blockSize  minimum size of a block in bytes (default = 1)
@@ -54,6 +78,7 @@ namespace atl
        m_metadata = reinterpret_cast<BaseContainerMetadata *>(&m_buffer[0]);
        m_metadata->m_id = getTimeStamp();
        m_metadata->m_offset = metaSize;
+       m_metadata->m_metaSize = metaSize;
        m_metadata->m_type   = TYPE_BASE;
        m_metadata->m_size = m_blockCount * m_blockSize;
        std::strncpy( m_metadata->m_magic, "ATLc\n", MAGIC_SIZE);
@@ -128,7 +153,7 @@ namespace atl
     **/
    size_t BaseContainer::getDataSize()
    {
-      return m_metadata->m_size - m_metadata->m_offset;
+      return m_metadata->m_size - m_metadata->m_metaSize;
    }
 
    /**
@@ -186,7 +211,7 @@ namespace atl
 
       container.m_metadata->m_id = 1;
 
-      std::string expected = "{\"id\":1,\"type\":1,\"size\":140,\"offset\":40}";
+      std::string expected = "{\"id\":1,\"type\":1,\"size\":148}";
       std::string result   = container.m_metadata->getJsonString();
 
       if( result.compare(expected)) {

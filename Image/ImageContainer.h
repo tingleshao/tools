@@ -18,12 +18,11 @@ namespace atl
    {
       private:
       protected:
-         ImageMetadata * m_metadata = NULL;
 
       public: 
          size_t getPixelDataSize();
          std::string getJsonMetadata();
-         size_t allocate( ImageMetadata metadata, size_t sz=0, size_t blockSize=BLK_SIZE_BYTE );
+         size_t allocate( ImageMetadata metadata, size_t sz=BLK_SIZE_DEFAULT, size_t blockSize=BLK_SIZE_BYTE );
          size_t allocate( uint32_t width
                         , uint32_t height
                         , uint32_t bpp

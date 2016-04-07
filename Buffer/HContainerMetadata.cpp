@@ -12,6 +12,14 @@
 namespace atl
 {
    /**
+    * \brief Constructor
+    **/
+   HContainerMetadata::HContainerMetadata()
+   {
+      m_type = TYPE_HCONTAINER;
+      m_metaSize = sizeof( HContainerMetadata);
+   }
+   /**
     * \brief Generates a jsonString based on the contained metadata
     * \param [in] brackets flag to indicate if surrounding brackets are needed (default = true)
     * \return std::string with Json representation
@@ -63,7 +71,7 @@ namespace atl
       metadata.m_tableSize  = 5;
       metadata.m_usedBytes      = 6;
 
-      std::string expected("{\"id\":1234,\"type\":0,\"size\":1,\"offset\":1235,\"objectData\":{\"containerCount\":4,\"tableSize\":5,\"usedBytes\":6}}");
+      std::string expected("{\"id\":1234,\"type\":2,\"size\":1,\"objectData\":{\"containerCount\":4,\"tableSize\":5,\"usedBytes\":6}}");
       std::string result = metadata.getJsonString();
 
       if( expected.compare(result)) {

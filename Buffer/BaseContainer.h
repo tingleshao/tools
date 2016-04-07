@@ -18,21 +18,24 @@ namespace atl
    class BaseContainer
    {
       private:
+         BaseBuffer m_metaBuffer;                   //!< Buffer to hold locally allocated metadata
 
       protected:
          
       public: 
          BaseContainerMetadata * m_metadata = NULL; //!< Metadata fro the container
-         size_t m_blockSize  = BLK_SIZE_BYTE;                   //!< Minimum memory chunk in the container
+         size_t m_blockSize  = BLK_SIZE_BYTE;       //!< Minimum memory chunk in the container
          size_t m_blockCount = 0;                   //!< Number of blocks in the container. 0 is unlimited
-
+         bool   m_staticFlag = false;               //!< Indicates container is static and metadata is allocated
          BaseBuffer   m_buffer;                     //!< DataBuffer
 
+         ~BaseContainer();
          virtual size_t allocate( size_t bytes      
                                 , size_t blockSize  = 0
                                 , size_t metaSize   = 0
                                 );
 
+         bool         createStaticMetadata( size_t metaSize );
          size_t       getDataSize();
          void *       getDataPointer();
          bool         save( std::string filename, size_t blockSize = BLK_SIZE_DEFAULT );

@@ -29,6 +29,7 @@ namespace atl
          uint64_t    m_id        = 0;            //!< ID of the object
          uint64_t    m_type      = TYPE_UNKNOWN; //!< Type of metadata
          uint64_t    m_size      = 0;            //!< Total size of the container 
+         uint64_t    m_metaSize  = 0;
          uint64_t    m_offset    = 0;            //!< Offset into the binary data
 
          BaseContainerMetadata();

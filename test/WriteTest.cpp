@@ -19,7 +19,7 @@
 
 using namespace std;
 
-std::string path="./fstest/";
+std::string path="./fstest/"; 
 int64_t writeCount = 100;
 int     gap = 100;        
 std::vector<std::string> nameVector;
@@ -149,7 +149,7 @@ int main(int argc, char * argv[])
 
    //Read in command line parameters to check read/write solution
    for( int i = 1; i < argc; i++ ) {
-      if( !strcmp(argv[i], "-d")) {
+      if( !strcmp(argv[i], "-d")) { //d: assign path
          argCount++;
          i++;
          path.assign( argv[i] );
@@ -206,21 +206,18 @@ int main(int argc, char * argv[])
    }
 
    //Ok, we've got the names, now let's write the files
-
    //
    // Current - warm up
    //
    if( testFlag & NORMAL_TEST) {
-
+      // TODO: why write two times?
       printf("--- Warm up\n");
       writeSingleThread( nameVector );
 
-      //Start read thread
+      //Start read thread .. write? 
       printf("--- Write existing\n");
       writeSingleThread( nameVector );
 
-
-      //
       // Read and write with existing files
       //
       printf("--- RW existing\n");

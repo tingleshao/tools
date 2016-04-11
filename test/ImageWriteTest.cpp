@@ -29,6 +29,7 @@ int fd;
 
 /** 
  * \brief Thread for reading images as individual files
+TODO: ways to block each each imageC
  **/
 void readSingleThread( std::vector<std::string> nameVector) 
 {

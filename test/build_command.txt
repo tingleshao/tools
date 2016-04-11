@@ -1,0 +1,2 @@
+g++ -std=c++11 -pthread -L ../lib/ -I ../ATimer/ ../ATimer/ATimer.cpp WriteTest.cpp -o writetest
+

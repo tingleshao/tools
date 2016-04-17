@@ -23,6 +23,7 @@ std::string path="./fstest/";
 int64_t writeCount = 100;
 int     gap = 100;        
 std::vector<std::string> nameVector;
+// TODO: change this to a finer resultion thing
 uint64_t bufSize = 4194304;  //4MB block
 std::string flatName="./fstest/flat.test";
 int fd;
